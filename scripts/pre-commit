@@ -1,0 +1,16 @@
+#!/bin/sh
+
+# git 의 스테이징된 파일 목록 가져오기 (git add 된 파일 목록)
+stagedFiles=$(git diff --staged --name-only)
+
+# 코드 포맷팅 자동 적용
+echo "Running spotlessApply..."
+./gradlew spotlessApply
+
+# Add files to stage spotless applied
+# spotless 적용 후 변경된 파일을 다시 git 에 추가
+for file in $stagedFiles; do
+  if test -f "$file"; then
+    git add $file
+  fi
+done
