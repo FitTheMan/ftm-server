@@ -7,12 +7,15 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    environment: DEV
 
     steps:
       # 체크아웃
       - name: Checkout
         uses: actions/checkout@v4
+
+      # ENV 설정
+      - name: Load ENV into Environment Variable
+        run: echo "${{ secrets.ENV }}" >> $GITHUB_ENV
 
       # JDK 17 세팅
       - name: Set up JDK 17
