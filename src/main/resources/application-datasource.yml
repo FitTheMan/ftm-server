@@ -10,6 +10,7 @@ spring:
     password: ${POSTGRES_PASSWORD}
 
   jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     properties:
       hibernate:
         default_batch_fetch_size: ${JPA_BATCH_FETCH_SIZE:100}
