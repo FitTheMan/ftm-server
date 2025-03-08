@@ -29,6 +29,9 @@ jobs:
         run: |
           echo "${{ secrets.ENV }}" >> $GITHUB_ENV
           
+      # ENV 로그 마스킹 적용
+      - name: Mask ENV
+        run: |
           while IFS= read -r line; do
             echo "::add-mask::$line"
           done <<< "${{ secrets.ENV }}"
