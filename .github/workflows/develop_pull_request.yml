@@ -13,10 +13,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # ENV 설정
-      - name: Load ENV into Environment Variable
-        run: echo "${{ secrets.ENV }}" >> $GITHUB_ENV
-
       # JDK 17 세팅
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -27,6 +23,15 @@ jobs:
       # Gradlew 생행 권한 허용
       - name: Grant Execute Permission for Gradlew
         run: chmod +x ./gradlew
+
+      # ENV 설정
+      - name: Load ENV into Environment Variable
+        run: |
+          echo "${{ secrets.ENV }}" >> $GITHUB_ENV
+          
+          while IFS= read -r line; do
+            echo "::add-mask::$line"
+          done <<< "${{ secrets.ENV }}"
 
       # Gradle setup, check(코드 품질 관리, 테스트) 실행
       - name: Setup Gradle
