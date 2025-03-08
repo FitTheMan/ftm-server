@@ -37,9 +37,11 @@ jobs:
       # ENV 로그 마스킹 적용
       - name: Mask ENV
         run: |
-          while IFS= read -r line; do
-            echo "::add-mask::$line"
-          done <<< "${{ secrets.ENV }}"
+          if [ -f "$GITHUB_ENV" ]; then
+            while IFS= read -r line; do
+              echo "::add-mask::$line"
+            done < "$GITHUB_ENV"
+          fi
 
       # Gradle 빌드
       - name: Build with Gradle

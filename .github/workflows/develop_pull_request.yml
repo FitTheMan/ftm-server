@@ -32,9 +32,11 @@ jobs:
       # ENV 로그 마스킹 적용
       - name: Mask ENV
         run: |
-          while IFS= read -r line; do
-            echo "::add-mask::$line"
-          done <<< "${{ secrets.ENV }}"
+          if [ -f "$GITHUB_ENV" ]; then
+            while IFS= read -r line; do
+              echo "::add-mask::$line"
+            done < "$GITHUB_ENV"
+          fi
 
       # Gradle setup, check(코드 품질 관리, 테스트) 실행
       - name: Setup Gradle
