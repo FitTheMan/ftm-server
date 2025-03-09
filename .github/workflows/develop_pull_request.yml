@@ -20,21 +20,14 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      # Gradlew 생행 권한 허용
+      # Gradlew 실행 권한 허용
       - name: Grant Execute Permission for Gradlew
         run: chmod +x ./gradlew
 
       # .env 파일 생성
-      - name: Create .env file
+      - name: Load secrets into .env file
         run: |
           echo "${{ secrets.ENV }}" >> .env
-          
-      # .env 파일을 로드하고 환경변수로 등록
-      - name: Load .env and Export Environment Variable
-        run: |
-          set -o allexport
-          source .env
-          set +o allexport
 
       # Gradle setup, check(코드 품질 관리, 테스트) 실행
       - name: Setup Gradle
