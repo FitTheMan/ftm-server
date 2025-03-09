@@ -29,19 +29,17 @@ jobs:
       - name: Grant Execute Permission for Gradlew
         run: chmod +x ./gradlew
 
-      # ENV 설정
-      - name: Load ENV into Environment Variable
+      # .env 파일 생성
+      - name: Create .env file
         run: |
-          echo "${{ secrets.ENV }}" >> $GITHUB_ENV
+          echo "${{ secrets.ENV }}" >> .env
 
-      # ENV 로그 마스킹 적용
-      - name: Mask ENV
+      # .env 파일을 로드하고 환경변수로 등록
+      - name: Load .env and Export Environment Variable
         run: |
-          if [ -f "$GITHUB_ENV" ]; then
-            while IFS= read -r line; do
-              echo "::add-mask::$line"
-            done < "$GITHUB_ENV"
-          fi
+          set -o allexport
+          source .env
+          set +o allexport
 
       # Gradle 빌드
       - name: Build with Gradle
