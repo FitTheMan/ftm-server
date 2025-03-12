@@ -40,6 +40,8 @@ dependencies {
     runtimeOnly 'org.postgresql:postgresql'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+    implementation 'io.hypersistence:hypersistence-utils-hibernate-63:3.9.3'
+
 
     // Validation
     implementation 'org.springframework.boot:spring-boot-starter-validation'
