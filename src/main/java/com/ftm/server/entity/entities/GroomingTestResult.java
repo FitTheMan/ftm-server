@@ -21,11 +21,11 @@ public class GroomingTestResult extends BaseEntity {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "grommig_test_answer_id")
+    @JoinColumn(name = "grooming_test_answer_id")
     private GroomingTestAnswer groomingTestAnswer;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "grommig_test_question_id")
+    @JoinColumn(name = "grooming_test_question_id")
     private GroomingTestQuestion groomingTestQuestion;
 
     @Builder(access = AccessLevel.PRIVATE)
