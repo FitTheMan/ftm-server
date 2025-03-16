@@ -6,6 +6,8 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 @Entity
 @Table(name = "beauty_product")
@@ -21,7 +23,8 @@ public class BeautyProduct extends BaseEntity {
     private String productImageLink;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "beauty_product_category")
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
+    @Column(name = "beauty_product_category", columnDefinition = "beauty_product_category")
     private BeautyProductCategory beautyProductCategory;
 
     private String brand;
