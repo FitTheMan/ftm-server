@@ -4,10 +4,13 @@ spring:
       on-profile: "test"
 
   datasource:
-    url: jdbc:h2:mem:testDb;MODE=POSTGRESQL
+    url: jdbc:postgresql://localhost:5432/ftm_test_db
+    username: test
+    password: test
+    driver-class-name: org.postgresql.Driver
 
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: none
     show-sql: true
@@ -15,3 +18,10 @@ spring:
       hibernate:
         format_sql: true
         default_batch_fetch_size: 1000
+
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:test-schema.sql
+      data-locations: classpath:test-data.sql
+

@@ -20,6 +20,16 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      # 테스트 환경에서 필요한 컨테이너 실행 (redis, postgres)
+      - name: Run Containers
+        run: docker compose -f ./docker-compose-test.yml up -d
+
+      # 테스트 환경에서 필요한 스키마, 데이터 등록
+      - name: Apply Schema and Data
+        run: |
+          echo "${{ secrets.SCHEMA_SQL }}" > src/test/resources/test-schema.sql
+          echo "${{ secrets.DATA_SQL }}" > src/test/resources/test-data.sql
+
       # Gradlew 실행 권한 허용
       - name: Grant Execute Permission for Gradlew
         run: chmod +x ./gradlew
