@@ -55,13 +55,21 @@ jobs:
         run: |
           echo "${{ secrets.ENV }}" >> .env
 
+      # Swagger API 문서화 task 실행
+      - name: Apply Swagger API Document Task
+        run: ./gradlew copyOasToSwagger
+
+      # Rest Docs API 문서화 task 실행
+      - name: Apply Rest Docs API Document Task
+        run: ./gradlew copyDocument
+
       # Gradle 빌드
       - name: Build with Gradle
         id: gradle
         uses: gradle/gradle-build-action@v2
         with:
           arguments: |
-            build
+            bootJar
             --scan
           cache-read-only: ${{ github.ref != 'refs/heads/main' && github.ref != 'refs/heads/develop' }}
 
