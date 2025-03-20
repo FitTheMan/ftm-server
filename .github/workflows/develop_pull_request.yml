@@ -26,9 +26,20 @@ jobs:
 
       # 테스트 환경에서 필요한 스키마, 데이터 등록
       - name: Apply Schema and Data
+        env:
+          TEST_POSTGRES_CONTAINER_NAME: "${{ github.event.repository.name }}-postgres-1"
+          TEST_POSTGRES_USER: test
+          TEST_POSTGRES_DB: ftm_test_db
         run: |
-          echo "${{ secrets.SCHEMA_SQL }}" > src/test/resources/test-schema.sql
-          echo "${{ secrets.DATA_SQL }}" > src/test/resources/test-data.sql
+          echo "⏳ Waiting for postgres to be ready..."
+          until docker exec -i $TEST_POSTGRES_CONTAINER_NAME pg_isready -U $TEST_POSTGRES_USER -d $TEST_POSTGRES_DB; do
+            echo "postgres is not ready yet. Retrying in 3 seconds..."
+            sleep 3
+          done
+          echo "✅ postgres is ready!"
+          
+          echo "${{ secrets.SCHEMA_SQL }}" | docker exec -i $TEST_POSTGRES_CONTAINER_NAME psql -U $TEST_POSTGRES_USER -d $TEST_POSTGRES_DB
+          echo "${{ secrets.DATA_SQL }}" | docker exec -i $TEST_POSTGRES_CONTAINER_NAME psql -U $TEST_POSTGRES_USER -d $TEST_POSTGRES_DB
 
       # Gradlew 실행 권한 허용
       - name: Grant Execute Permission for Gradlew
