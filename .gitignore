@@ -41,3 +41,8 @@ out/
 
 ### sql ###
 *.sql
+
+### api docs ###
+src/main/resources/static/docs/openapi3.yaml
+src/main/resources/static/docs/index.html
+src/docs/asciidoc/index.html

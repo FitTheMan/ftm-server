@@ -28,10 +28,6 @@ repositories {
     mavenCentral()
 }
 
-ext {
-    set('snippetsDir', file("build/generated-snippets"))
-}
-
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -67,7 +63,6 @@ dependencies {
     // Document
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
     asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
-    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
     testImplementation 'com.epages:restdocs-api-spec-mockmvc:0.18.2'
     testImplementation 'com.epages:restdocs-api-spec-restassured:0.18.2'
     testImplementation 'org.springframework.restdocs:spring-restdocs-restassured'
@@ -77,12 +72,23 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
 }
 
 tasks.named('test') {
     delete file('build/generated-snippets')
-    outputs.dir snippetsDir
     useJUnitPlatform()
+}
+
+openapi3 {
+    servers = [
+            { url = "http://localhost:8080/" },
+            { url = "https://dev-api.fittheman.site/" }
+    ]
+    title = '핏더맨 API DOCUMENT'
+    description = '핏더맨 api 명세서입니다.'
+    version = '0.1.0'
+    format = 'yaml'
 }
 
 tasks.named('asciidoctor') {
@@ -112,34 +118,28 @@ tasks.register('copyOasToSwagger', Copy) {
 
     // openapi3 task가 먼저 실행되도록 설정
     dependsOn tasks.named('openapi3')
+
+    dependsOn tasks.named('addAuthorization')
 }
 
-tasks.withType(GenerateSwaggerUI) {
+
+
+tasks.register('addAuthorization', Task) {
     dependsOn 'openapi3'
-    doFirst {
+    doLast {
         def swaggerUIFile = file("${openapi3.outputDirectory}/openapi3.yaml")
 
-        def securitySchemesContent =  "  securitySchemes:\n" +  \
-                                      "    APIKey:\n" +  \
-                                      "      type: apiKey\n" +  \
-                                      "      name: Authorization\n" +  \
-                                      "      in: header\n" + \
-                                      "security:\n" +
+        println("swaggerUIFile 경로: ${swaggerUIFile}")
+        def securitySchemesContent =  "  securitySchemes:\n" +
+                "    APIKey:\n" +
+                "      type: apiKey\n" +
+                "      name: JSESSIONID\n" +
+                "      in: cookie\n" +
+                "security:\n" +
                 "  - APIKey: []  # Apply the security scheme here"
 
         swaggerUIFile.append securitySchemesContent
     }
-}
-
-openapi3 {
-    servers = [
-            { url = "http://localhost:8080/" },
-            { url = "https://dev-api.fittheman.site/" }
-    ]
-    title = '핏더맨 API DOCUMENT'
-    description = '핏더맨 api 명세서입니다.'
-    version = '0.1.0'
-    format = 'yaml'
 }
 
 jar.enabled = false
