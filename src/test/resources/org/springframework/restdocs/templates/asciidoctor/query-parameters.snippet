@@ -1,0 +1,12 @@
+|===
+|Parameter|Description|Required|Default
+
+{{#parameters}}
+    |{{#tableCellContent}}`+{{name}}+`{{/tableCellContent}}
+    |{{#tableCellContent}}{{description}}{{/tableCellContent}}
+    |{{#tableCellContent}}{{#optional}}false{{/optional}}{{^optional}}true{{/optional}}{{/tableCellContent}}
+    |{{#tableCellContent}}{{#default}}{{default}}{{/default}}{{^default}} {{/default}}{{/tableCellContent}}
+
+
+{{/parameters}}
+|===

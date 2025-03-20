@@ -1,0 +1,11 @@
+
+**content-type : multipart/form-data**
+|===
+|Name|Description|Content-Type
+
+{{#requestParts}}
+    |{{#tableCellContent}}`+{{name}}+`{{/tableCellContent}}
+    |{{#tableCellContent}}{{description}}{{/tableCellContent}}
+    |{{#tableCellContent}}{{#content-type}}{{content-type}}{{/content-type}}{{^content-type}} {{/content-type}}{{/tableCellContent}}
+{{/requestParts}}
+|===

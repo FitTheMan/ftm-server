@@ -1,0 +1,101 @@
+:doctype: book
+:toc: left
+:icons: font
+:toclevels: 3
+:source-highlighter: highlightjs
+:sectlinks:
+
+= **FitTheMan API Document**
+
+
+== 문서
+[cols="2,4,4", options="header"]
+|===
+| Name |Url| 비고
+| Rest Docs |/docs/index.html| 기본 API 문서
+| API Test |/docs/swagger-ui.html| Swagger Api Test 문서
+|===
+
+== API 서버 경로
+[cols="2,4,4",options="header"]
+|===
+| 환경 | 도메인 | 비고
+| 개발(dev) | https://dev-api.fittheman.site | API 문서 제공
+|===
+
+== 응답형식
+
+=== 공통 응답 형식
+
+[source, json]
+----
+HTTP/1.1 {HTTP STATUS CODE} {HTTP STATUS}
+Content-Type : application/json
+{
+  "status":  "http status" ,
+  "code":  "custom status code",
+  "message" : "response message"
+  "data": "data"
+}
+----
+
+=== 성공 응답
+
+요청이 성공했을 경우 아래의 Http Status 중 하나를 반환합니다.
+
+[cols="5,5,10,6", options="header"]
+|===
+| Http Status Code | Http Status | 비고 | Response Body
+| 200 | OK | 요청에 성공  | O
+| 201 | CREATED | resource 생성 | O
+| 203 | ACCEPTED | 요청은 수락되었지만 아직 처리가 완료되지 않음 | O
+| 204 | NO CONTENT |요청에 성공했으나 반환할 응답값이 없음 | X
+|===
+
+=== 응답 예시
+
+==== 1. Response Body가 없는 경우
+
+[source, json]
+----
+HTTP/1.1 204 NO CONTENT
+----
+
+==== 2. 응답 data가 없는 경우
+[source, json]
+----
+HTTP/1.1 201 CREATED
+Content-Type: application/json
+{
+  "status": "CREATED", // 예시
+  "code": "S002", //예시
+  "message" : "resource가 정상적으로 생성되었습니다."
+  "data": null
+}
+----
+
+==== 3. 응답 data가 있는 경우 예시
+[source, json]
+----
+HTTP/1.1 200 OK
+Content-Type: application/json
+{
+  "status": "OK", //예시
+  "code": "S001", //예시
+  "message" : "요청이 정상적으로 처리되었습니다."
+  "data": {
+    "id": 123,
+    "name": "example"
+  }
+}
+----
+
+== 실패 응답
+
+[cols="2,4,4,4,8", options="header"]
+|===
+| 구분 |Http Status Code | Http Status  | custom error code | 비고
+| 공통 | 400 | BAD_REQUEST | E400_001 | API 요청에 요구되는 request의 모든 조건을 만족하지 못했을 경우 공통적으로 반환됨. (ex.email 형식 불일치, request parameter 누락, 필드 type 불일치)
+| 공통 | 500 | INTERNAL_SERVER_ERROR | E500_001 | 서버 측에서 처리하지 못한 예외가 발생하면 모든 api 요청에 대해 공통적으로 반환됨.
+|===
+

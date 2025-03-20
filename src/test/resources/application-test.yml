@@ -21,7 +21,7 @@ spring:
 
   sql:
     init:
-      mode: always
+      mode: never
       schema-locations: classpath:test-schema.sql
       data-locations: classpath:test-data.sql
 
