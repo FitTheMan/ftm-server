@@ -24,11 +24,10 @@ import org.springframework.test.web.servlet.ResultActions;
 
 public class EmailDuplicationCheckTest extends BaseTest {
 
-    private final List<ParameterDescriptor> queryParametersForEmail =
-            List.of(
-                    parameterWithName("email")
-                            .description("중복 확인 email")
-                            .attributes(new Attributes.Attribute("constraint", "email 형식")));
+    private final ParameterDescriptor queryParametersForEmail =
+            parameterWithName("email")
+                    .description("중복 확인 email")
+                    .attributes(new Attributes.Attribute("constraint", "email 형식"));
 
     private final List<FieldDescriptor> responseFieldDescriptorsForEmailDuplicationCheck =
             List.of(
@@ -39,27 +38,26 @@ public class EmailDuplicationCheckTest extends BaseTest {
                     fieldWithPath("data.isDuplicated").type("Boolean").description("중복 여부"));
 
     private ResultActions getResultActions(String email) throws Exception {
-        return mockMvc.perform( // api 실행
+        return mockMvc.perform(
                 RestDocumentationRequestBuilders.get("/api/users/email/duplication")
-                        .param("email", email) // query parameter
-                );
+                        .param("email", email));
     }
 
     // 문서화 반환 함수
     private RestDocumentationResultHandler getDocument(Integer identifier) {
         return document(
-                "api/users/email/duplication/" + identifier,
-                preprocessRequest(prettyPrint()), // request 출력 형식 지정->host 이름 변경
-                preprocessResponse(prettyPrint(), getModifiedHeader()), // response 출력 형식 지정
-                responseFields(
-                        responseFieldDescriptorsForEmailDuplicationCheck), // response body field
-                // descriptor
-                queryParameters(queryParametersForEmail), // query parameter descriptor
+                "emailDuplicationCheck/" + identifier,
+                preprocessRequest(prettyPrint()),
+                preprocessResponse(prettyPrint(), getModifiedHeader()),
+                responseFields(responseFieldDescriptorsForEmailDuplicationCheck),
+                queryParameters(queryParametersForEmail),
                 resource(
                         ResourceSnippetParameters.builder()
                                 .tag("회원")
                                 .summary("이메일 중복 확인 api")
                                 .description("email 중복 확인 api입니다.")
+                                .responseFields(responseFieldDescriptorsForEmailDuplicationCheck)
+                                .queryParameters(queryParametersForEmail)
                                 .build()));
     }
 
