@@ -4,6 +4,7 @@
 :toclevels: 3
 :source-highlighter: highlightjs
 :sectlinks:
+:snippetsDir: ../../../build/generated-snippets
 
 = **FitTheMan API Document**
 
@@ -106,15 +107,15 @@ Content-Type: application/json
 이메일 중복을 확인하는 api입니다.
 
 ==== Request
-include::{snippets}/api/users/email/duplication/1/http-request.adoc[]
+include::{snippetsDir}/api/users/email/duplication/1/http-request.adoc[]
 
 ==== Request Query Parameter Fields
-include::{snippets}/api/users/email/duplication/1/query-parameters.adoc[]
+include::{snippetsDir}/api/users/email/duplication/1/query-parameters.adoc[]
 
 ==== 성공 Response
-include::{snippets}/api/users/email/duplication/1/http-response.adoc[]
+include::{snippetsDir}/api/users/email/duplication/1/http-response.adoc[]
 
 ==== Response Body Fields
-include::{snippets}/api/users/email/duplication/1/response-fields.adoc[]
+include::{snippetsDir}/api/users/email/duplication/1/response-fields.adoc[]
 
 ---
