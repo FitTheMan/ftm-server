@@ -34,7 +34,7 @@ Content-Type : application/json
 {
   "status":  "http status" ,
   "code":  "custom status code",
-  "message" : "response message"
+  "message" : "response message",
   "data": "data"
 }
 ----
@@ -69,7 +69,7 @@ Content-Type: application/json
 {
   "status": "CREATED", // 예시
   "code": "S002", //예시
-  "message" : "resource가 정상적으로 생성되었습니다."
+  "message" : "resource가 정상적으로 생성되었습니다.",
   "data": null
 }
 ----
@@ -82,7 +82,7 @@ Content-Type: application/json
 {
   "status": "OK", //예시
   "code": "S001", //예시
-  "message" : "요청이 정상적으로 처리되었습니다."
+  "message" : "요청이 정상적으로 처리되었습니다.",
   "data": {
     "id": 123,
     "name": "example"
@@ -99,3 +99,22 @@ Content-Type: application/json
 | 공통 | 500 | INTERNAL_SERVER_ERROR | E500_001 | 서버 측에서 처리하지 못한 예외가 발생하면 모든 api 요청에 대해 공통적으로 반환됨.
 |===
 
+==  회원
+
+=== **1. 이메일 중복 확인**
+
+이메일 중복을 확인하는 api입니다.
+
+==== Request
+include::{snippets}/api/users/email/duplication/1/http-request.adoc[]
+
+==== Request Query Parameter Fields
+include::{snippets}/api/users/email/duplication/1/query-parameters.adoc[]
+
+==== 성공 Response
+include::{snippets}/api/users/email/duplication/1/http-response.adoc[]
+
+==== Response Body Fields
+include::{snippets}/api/users/email/duplication/1/response-fields.adoc[]
+
+---
