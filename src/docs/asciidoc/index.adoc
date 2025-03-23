@@ -4,7 +4,7 @@
 :toclevels: 3
 :source-highlighter: highlightjs
 :sectlinks:
-:snippetsDir: ../../../build/generated-snippets
+:snippetsDir: build/generated-snippets
 
 = **FitTheMan API Document**
 
