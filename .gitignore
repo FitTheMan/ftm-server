@@ -38,6 +38,7 @@ out/
 
 ### env ###
 .env
+test.env
 
 ### sql ###
 *.sql

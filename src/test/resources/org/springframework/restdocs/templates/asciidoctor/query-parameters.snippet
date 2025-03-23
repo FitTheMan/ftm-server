@@ -1,9 +1,10 @@
 |===
-|Parameter|Description|Required|Default
+|Parameter|Description|Constraint|Required|Default
 
 {{#parameters}}
     |{{#tableCellContent}}`+{{name}}+`{{/tableCellContent}}
     |{{#tableCellContent}}{{description}}{{/tableCellContent}}
+    |{{#tableCellContent}}{{#constraint}}{{constraint}}{{/constraint}}{{^constraint}} {{/constraint}}{{/tableCellContent}}
     |{{#tableCellContent}}{{#optional}}false{{/optional}}{{^optional}}true{{/optional}}{{/tableCellContent}}
     |{{#tableCellContent}}{{#default}}{{default}}{{/default}}{{^default}} {{/default}}{{/tableCellContent}}
 

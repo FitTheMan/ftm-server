@@ -8,7 +8,7 @@ public enum ErrorResponseCode {
 
     // 400번
     INVALID_REQUEST_ARGUMENT(
-            HttpStatus.BAD_REQUEST, "E400_001", "클라이언트 요청이 잘못된 형식이거나, 필수 데이터가 누락되었습니다."),
+            HttpStatus.BAD_REQUEST, "E400_001", "클라이언트 요청값의 일부가 잘못된 형식이거나, 필수 데이터가 누락되었습니다."),
 
     // 401번
     NOT_AUTHENTICATED(HttpStatus.UNAUTHORIZED, "E401_001", "인증되지 않은 사용자입니다."),

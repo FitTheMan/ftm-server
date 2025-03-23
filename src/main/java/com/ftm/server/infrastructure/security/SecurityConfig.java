@@ -41,6 +41,8 @@ public class SecurityConfig {
                     "https://dev-api.fittheman.site", // 개발 환경 서버 도메인
                     "https://fittheman.site"); // 개발 환경 클라이언트 도메인
 
+    private static final String[] ANONYMOUS_MATCHERS = {"/docs/**", "/api/users/email/duplication"};
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -74,7 +76,7 @@ public class SecurityConfig {
                         authorize -> {
                             authorize
                                     // 정적 리소스 경로 허용
-                                    .requestMatchers("/docs/**")
+                                    .requestMatchers(ANONYMOUS_MATCHERS)
                                     .permitAll();
 
                             // TODO: 요청 허용 특정 API 추가 (회원가입, 로그인 등)
