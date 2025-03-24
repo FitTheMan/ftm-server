@@ -119,3 +119,26 @@ include::{snippetsDir}/emailDuplicationCheck/1/http-response.adoc[]
 include::{snippetsDir}/emailDuplicationCheck/1/response-fields.adoc[]
 
 ---
+
+
+=== **2. 이메일 인증 api**
+
+이메일 인증용 코드를 발송하는 api입니다.
+
+==== Request
+include::{snippetsDir}/emailAuthentication/1/http-request.adoc[]
+
+==== Request Body Fields
+include::{snippetsDir}/emailAuthentication/1/request-fields.adoc[]
+
+==== 성공 Response
+include::{snippetsDir}/emailAuthentication/1/http-response.adoc[]
+
+==== Response Body Fields
+include::{snippetsDir}/emailAuthentication/1/response-fields.adoc[]
+
+==== 실패 Response
+실패1.
+include::{snippetsDir}/emailAuthentication/2/http-response.adoc[]
+실패 2
+include::{snippetsDir}/emailAuthentication/3/http-response.adoc[]
