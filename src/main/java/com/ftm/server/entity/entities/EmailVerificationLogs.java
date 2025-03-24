@@ -1,5 +1,6 @@
 package com.ftm.server.entity.entities;
 
+import com.ftm.server.domain.dto.command.EmailVerificationLogCreationCommand;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
@@ -19,7 +20,6 @@ public class EmailVerificationLogs extends BaseEntity {
     @Column(nullable = false)
     private String email;
 
-    @Lob
     @Column(name = "verification_code", nullable = false)
     private String verificationCode;
 
@@ -44,5 +44,27 @@ public class EmailVerificationLogs extends BaseEntity {
         this.isVerified = isVerified;
         this.trialNum = trialNum;
         this.tokenIssuanceTime = tokenIssuanceTime;
+    }
+
+    public static EmailVerificationLogs from(EmailVerificationLogCreationCommand command) {
+        return EmailVerificationLogs.builder()
+                .email(command.getEmail())
+                .verificationCode(command.getVerificationCode())
+                .isVerified(false)
+                .trialNum(1)
+                .tokenIssuanceTime(LocalDateTime.now())
+                .build();
+    }
+
+    public void updateVerificationStatus(String verificationCode) {
+        this.trialNum++;
+        this.verificationCode = verificationCode;
+        this.tokenIssuanceTime = LocalDateTime.now();
+    }
+
+    public void initializeVerificationStatus(String verificationCode) {
+        this.trialNum = 1;
+        this.verificationCode = verificationCode;
+        this.tokenIssuanceTime = LocalDateTime.now();
     }
 }
