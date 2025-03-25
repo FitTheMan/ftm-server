@@ -9,9 +9,6 @@ spring:
       - storage
       - security
 
-  session:
-    timeout: 1800 # 30분
-
   mail:
     host: smtp.gmail.com
     port: 587
