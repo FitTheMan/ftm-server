@@ -137,7 +137,7 @@ tasks.register('addAuthorization', Task) {
         def securitySchemesContent =  "  securitySchemes:\n" +
                 "    APIKey:\n" +
                 "      type: apiKey\n" +
-                "      name: JSESSIONID\n" +
+                "      name: SESSION\n" +
                 "      in: cookie\n" +
                 "security:\n" +
                 "  - APIKey: []  # Apply the security scheme here"
