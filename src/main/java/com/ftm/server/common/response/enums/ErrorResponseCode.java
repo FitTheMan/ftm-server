@@ -12,6 +12,7 @@ public enum ErrorResponseCode {
 
     // 401번
     NOT_AUTHENTICATED(HttpStatus.UNAUTHORIZED, "E401_001", "인증되지 않은 사용자입니다."),
+    INVALID_CREDENTIALS(HttpStatus.UNAUTHORIZED, "E401_002", "인증에 실패하였습니다."),
 
     // 403번
     NOT_AUTHORIZATION(HttpStatus.FORBIDDEN, "E403_001", "인증된 사용자이나 해당 자원에 대한 접근 권한이 없습니다."),
