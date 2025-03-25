@@ -142,3 +142,22 @@ include::{snippetsDir}/emailAuthentication/1/response-fields.adoc[]
 include::{snippetsDir}/emailAuthentication/2/http-response.adoc[]
 실패 2
 include::{snippetsDir}/emailAuthentication/3/http-response.adoc[]
+
+
+=== **3. 이메일 인증 코드 검증 api**
+
+이메일 인증용 코드를 검증하는 api입니다.
+
+==== Request
+include::{snippetsDir}/emailCodeVerification/1/http-request.adoc[]
+
+==== Request Body Fields
+include::{snippetsDir}/emailCodeVerification/1/request-fields.adoc[]
+
+==== 성공 Response
+include::{snippetsDir}/emailCodeVerification/1/http-response.adoc[]
+
+==== Response Body Fields
+include::{snippetsDir}/emailCodeVerification/1/response-fields.adoc[]
+
+
