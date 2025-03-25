@@ -9,7 +9,6 @@ import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
-import org.springframework.security.web.context.SecurityContextPersistenceFilter;
 import org.springframework.stereotype.Component;
 
 /** 인증은 되었지만 접근 권한이 없는 경우 예외처리하는 핸들러 */
@@ -27,7 +26,5 @@ public class PermissionDeniedHandler implements AccessDeniedHandler {
             throws IOException, ServletException {
         securityResponseHandler.sendResponse(
                 response, ApiResponse.fail(ErrorResponseCode.NOT_AUTHORIZATION));
-
-        SecurityContextPersistenceFilter filter = new SecurityContextPersistenceFilter();
     }
 }
