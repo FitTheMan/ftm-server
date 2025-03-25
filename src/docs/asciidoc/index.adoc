@@ -100,6 +100,8 @@ Content-Type: application/json
 | 공통 | 500 | INTERNAL_SERVER_ERROR | E500_001 | 서버 측에서 처리하지 못한 예외가 발생하면 모든 api 요청에 대해 공통적으로 반환됨.
 |===
 
+
+
 ==  회원
 
 === **1. 이메일 중복 확인**
@@ -161,3 +163,20 @@ include::{snippetsDir}/emailCodeVerification/1/http-response.adoc[]
 include::{snippetsDir}/emailCodeVerification/1/response-fields.adoc[]
 
 
+== 인증/인가
+
+=== **1. 유저 로그인**
+
+유저 로그인 api 입니다. (이메일, 패스워드)
+
+=== Request
+include::{snippetsDir}/loginUser/1/http-request.adoc[]
+
+== 성공 Response
+include::{snippetsDir}/loginUser/1/http-response.adoc[]
+
+== Response Body Fields
+include::{snippetsDir}/loginUser/1/response-fields.adoc[]
+
+== 실패 Response
+include::{snippetsDir}/loginUser/2/http-response.adoc[]
