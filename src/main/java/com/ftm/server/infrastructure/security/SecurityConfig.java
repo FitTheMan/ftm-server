@@ -7,17 +7,22 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 
@@ -44,7 +49,7 @@ public class SecurityConfig {
     private static final String[] GET_ANONYMOUS_MATCHERS = {"/api/users/email/duplication"};
 
     private static final String[] POST_ANONYMOUS_MATCHERS = {
-        "/api/users/email/authentication", "/api/users/email/authentication/code"
+        "/api/users/email/authentication", "/api/users/email/authentication/code", "/api/auth/login"
     };
 
     private static final String[] ANONYMOUS_MATCHERS = {"/docs/**"};
@@ -67,6 +72,9 @@ public class SecurityConfig {
                                         .migrateSession() // 세션 고정 보호
                                         .maximumSessions(1) // 동시 로그인 1개 제한
                                         .maxSessionsPreventsLogin(false)) // 기존 세션 만료 후 새 로그인 허용
+                // 시큐리티 컨텍스트 레포지토리 등록 (시큐리티 6.x 이상부터는 시큐리티가 자동으로 컨텍스트에 로드/저장해주지 않기 때문에 명시해줘야함)
+                .securityContext(
+                        context -> context.securityContextRepository(securityContextRepository()))
                 // 예외 핸들링
                 .exceptionHandling(
                         exception ->
@@ -101,6 +109,23 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    // Spring Security 6 이상에서는 세션 기반 인증 유지를 위해 SecurityContextRepository 설정이 필요
+    // HttpSession 기반 저장소를 통해 로그인 상태를 세션(Redis)에 자동 저장 및 복원
+    @Bean
+    public SecurityContextRepository securityContextRepository() {
+        return new HttpSessionSecurityContextRepository();
+    }
+
+    // 시큐리티 인증을 관리하는 AuthenticationManager 설정
+    @Bean
+    public AuthenticationManager authenticationManager(UserPrincipalService userPrincipalService) {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(userPrincipalService);
+        provider.setPasswordEncoder(passwordEncoder());
+
+        return new ProviderManager(provider);
     }
 
     // CORS 설정
