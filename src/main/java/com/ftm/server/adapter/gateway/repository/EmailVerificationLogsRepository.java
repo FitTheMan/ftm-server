@@ -10,4 +10,7 @@ public interface EmailVerificationLogsRepository
         extends JpaRepository<EmailVerificationLogs, Long> {
 
     Optional<EmailVerificationLogs> findByEmail(String email);
+
+    Optional<EmailVerificationLogs> findByVerificationCodeAndEmail(
+            String verificationCode, String email);
 }

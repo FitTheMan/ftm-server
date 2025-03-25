@@ -67,4 +67,8 @@ public class EmailVerificationLogs extends BaseEntity {
         this.verificationCode = verificationCode;
         this.tokenIssuanceTime = LocalDateTime.now();
     }
+
+    public void updateVerificationStatus(Boolean isVerified) {
+        this.isVerified = isVerified;
+    }
 }

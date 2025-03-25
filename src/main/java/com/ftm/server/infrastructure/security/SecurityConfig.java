@@ -43,7 +43,9 @@ public class SecurityConfig {
 
     private static final String[] GET_ANONYMOUS_MATCHERS = {"/api/users/email/duplication"};
 
-    private static final String[] POST_ANONYMOUS_MATCHERS = {"/api/users/email/authentication"};
+    private static final String[] POST_ANONYMOUS_MATCHERS = {
+        "/api/users/email/authentication", "/api/users/email/authentication/code"
+    };
 
     private static final String[] ANONYMOUS_MATCHERS = {"/docs/**"};
 
