@@ -1,10 +1,10 @@
 package com.ftm.server.infrastructure.security;
 
-import com.ftm.server.adapter.gateway.repository.UserRepository;
+import com.ftm.server.application.port.repository.UserRepository;
 import com.ftm.server.common.annotation.InfraService;
 import com.ftm.server.common.exception.CustomException;
 import com.ftm.server.common.response.enums.ErrorResponseCode;
-import com.ftm.server.entity.entities.User;
+import com.ftm.server.domain.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

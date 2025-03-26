@@ -9,9 +9,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.ftm.server.BaseTest;
-import com.ftm.server.adapter.dto.request.EmailCodeVerificationRequest;
-import com.ftm.server.domain.dto.command.EmailVerificationLogCreationCommand;
-import com.ftm.server.domain.service.EmailVerificationLogsService;
+import com.ftm.server.application.dto.command.EmailVerificationLogCreationCommand;
+import com.ftm.server.application.service.EmailVerificationLogsService;
+import com.ftm.server.web.dto.request.EmailCodeVerificationRequest;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import org.junit.jupiter.api.Test;

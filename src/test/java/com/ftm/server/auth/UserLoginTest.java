@@ -14,11 +14,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.ftm.server.BaseTest;
-import com.ftm.server.adapter.dto.request.UserLoginRequest;
+import com.ftm.server.application.dto.command.GeneralUserCreationCommand;
+import com.ftm.server.application.port.AuthenticationPort;
+import com.ftm.server.application.port.repository.UserImageRepository;
+import com.ftm.server.application.port.repository.UserRepository;
 import com.ftm.server.common.response.enums.ErrorResponseCode;
+import com.ftm.server.domain.entity.User;
+import com.ftm.server.domain.entity.UserImage;
+import com.ftm.server.domain.enums.AgeGroup;
+import com.ftm.server.web.dto.request.UserLoginRequest;
 import java.util.List;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.FieldDescriptor;
@@ -27,6 +36,10 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
 public class UserLoginTest extends BaseTest {
+
+    @Autowired private UserRepository userRepository;
+    @Autowired private UserImageRepository userImageRepository;
+    @Autowired private AuthenticationPort authenticationPort;
 
     private final List<FieldDescriptor> requestFieldLoginUser =
             List.of(
@@ -44,8 +57,14 @@ public class UserLoginTest extends BaseTest {
                     fieldWithPath("data.profileImageUrl")
                             .type(STRING)
                             .description("유저 프로필 이미지 URL"),
-                    fieldWithPath("data.mildLevelName").type(STRING).description("순한맛 그루밍 레벨 이름"),
-                    fieldWithPath("data.spicyLevelName").type(STRING).description("매운맛 그루밍 레벨 이름"),
+                    fieldWithPath("data.mildLevelName")
+                            .type(STRING)
+                            .optional()
+                            .description("순한맛 그루밍 레벨 이름"),
+                    fieldWithPath("data.spicyLevelName")
+                            .type(STRING)
+                            .optional()
+                            .description("매운맛 그루밍 레벨 이름"),
                     fieldWithPath("data.loginTime").type(STRING).description("로그인 시간"));
 
     private ResultActions getResultActions(UserLoginRequest request) throws Exception {
@@ -73,6 +92,19 @@ public class UserLoginTest extends BaseTest {
                                 .description("유저 로그인 api 입니다.")
                                 .responseFields(responseFieldLoginUser)
                                 .build()));
+    }
+
+    @BeforeEach
+    void setUp() {
+        GeneralUserCreationCommand testCommand =
+                GeneralUserCreationCommand.of(
+                        "test@gmail.com",
+                        authenticationPort.passwordEncode("test1234!"),
+                        "test",
+                        AgeGroup.TEENS,
+                        null);
+        User testUser = userRepository.save(User.createGeneralUser(testCommand));
+        userImageRepository.save(UserImage.createUserImage(testUser));
     }
 
     @Test

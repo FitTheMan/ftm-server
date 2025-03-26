@@ -11,11 +11,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.ftm.server.BaseTest;
-import com.ftm.server.adapter.dto.request.EmailAuthenticationRequest;
+import com.ftm.server.application.dto.command.EmailAuthenticationCommand;
+import com.ftm.server.application.usecase.user.EmailAuthenticationUseCase;
 import com.ftm.server.common.exception.CustomException;
 import com.ftm.server.common.response.enums.ErrorResponseCode;
-import com.ftm.server.domain.dto.command.EmailAuthenticationCommand;
-import com.ftm.server.domain.usecase.user.EmailAuthenticationUseCase;
+import com.ftm.server.web.dto.request.EmailAuthenticationRequest;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import org.junit.jupiter.api.Test;

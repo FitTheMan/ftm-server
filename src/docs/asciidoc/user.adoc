@@ -1,0 +1,97 @@
+=== **1. 이메일 중복 확인**
+
+이메일 중복을 확인하는 api입니다.
+
+==== Request
+include::{snippetsDir}/emailDuplicationCheck/1/http-request.adoc[]
+
+==== Request Query Parameter Fields
+include::{snippetsDir}/emailDuplicationCheck/1/query-parameters.adoc[]
+
+==== 성공 Response
+include::{snippetsDir}/emailDuplicationCheck/1/http-response.adoc[]
+
+==== Response Body Fields
+include::{snippetsDir}/emailDuplicationCheck/1/response-fields.adoc[]
+
+---
+
+=== **2. 이메일 인증 api**
+
+이메일 인증용 코드를 발송하는 api입니다.
+
+==== Request
+include::{snippetsDir}/emailAuthentication/1/http-request.adoc[]
+
+==== Request Body Fields
+include::{snippetsDir}/emailAuthentication/1/request-fields.adoc[]
+
+==== 성공 Response
+include::{snippetsDir}/emailAuthentication/1/http-response.adoc[]
+
+==== Response Body Fields
+include::{snippetsDir}/emailAuthentication/1/response-fields.adoc[]
+
+==== 실패 Response
+실패1.
+include::{snippetsDir}/emailAuthentication/2/http-response.adoc[]
+실패 2
+include::{snippetsDir}/emailAuthentication/3/http-response.adoc[]
+
+---
+
+=== **3. 이메일 인증 코드 검증 api**
+
+이메일 인증용 코드를 검증하는 api입니다.
+
+==== Request
+include::{snippetsDir}/emailCodeVerification/1/http-request.adoc[]
+
+==== Request Body Fields
+include::{snippetsDir}/emailCodeVerification/1/request-fields.adoc[]
+
+==== 성공 Response
+include::{snippetsDir}/emailCodeVerification/1/http-response.adoc[]
+
+==== Response Body Fields
+include::{snippetsDir}/emailCodeVerification/1/response-fields.adoc[]
+
+---
+
+=== **4. 회원가입시 필요한 정보 목록 조회  api**
+
+회원가입시 사용자에게 입력 받는 연령대 정보와 관심 해시태그 정보 옵션들을 조회합니다.
+
+
+==== Request
+include::{snippetsDir}/userSignupOptions/1/http-request.adoc[]
+
+==== 성공 Response
+include::{snippetsDir}/userSignupOptions/1/http-response.adoc[]
+
+==== Response Body Fields
+include::{snippetsDir}/userSignupOptions/1/response-fields.adoc[]
+
+---
+
+=== **5. 일반 회원가입 api**
+
+일반 회원가입 api입니다.
+
+==== Request
+include::{snippetsDir}/generalUserSignUp/1/http-request.adoc[]
+
+==== Request Body Fields
+include::{snippetsDir}/generalUserSignUp/1/request-fields.adoc[]
+
+==== 성공 Response
+include::{snippetsDir}/generalUserSignUp/1/http-response.adoc[]
+
+==== Response Body Fields
+include::{snippetsDir}/generalUserSignUp/1/response-fields.adoc[]
+
+==== 실패 Response
+실패1.
+include::{snippetsDir}/generalUserSignUp/2/http-response.adoc[]
+실패 2
+include::{snippetsDir}/generalUserSignUp/3/http-response.adoc[]
