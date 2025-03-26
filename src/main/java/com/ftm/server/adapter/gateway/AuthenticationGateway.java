@@ -16,4 +16,6 @@ public interface AuthenticationGateway {
             Authentication authentication,
             HttpServletRequest request,
             HttpServletResponse response);
+
+    String passwordEncode(String password);
 }

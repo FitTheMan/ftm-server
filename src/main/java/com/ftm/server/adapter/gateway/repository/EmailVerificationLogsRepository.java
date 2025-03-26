@@ -13,4 +13,6 @@ public interface EmailVerificationLogsRepository
 
     Optional<EmailVerificationLogs> findByVerificationCodeAndEmail(
             String verificationCode, String email);
+
+    Optional<EmailVerificationLogs> findByEmailAndIsVerified(String email, Boolean isVerified);
 }

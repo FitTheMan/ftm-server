@@ -46,10 +46,15 @@ public class SecurityConfig {
                     "https://dev-api.fittheman.site", // 개발 환경 서버 도메인
                     "https://fittheman.site"); // 개발 환경 클라이언트 도메인
 
-    private static final String[] GET_ANONYMOUS_MATCHERS = {"/api/users/email/duplication"};
+    private static final String[] GET_ANONYMOUS_MATCHERS = {
+        "/api/users/email/duplication", "/api/users/options"
+    };
 
     private static final String[] POST_ANONYMOUS_MATCHERS = {
-        "/api/users/email/authentication", "/api/users/email/authentication/code", "/api/auth/login"
+        "/api/users/email/authentication",
+        "/api/users/email/authentication/code",
+        "/api/auth/login",
+        "/api/users"
     };
 
     private static final String[] ANONYMOUS_MATCHERS = {"/docs/**"};
