@@ -104,8 +104,8 @@ Content-Type: application/json
 
 =  **회원**
 
-include::user.adoc[]
+include::user-api.adoc[]
 
 = **인증/인가**
 
-include::auth.adoc[]
+include::auth-api.adoc[]

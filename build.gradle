@@ -100,12 +100,19 @@ openapi3 {
 tasks.named('asciidoctor') {
     inputs.dir snippetsDir
     dependsOn test
+    attributes(
+            'snippetsDir': file('build/generated-snippets'),
+            'source-highlighter': 'highlightjs',
+            'toc': 'left',
+            'icons': 'font'
+    )
+    baseDirFollowsSourceFile()
 }
 
 tasks.register('copyDocument', Copy){
     dependsOn tasks.named('asciidoctor')
     delete file('src/main/resources/static/docs/index.html')
-    from file("build/docs/asciidoc")
+    from file("build/docs/asciidoc/index.html")
     into file("src/main/resources/static/docs")
 }
 
