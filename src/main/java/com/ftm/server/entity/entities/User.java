@@ -1,5 +1,6 @@
 package com.ftm.server.entity.entities;
 
+import com.ftm.server.domain.dto.command.GeneralUserCreationCommand;
 import com.ftm.server.entity.enums.AgeGroup;
 import com.ftm.server.entity.enums.HashTag;
 import com.ftm.server.entity.enums.SocialProvider;
@@ -103,5 +104,18 @@ public class User extends BaseEntity {
         this.favoriteHashtags = favoriteHashtags;
         this.isDeleted = isDeleted;
         this.deletedAt = deletedAt;
+    }
+
+    public static User createGeneralUser(GeneralUserCreationCommand command) {
+        return User.builder()
+                .email(command.getEmail())
+                .password(command.getPassword())
+                .nickname(command.getNickName())
+                .ageGroup(command.getAgeGroup())
+                .favoriteHashtags(command.getHashTags())
+                .groomingScore(0)
+                .isDeleted(false)
+                .role(UserRole.USER)
+                .build();
     }
 }

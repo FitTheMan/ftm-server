@@ -13,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.context.SecurityContextRepository;
 
 @Slf4j
@@ -22,6 +23,9 @@ public class AuthenticationService implements AuthenticationGateway {
 
     private final AuthenticationManager authenticationManager;
     private final SecurityContextRepository securityContextRepository;
+    private final PasswordEncoder passwordEncoder;
+
+    // end::[]]
 
     @Override
     public Authentication createAuthenticationFromCredentials(UserLoginCommand command)
@@ -45,5 +49,10 @@ public class AuthenticationService implements AuthenticationGateway {
 
         // 생성한 시큐리티 컨텍스트를 Redis 세션에 저장
         securityContextRepository.saveContext(context, request, response);
+    }
+
+    @Override
+    public String passwordEncode(String password) {
+        return passwordEncoder.encode(password);
     }
 }

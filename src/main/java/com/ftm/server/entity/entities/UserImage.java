@@ -27,4 +27,8 @@ public class UserImage extends BaseEntity {
         this.user = user;
         this.objectKey = objectKey;
     }
+
+    public static UserImage createUserImage(User user) {
+        return UserImage.builder().user(user).objectKey("users/default-image.png").build();
+    }
 }

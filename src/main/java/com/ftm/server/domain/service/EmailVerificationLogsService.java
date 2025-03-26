@@ -4,6 +4,7 @@ import com.ftm.server.adapter.gateway.repository.EmailVerificationLogsRepository
 import com.ftm.server.domain.dto.command.EmailVerificationLogCreationCommand;
 import com.ftm.server.domain.dto.query.EmailCodeVerificationQuery;
 import com.ftm.server.domain.dto.query.FindByEmailQuery;
+import com.ftm.server.domain.dto.query.FindEmailVerificationLogsByEmailQuery;
 import com.ftm.server.entity.entities.EmailVerificationLogs;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -27,5 +28,10 @@ public class EmailVerificationLogsService {
             EmailCodeVerificationQuery query) {
         return emailVerificationLogsRepository.findByVerificationCodeAndEmail(
                 query.getCode(), query.getEmail());
+    }
+
+    public Optional<EmailVerificationLogs> findVerifiedOneByEmail(
+            FindEmailVerificationLogsByEmailQuery query) {
+        return emailVerificationLogsRepository.findByEmailAndIsVerified(query.getEmail(), true);
     }
 }

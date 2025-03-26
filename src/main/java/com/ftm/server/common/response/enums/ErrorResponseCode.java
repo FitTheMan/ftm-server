@@ -24,6 +24,7 @@ public enum ErrorResponseCode {
     USER_ALREADY_EXISTS(HttpStatus.CONFLICT, "E409_001", "이미 존재하는 사용자입니다."),
     PASSWORD_NOT_MATCHED(HttpStatus.CONFLICT, "E409_002", "비밀번호가 일치하지 않습니다."),
     EXCEED_NUMBER_OF_TRIAL(HttpStatus.CONFLICT, "E409_003", "시도 가능 횟수를 초과했습니다. 잠시 후에 다시 시도 해 주세요."),
+    EMAIL_NOT_VERIFIED(HttpStatus.CONFLICT, "E409_004", "이메일 인증이 완료되지 않았습니다."),
 
     // 500번
     UNKNOWN_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "E500_001", "알 수 없는 서버 에러가 발생했습니다."),
