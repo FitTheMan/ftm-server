@@ -1,8 +1,8 @@
 package com.ftm.server.infrastructure.security;
 
-import com.ftm.server.adapter.gateway.AuthenticationGateway;
+import com.ftm.server.application.dto.command.UserLoginCommand;
+import com.ftm.server.application.port.AuthenticationPort;
 import com.ftm.server.common.annotation.InfraService;
-import com.ftm.server.domain.dto.command.UserLoginCommand;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ import org.springframework.security.web.context.SecurityContextRepository;
 @Slf4j
 @InfraService
 @RequiredArgsConstructor
-public class AuthenticationService implements AuthenticationGateway {
+public class AuthenticationService implements AuthenticationPort {
 
     private final AuthenticationManager authenticationManager;
     private final SecurityContextRepository securityContextRepository;

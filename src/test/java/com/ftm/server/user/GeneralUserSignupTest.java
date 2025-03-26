@@ -10,14 +10,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.ftm.server.BaseTest;
-import com.ftm.server.adapter.dto.request.GeneralUserSignupRequest;
-import com.ftm.server.adapter.gateway.repository.EmailVerificationLogsRepository;
+import com.ftm.server.application.dto.command.EmailVerificationLogCreationCommand;
+import com.ftm.server.application.dto.command.GeneralUserCreationCommand;
+import com.ftm.server.application.port.repository.EmailVerificationLogsRepository;
+import com.ftm.server.application.service.UserService;
 import com.ftm.server.common.response.enums.ErrorResponseCode;
-import com.ftm.server.domain.dto.command.EmailVerificationLogCreationCommand;
-import com.ftm.server.domain.service.UserService;
-import com.ftm.server.entity.entities.EmailVerificationLogs;
-import com.ftm.server.entity.enums.AgeGroup;
-import com.ftm.server.entity.enums.HashTag;
+import com.ftm.server.domain.entity.EmailVerificationLogs;
+import com.ftm.server.domain.enums.AgeGroup;
+import com.ftm.server.domain.enums.HashTag;
+import com.ftm.server.web.dto.request.GeneralUserSignupRequest;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -87,7 +88,7 @@ public class GeneralUserSignupTest extends BaseTest {
     @Transactional
     void 일반회원가입_성공() throws Exception {
         // given
-        String email = "test1@gmail.com";
+        String email = "test@gmail.com";
         String code = "123456";
 
         EmailVerificationLogCreationCommand command =
@@ -116,7 +117,7 @@ public class GeneralUserSignupTest extends BaseTest {
         // given
         GeneralUserSignupRequest request =
                 new GeneralUserSignupRequest(
-                        "test1@gmail.com", "123456", AgeGroup.FIFTIES, List.of(HashTag.PERFUME));
+                        "test@gmail.com", "123456", AgeGroup.FIFTIES, List.of(HashTag.PERFUME));
 
         // when
         ResultActions resultActions = getResultActions(request);
@@ -135,13 +136,11 @@ public class GeneralUserSignupTest extends BaseTest {
     @Transactional
     void 일반회원가입_실패2() throws Exception {
         // given
-
-        //        String email = "test@gmail.com";
-        //        HashTag[] hashTags = {HashTag.PERFUME};
-        //        GeneralUserCreationCommand command =
-        //                new GeneralUserCreationCommand(email, "123456", "닉넴", AgeGroup.FIFTIES,
-        // hashTags);
-        //        userService.createGeneralUser(command);
+        String email = "test@gmail.com";
+        HashTag[] hashTags = {HashTag.PERFUME};
+        GeneralUserCreationCommand command =
+                new GeneralUserCreationCommand(email, "123456", "닉넴", AgeGroup.FIFTIES, hashTags);
+        userService.createGeneralUser(command);
 
         GeneralUserSignupRequest request =
                 new GeneralUserSignupRequest(

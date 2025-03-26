@@ -1,7 +1,7 @@
 package com.ftm.server.infrastructure.security;
 
-import com.ftm.server.entity.entities.User;
-import com.ftm.server.entity.enums.UserRole;
+import com.ftm.server.domain.entity.User;
+import com.ftm.server.domain.enums.UserRole;
 import java.util.Collection;
 import java.util.Collections;
 import lombok.Getter;

@@ -1,6 +1,6 @@
 package com.ftm.server.infrastructure.smtp;
 
-import com.ftm.server.adapter.gateway.MailSenderGateway;
+import com.ftm.server.application.port.MailSenderPort;
 import com.ftm.server.common.annotation.InfraService;
 import com.ftm.server.common.exception.CustomException;
 import com.ftm.server.common.response.enums.ErrorResponseCode;
@@ -13,7 +13,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 
 @RequiredArgsConstructor
 @InfraService
-public class MailSenderService implements MailSenderGateway {
+public class MailSenderService implements MailSenderPort {
 
     private final JavaMailSender mailSender;
 

@@ -43,8 +43,8 @@ jobs:
           done
           echo "✅ postgres is ready!"
 
-          echo "${{ secrets.SCHEMA_SQL }}" | base64 --decode | docker exec -i $TEST_POSTGRES_CONTAINER_NAME psql -U $TEST_POSTGRES_USER -d $TEST_POSTGRES_DB
-          echo "${{ secrets.DATA_SQL }}" | base64 --decode | docker exec -i $TEST_POSTGRES_CONTAINER_NAME psql -U $TEST_POSTGRES_USER -d $TEST_POSTGRES_DB
+          echo "${{ secrets.SCHEMA_SQL }}" | docker exec -i $TEST_POSTGRES_CONTAINER_NAME psql -U $TEST_POSTGRES_USER -d $TEST_POSTGRES_DB
+          echo "${{ secrets.DATA_SQL }}" | docker exec -i $TEST_POSTGRES_CONTAINER_NAME psql -U $TEST_POSTGRES_USER -d $TEST_POSTGRES_DB
 
       # Gradlew 실행 권한 허용
       - name: Grant Execute Permission for Gradlew
