@@ -19,6 +19,7 @@ public enum ErrorResponseCode {
 
     // 404번
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "E404_001", "요청된 사용자를 찾을 수 없습니다."),
+    USER_IMAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "E404_002", "요청한 유저 이미지를 찾을 수 없습니다."),
 
     // 409번
     USER_ALREADY_EXISTS(HttpStatus.CONFLICT, "E409_001", "이미 존재하는 사용자입니다."),
