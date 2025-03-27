@@ -44,6 +44,7 @@ public class SecurityConfig {
             List.of(
                     "http://localhost:8080", // 로컬 환경 서버 도메인
                     "https://dev-api.fittheman.site", // 개발 환경 서버 도메인
+                    "http://localhost:3000", // 로컬 환경 클라이언트 도메인
                     "https://fittheman.site"); // 개발 환경 클라이언트 도메인
 
     private static final String[] GET_ANONYMOUS_MATCHERS = {
