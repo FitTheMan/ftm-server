@@ -54,7 +54,7 @@ public class SecurityConfig {
     private static final String[] POST_ANONYMOUS_MATCHERS = {
         "/api/users/email/authentication",
         "/api/users/email/authentication/code",
-        "/api/auth/login",
+        "/api/auth/login/**",
         "/api/users"
     };
 

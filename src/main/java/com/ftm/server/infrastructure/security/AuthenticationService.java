@@ -3,6 +3,7 @@ package com.ftm.server.infrastructure.security;
 import com.ftm.server.application.dto.command.UserLoginCommand;
 import com.ftm.server.application.port.AuthenticationPort;
 import com.ftm.server.common.annotation.InfraService;
+import com.ftm.server.domain.entity.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +37,13 @@ public class AuthenticationService implements AuthenticationPort {
 
         // 인증 수행 (UserPrincipalService 호출, PasswordEncoder 비밀번호 검증 포함)
         return authenticationManager.authenticate(token);
+    }
+
+    @Override
+    public Authentication createAuthenticationFromSocial(User user) {
+        UserPrincipal userPrincipal = UserPrincipal.of(user);
+        return new UsernamePasswordAuthenticationToken(
+                userPrincipal, null, userPrincipal.getAuthorities());
     }
 
     @Override
