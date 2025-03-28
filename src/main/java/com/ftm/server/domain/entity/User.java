@@ -118,4 +118,15 @@ public class User extends BaseEntity {
                 .role(UserRole.USER)
                 .build();
     }
+
+    public static User createTestKakaoUser() {
+        return User.builder()
+                .nickname("test")
+                .socialProvider(SocialProvider.KAKAO)
+                .socialId("test_kakao_id")
+                .groomingScore(0)
+                .isDeleted(false)
+                .role(UserRole.USER)
+                .build();
+    }
 }
