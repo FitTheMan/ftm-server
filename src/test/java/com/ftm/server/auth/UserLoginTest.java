@@ -82,7 +82,8 @@ public class UserLoginTest extends BaseTest {
                 requestFields(requestFieldLoginUser),
                 responseHeaders(
                         headerWithName("Set-Cookie")
-                                .description("세션 ID를 담고 있는 쿠키 (SESSION), 만료 시간: 1시간")
+                                .description(
+                                        "로그인 성공 시 발급되는 세션 쿠키 (만료 시간: 1시간, Value: SESSION=session-id 형태)")
                                 .optional()),
                 responseFields(responseFieldLoginUser),
                 resource(
@@ -120,7 +121,7 @@ public class UserLoginTest extends BaseTest {
         MvcResult result = resultActions.andReturn();
 
         // 세션 쿠키 수동 추가 (문서화 통과용)
-        result.getResponse().addHeader("Set-Cookie", "SESSION=mock-session-id; Path=/; HttpOnly");
+        result.getResponse().addHeader("Set-Cookie", "SESSION=session-id; Path=/; HttpOnly");
 
         // then
         resultActions
