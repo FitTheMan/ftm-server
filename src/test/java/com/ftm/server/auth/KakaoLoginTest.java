@@ -115,7 +115,7 @@ public class KakaoLoginTest extends BaseTest {
         MvcResult result = resultActions.andReturn();
 
         // 세션 쿠키 수동 추가 (문서화 통과용)
-        result.getResponse().addHeader("Set-Cookie", "SESSION=mock-session-id; Path=/; HttpOnly");
+        result.getResponse().addHeader("Set-Cookie", "SESSION=session-id; Path=/; HttpOnly");
 
         // then
         resultActions
@@ -124,7 +124,8 @@ public class KakaoLoginTest extends BaseTest {
                 .andDo(print());
 
         // documentation
-        resultActions.andDo(getDocument(1, "SESSION 쿠키: 로그인 성공 시 발급되는 세션 쿠키 (기본 만료 시간 30분)"));
+        resultActions.andDo(
+                getDocument(1, "로그인 성공 시 발급되는 세션 쿠키 (만료 시간: 1시간, Value: SESSION=session-id 형태)"));
     }
 
     @Test
@@ -140,7 +141,7 @@ public class KakaoLoginTest extends BaseTest {
         MvcResult result = resultActions.andReturn();
 
         // 세션 쿠키 수동 추가 (문서화 통과용)
-        result.getResponse().addHeader("Set-Cookie", "SESSION=mock-session-id; Path=/; HttpOnly");
+        result.getResponse().addHeader("Set-Cookie", "SESSION=session-id; Path=/; HttpOnly");
 
         // then
         resultActions
@@ -149,7 +150,9 @@ public class KakaoLoginTest extends BaseTest {
                 .andDo(print());
 
         // documentation
-        resultActions.andDo(getDocument(2, "SESSION 쿠키: 소셜 회원가입이 필요한 사용자를 위한 임시 세션 (만료 시간 5분)"));
+        resultActions.andDo(
+                getDocument(
+                        2, "소셜 유저 정보를 담은 임시 세션 쿠키 (만료 시간: 5분, , Value: SESSION=session-id 형태)"));
     }
 
     @Test
