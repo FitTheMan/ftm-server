@@ -8,6 +8,9 @@ include::{snippetsDir}/loginUser/1/http-request.adoc[]
 ==== 성공 Response
 include::{snippetsDir}/loginUser/1/http-response.adoc[]
 
+==== Response Headers
+include::{snippetsDir}/loginUser/1/response-headers.adoc[]
+
 ==== Response Body Fields
 include::{snippetsDir}/loginUser/1/response-fields.adoc[]
 
@@ -26,13 +29,44 @@ include::{snippetsDir}/kakaoLogin/1/http-request.adoc[]
 ==== 성공 Response
 성공 1. 카카오 로그인 성공, 서비스에 가입된 유저인 경우
 include::{snippetsDir}/kakaoLogin/1/http-response.adoc[]
-include::{snippetsDir}/kakaoLogin/1/response-fields.adoc[]
 
 성공 2. 카카오 로그인은 성공했지만, 서비스에 가입된 유저가 아닌 경우 (세션에 카카오 유저 정보를 임시로 등록하고 응답 쿠키에 SESSION 등록, 만료시간 5분)
 include::{snippetsDir}/kakaoLogin/2/http-response.adoc[]
+
+==== Response Headers
+성공 1.
+include::{snippetsDir}/kakaoLogin/1/response-headers.adoc[]
+
+성공 2.
+include::{snippetsDir}/kakaoLogin/2/response-headers.adoc[]
+
+==== Response Body Fields
+성공 1.
+include::{snippetsDir}/kakaoLogin/1/response-fields.adoc[]
 
 ==== 실패 Response
 실패 1.
 include::{snippetsDir}/kakaoLogin/3/http-response.adoc[]
 실패 2.
 include::{snippetsDir}/kakaoLogin/4/http-response.adoc[]
+
+---
+
+=== **3. 로그아웃**
+
+로그아웃 api 입니다. 요청 헤더에 Key=Cookie, Value="SESSION=" 형식의 세션 쿠키가 존재해야합니다.
+
+==== Request
+include::{snippetsDir}/logout/1/http-request.adoc[]
+
+==== Request Header
+include::{snippetsDir}/logout/1/request-headers.adoc[]
+
+==== 성공 Response
+include::{snippetsDir}/logout/1/http-response.adoc[]
+
+==== Response Body Fields
+include::{snippetsDir}/logout/1/response-fields.adoc[]
+
+==== 실패 Response
+include::{snippetsDir}/logout/2/http-response.adoc[]
