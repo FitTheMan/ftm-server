@@ -100,7 +100,8 @@ public class SocialUserSignupTest extends BaseTest {
                 requestFields(requestFieldDescriptors),
                 responseHeaders(
                         headerWithName("Set-Cookie")
-                                .description("세션 ID를 담고 있는 쿠키 (SESSION), 만료 시간: 1시간")
+                                .description(
+                                        "로그인 성공 시 발급되는 세션 쿠키 (만료 시간: 1시간, Value: SESSION=session-id 형태)")
                                 .optional()),
                 resource(
                         ResourceSnippetParameters.builder()
