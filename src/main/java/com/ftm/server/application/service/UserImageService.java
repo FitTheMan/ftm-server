@@ -21,8 +21,9 @@ public class UserImageService {
                 .orElseThrow(() -> new CustomException(ErrorResponseCode.USER_IMAGE_NOT_FOUND));
     }
 
-    public void saveUserDefaultImage(User user) {
+    public UserImage saveUserDefaultImage(User user) {
         UserImage userImage = UserImage.createUserImage(user);
         userImageRepository.save(userImage);
+        return userImage;
     }
 }

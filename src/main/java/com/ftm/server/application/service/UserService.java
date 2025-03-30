@@ -1,8 +1,10 @@
 package com.ftm.server.application.service;
 
 import com.ftm.server.application.dto.command.GeneralUserCreationCommand;
+import com.ftm.server.application.dto.command.SocialUserCreationCommand;
 import com.ftm.server.application.dto.query.FindByEmailQuery;
 import com.ftm.server.application.dto.query.FindByIdQuery;
+import com.ftm.server.application.dto.query.FindBySocialValueQuery;
 import com.ftm.server.application.dto.query.FindSocialUserQuery;
 import com.ftm.server.application.port.repository.UserRepository;
 import com.ftm.server.common.exception.CustomException;
@@ -39,6 +41,17 @@ public class UserService {
         User user = User.createGeneralUser(command);
         userRepository.save(user);
         return user;
+    }
+
+    public User createSocialUser(SocialUserCreationCommand command) {
+        User user = User.createSocailUser(command);
+        userRepository.save(user);
+        return user;
+    }
+
+    public Boolean userCheckBySocialValue(FindBySocialValueQuery query) {
+        return userRepository.existsBySocialIdAndSocialProvider(
+                query.getSocialId(), query.getSocialProvider());
     }
 
     public Boolean userCheckByEmail(FindByEmailQuery query) {

@@ -31,6 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.FieldDescriptor;
+import org.springframework.restdocs.snippet.Attributes;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,11 +61,17 @@ public class UserLoginTest extends BaseTest {
                     fieldWithPath("data.mildLevelName")
                             .type(STRING)
                             .optional()
-                            .description("순한맛 그루밍 레벨 이름"),
+                            .description("순한맛 그루밍 레벨 이름")
+                            .attributes(
+                                    new Attributes.Attribute(
+                                            "nullable", "그루밍 테스트를 아직 진행하지 않은 경우 null")),
                     fieldWithPath("data.spicyLevelName")
                             .type(STRING)
                             .optional()
-                            .description("매운맛 그루밍 레벨 이름"),
+                            .description("매운맛 그루밍 레벨 이름")
+                            .attributes(
+                                    new Attributes.Attribute(
+                                            "nullable", "그루밍 테스트를 아직 진행하지 않은 경우 null")),
                     fieldWithPath("data.loginTime").type(STRING).description("로그인 시간"));
 
     private ResultActions getResultActions(UserLoginRequest request) throws Exception {
