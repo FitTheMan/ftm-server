@@ -14,9 +14,11 @@ import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @UseCase
 @RequiredArgsConstructor
+@Slf4j
 public class EmailAuthenticationUseCase {
 
     private final MailSenderPort mailSenderPort;

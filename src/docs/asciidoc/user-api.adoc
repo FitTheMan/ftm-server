@@ -95,3 +95,27 @@ include::{snippetsDir}/generalUserSignUp/1/response-fields.adoc[]
 include::{snippetsDir}/generalUserSignUp/2/http-response.adoc[]
 실패 2
 include::{snippetsDir}/generalUserSignUp/3/http-response.adoc[]
+
+
+=== **6. 소셜 회원가입 api**
+
+소셜 회원가입 api입니다.
+
+==== Request
+**소셜 로그인 후 발급된 session id를  cookie에 전달**
+include::{snippetsDir}/socialUserSignUp/1/http-request.adoc[]
+
+==== Request Body Fields
+include::{snippetsDir}/socialUserSignUp/1/request-fields.adoc[]
+
+==== 성공 Response
+include::{snippetsDir}/socialUserSignUp/1/http-response.adoc[]
+
+==== Response Body Fields
+include::{snippetsDir}/socialUserSignUp/1/response-fields.adoc[]
+
+==== 실패 Response
+실패1.
+include::{snippetsDir}/socialUserSignUp/2/http-response.adoc[]
+실패 2
+include::{snippetsDir}/socialUserSignUp/3/http-response.adoc[]

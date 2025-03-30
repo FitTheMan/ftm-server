@@ -1,6 +1,7 @@
 package com.ftm.server.domain.entity;
 
 import com.ftm.server.application.dto.command.GeneralUserCreationCommand;
+import com.ftm.server.application.dto.command.SocialUserCreationCommand;
 import com.ftm.server.domain.enums.AgeGroup;
 import com.ftm.server.domain.enums.HashTag;
 import com.ftm.server.domain.enums.SocialProvider;
@@ -107,12 +108,38 @@ public class User extends BaseEntity {
     }
 
     public static User createGeneralUser(GeneralUserCreationCommand command) {
+
+        HashTag[] hashTags = null;
+
+        if (command.getHashtags() != null && command.getHashtags().isEmpty()) {
+            hashTags = command.getHashtags().toArray(new HashTag[0]);
+        }
         return User.builder()
                 .email(command.getEmail())
                 .password(command.getPassword())
                 .nickname(command.getNickName())
                 .ageGroup(command.getAgeGroup())
-                .favoriteHashtags(command.getHashTags())
+                .favoriteHashtags(hashTags)
+                .groomingScore(0)
+                .isDeleted(false)
+                .role(UserRole.USER)
+                .build();
+    }
+
+    public static User createSocailUser(SocialUserCreationCommand command) {
+
+        HashTag[] hashTags = null;
+
+        if (command.getHashtags() != null && command.getHashtags().isEmpty()) {
+            hashTags = command.getHashtags().toArray(new HashTag[0]);
+        }
+
+        return User.builder()
+                .socialProvider(command.getProvider())
+                .socialId(command.getSocialId())
+                .nickname(command.getNickname())
+                .ageGroup(command.getAge())
+                .favoriteHashtags(hashTags)
                 .groomingScore(0)
                 .isDeleted(false)
                 .role(UserRole.USER)

@@ -28,6 +28,7 @@ import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.restdocs.snippet.Attributes;
 import org.springframework.test.web.servlet.ResultActions;
 
 public class GeneralUserSignupTest extends BaseTest {
@@ -41,13 +42,16 @@ public class GeneralUserSignupTest extends BaseTest {
                     fieldWithPath("email").type(JsonFieldType.STRING).description("회원가입 email"),
                     fieldWithPath("password")
                             .type(JsonFieldType.STRING)
-                            .description("회원가입 password"),
+                            .description("회원가입 password")
+                            .attributes(
+                                    new Attributes.Attribute("constraint", "영문+숫자+특수문자 포함 8자 이상.")),
                     fieldWithPath("age")
                             .type(JsonFieldType.STRING)
                             .description("연령대. 사용자 정보 옵션 조회 api에서 반환받은 value 값을 전달해 주세요."),
                     fieldWithPath("hashtags")
                             .type(JsonFieldType.ARRAY)
-                            .description("관심 해시태그. 사용자 정보 옵션 조회 api에서 반환받은 value 값을 전달해 주세요."));
+                            .description("관심 해시태그. 사용자 정보 옵션 조회 api에서 반환받은 value 값을 전달해 주세요.")
+                            .optional());
 
     private final List<FieldDescriptor> responseFieldDescriptors =
             List.of(
@@ -99,7 +103,7 @@ public class GeneralUserSignupTest extends BaseTest {
 
         GeneralUserSignupRequest request =
                 new GeneralUserSignupRequest(
-                        email, "123456", AgeGroup.FIFTIES, List.of(HashTag.PERFUME));
+                        email, "qwer1234!", AgeGroup.FIFTIES, List.of(HashTag.PERFUME));
 
         // when
         ResultActions resultActions = getResultActions(request);
@@ -117,7 +121,7 @@ public class GeneralUserSignupTest extends BaseTest {
         // given
         GeneralUserSignupRequest request =
                 new GeneralUserSignupRequest(
-                        "test@gmail.com", "123456", AgeGroup.FIFTIES, List.of(HashTag.PERFUME));
+                        "test@gmail.com", "qwer1234!", AgeGroup.FIFTIES, List.of(HashTag.PERFUME));
 
         // when
         ResultActions resultActions = getResultActions(request);
@@ -137,14 +141,15 @@ public class GeneralUserSignupTest extends BaseTest {
     void 일반회원가입_실패2() throws Exception {
         // given
         String email = "test@gmail.com";
-        HashTag[] hashTags = {HashTag.PERFUME};
+        List<HashTag> hashTags = List.of(HashTag.PERFUME);
         GeneralUserCreationCommand command =
-                new GeneralUserCreationCommand(email, "123456", "닉넴", AgeGroup.FIFTIES, hashTags);
+                new GeneralUserCreationCommand(
+                        email, "qwer1234!", "닉넴", AgeGroup.FIFTIES, hashTags);
         userService.createGeneralUser(command);
 
         GeneralUserSignupRequest request =
                 new GeneralUserSignupRequest(
-                        "test@gmail.com", "123456", AgeGroup.FIFTIES, List.of(HashTag.PERFUME));
+                        "test@gmail.com", "qwer1234!", AgeGroup.FIFTIES, List.of(HashTag.PERFUME));
 
         // when
         ResultActions resultActions = getResultActions(request);
