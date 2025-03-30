@@ -111,6 +111,9 @@ include::{snippetsDir}/socialUserSignUp/1/request-fields.adoc[]
 ==== 성공 Response
 include::{snippetsDir}/socialUserSignUp/1/http-response.adoc[]
 
+==== Response Headers
+include::{snippetsDir}/socialUserSignUp/1/response-headers.adoc[]
+
 ==== Response Body Fields
 include::{snippetsDir}/socialUserSignUp/1/response-fields.adoc[]
 
