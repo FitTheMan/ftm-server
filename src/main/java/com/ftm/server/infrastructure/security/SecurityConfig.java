@@ -55,7 +55,8 @@ public class SecurityConfig {
         "/api/users/email/authentication",
         "/api/users/email/authentication/code",
         "/api/auth/login/**",
-        "/api/users"
+        "/api/users",
+        "/api/users/social"
     };
 
     private static final String[] ANONYMOUS_MATCHERS = {"/docs/**"};

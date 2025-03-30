@@ -14,7 +14,6 @@ import com.ftm.server.common.response.enums.ErrorResponseCode;
 import com.ftm.server.common.utils.RandomNickNameCreator;
 import com.ftm.server.domain.entity.EmailVerificationLogs;
 import com.ftm.server.domain.entity.User;
-import com.ftm.server.domain.enums.HashTag;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 
@@ -45,7 +44,6 @@ public class GeneralUserSignupUseCase {
         }
 
         String nickname = RandomNickNameCreator.generateNickname(); // random 닉네임 생성
-        int size = command.getHashtags().size();
 
         GeneralUserCreationCommand convertedCommand =
                 GeneralUserCreationCommand.of(
@@ -53,7 +51,7 @@ public class GeneralUserSignupUseCase {
                         authenticationPort.passwordEncode(command.getPassword()),
                         nickname,
                         command.getAge(),
-                        command.getHashtags().toArray(new HashTag[size]));
+                        command.getHashtags());
 
         User user = userService.createGeneralUser(convertedCommand);
         userImageService.saveUserDefaultImage(user);
