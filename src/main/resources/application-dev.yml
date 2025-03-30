@@ -6,3 +6,11 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none
+
+server:
+  servlet:
+    session:
+      cookie:
+        name: SESSION
+        same-site: none
+        secure: true
