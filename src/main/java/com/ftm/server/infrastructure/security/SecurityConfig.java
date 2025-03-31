@@ -37,6 +37,7 @@ public class SecurityConfig {
                     HttpMethod.PUT,
                     HttpMethod.PATCH,
                     HttpMethod.DELETE,
+                    HttpMethod.OPTIONS,
                     HttpMethod.HEAD);
 
     // CORS 에서 허용할 도메인 목록

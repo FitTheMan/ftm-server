@@ -14,3 +14,4 @@ server:
         name: SESSION
         same-site: none
         secure: true
+        domain: .fittheman.site
