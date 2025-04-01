@@ -4,18 +4,17 @@ import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.ftm.server.BaseTest;
-import com.ftm.server.application.dto.command.EmailAuthenticationCommand;
-import com.ftm.server.application.usecase.user.EmailAuthenticationUseCase;
+import com.ftm.server.adapter.in.web.user.dto.request.EmailAuthenticationRequest;
+import com.ftm.server.application.command.user.EmailAuthenticationCommand;
+import com.ftm.server.application.port.in.user.EmailAuthenticationUseCase;
 import com.ftm.server.common.exception.CustomException;
 import com.ftm.server.common.response.enums.ErrorResponseCode;
-import com.ftm.server.web.dto.request.EmailAuthenticationRequest;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -32,7 +31,6 @@ import org.springframework.test.web.servlet.ResultActions;
 public class EmailAuthenticationTest extends BaseTest {
 
     @Autowired private EmailAuthenticationUseCase emailAuthenticationUseCase;
-
     @MockitoSpyBean private EmailAuthenticationUseCase mockitoEmailAuthenticationUseCase;
 
     private final List<FieldDescriptor> responseFieldDescriptors =
@@ -100,8 +98,7 @@ public class EmailAuthenticationTest extends BaseTest {
         // given
         EmailAuthenticationRequest request = new EmailAuthenticationRequest("test@gmail.com");
         for (int i = 0; i < 5; i++) {
-            emailAuthenticationUseCase.sendEmailAuthenticationCode(
-                    EmailAuthenticationCommand.from(request));
+            emailAuthenticationUseCase.execute(EmailAuthenticationCommand.from(request));
         }
         // when
         ResultActions resultActions = getResultActions(request);
@@ -127,7 +124,7 @@ public class EmailAuthenticationTest extends BaseTest {
         EmailAuthenticationRequest request = new EmailAuthenticationRequest("test@gmail.com");
         doThrow(new CustomException(ErrorResponseCode.FAIL_TO_SEND_EMAIL))
                 .when(mockitoEmailAuthenticationUseCase)
-                .sendEmailAuthenticationCode(EmailAuthenticationCommand.from(request));
+                .execute(EmailAuthenticationCommand.from(request));
 
         // when
         ResultActions resultActions = getResultActions(request);

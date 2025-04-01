@@ -1,49 +1,64 @@
 package com.ftm.server.domain.entity;
 
-import com.ftm.server.application.dto.command.EmailVerificationLogCreationCommand;
-import jakarta.persistence.*;
+import com.ftm.server.application.command.user.EmailVerificationLogCreationCommand;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Entity
-@Table(name = "email_verification_logs")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class EmailVerificationLogs extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class EmailVerificationLogs extends BaseTime {
+
     private Long id;
-
-    @Column(nullable = false)
     private String email;
-
-    @Column(name = "verification_code", nullable = false)
     private String verificationCode;
-
-    @Column(name = "is_verified", nullable = false)
     private Boolean isVerified = false;
-
-    @Column(name = "trial_num")
     private Integer trialNum;
-
-    @Column(name = "token_issuance_time")
     private LocalDateTime tokenIssuanceTime;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     @Builder(access = AccessLevel.PRIVATE)
     private EmailVerificationLogs(
+            Long id,
             String email,
             String verificationCode,
             Boolean isVerified,
             Integer trialNum,
-            LocalDateTime tokenIssuanceTime) {
+            LocalDateTime tokenIssuanceTime,
+            LocalDateTime createdAt,
+            LocalDateTime updatedAt) {
+        this.id = id;
         this.email = email;
         this.verificationCode = verificationCode;
         this.isVerified = isVerified;
         this.trialNum = trialNum;
         this.tokenIssuanceTime = tokenIssuanceTime;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public static EmailVerificationLogs of(
+            Long id,
+            String email,
+            String verificationCode,
+            Boolean isVerified,
+            Integer trialNum,
+            LocalDateTime tokenIssuanceTime,
+            LocalDateTime createdAt,
+            LocalDateTime updatedAt) {
+        return EmailVerificationLogs.builder()
+                .id(id)
+                .email(email)
+                .verificationCode(verificationCode)
+                .isVerified(isVerified)
+                .trialNum(trialNum)
+                .tokenIssuanceTime(tokenIssuanceTime)
+                .createdAt(createdAt)
+                .updatedAt(updatedAt)
+                .build();
     }
 
     public static EmailVerificationLogs from(EmailVerificationLogCreationCommand command) {

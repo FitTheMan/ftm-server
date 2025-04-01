@@ -3,15 +3,14 @@ package com.ftm.server.user;
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.ftm.server.BaseTest;
-import com.ftm.server.application.dto.command.EmailVerificationLogCreationCommand;
-import com.ftm.server.application.service.EmailVerificationLogsService;
-import com.ftm.server.web.dto.request.EmailCodeVerificationRequest;
+import com.ftm.server.adapter.in.web.user.dto.request.EmailCodeVerificationRequest;
+import com.ftm.server.application.command.user.EmailVerificationLogCreationCommand;
+import com.ftm.server.application.port.out.persistence.user.SaveEmailVerificationLogPort;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -25,7 +24,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 public class EmailCodeVerificationTest extends BaseTest {
 
-    @Autowired private EmailVerificationLogsService emailVerificationLogsService;
+    @Autowired private SaveEmailVerificationLogPort saveEmailVerificationLogPort;
 
     private final List<FieldDescriptor> requestFieldDescriptors =
             List.of(
@@ -74,7 +73,7 @@ public class EmailCodeVerificationTest extends BaseTest {
         String email = "test@gmail.com";
         String code = "123456";
         // given
-        emailVerificationLogsService.saveEmailVerificationLogs(
+        saveEmailVerificationLogPort.saveEmailVerificationLogs(
                 EmailVerificationLogCreationCommand.of(email, code));
 
         // when

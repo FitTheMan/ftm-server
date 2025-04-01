@@ -9,25 +9,23 @@ import static org.springframework.restdocs.headers.HeaderDocumentation.headerWit
 import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.JsonFieldType.*;
-import static org.springframework.restdocs.payload.JsonFieldType.STRING;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.ftm.server.BaseTest;
-import com.ftm.server.application.dto.command.KakaoAuthCommand;
-import com.ftm.server.application.port.SocialAuthClientPort;
-import com.ftm.server.application.port.repository.UserImageRepository;
-import com.ftm.server.application.port.repository.UserRepository;
+import com.ftm.server.adapter.in.web.auth.dto.request.KakaoLoginRequest;
+import com.ftm.server.application.command.auth.KakaoLoginCommand;
+import com.ftm.server.application.port.out.oauth.SocialOAuthClientPort;
+import com.ftm.server.application.port.out.persistence.user.SaveUserImagePort;
+import com.ftm.server.application.port.out.persistence.user.SaveUserPort;
 import com.ftm.server.common.exception.CustomException;
 import com.ftm.server.common.response.enums.ErrorResponseCode;
 import com.ftm.server.domain.entity.User;
 import com.ftm.server.domain.entity.UserImage;
 import com.ftm.server.infrastructure.oauth.kakao.KakaoAuthUser;
-import com.ftm.server.web.dto.request.KakaoLoginRequest;
 import java.util.List;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -42,10 +40,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 public class KakaoLoginTest extends BaseTest {
 
-    @MockitoBean private SocialAuthClientPort<KakaoAuthCommand, KakaoAuthUser> kakaoClient;
+    @MockitoBean
+    private SocialOAuthClientPort<KakaoLoginCommand, KakaoAuthUser> kakaoOAuthClientPort;
 
-    @Autowired private UserRepository userRepository;
-    @Autowired private UserImageRepository userImageRepository;
+    @Autowired private SaveUserPort saveUserPort;
+    @Autowired private SaveUserImagePort saveUserImagePort;
 
     private final List<FieldDescriptor> requestFieldKakaoLogin =
             List.of(fieldWithPath("authorizationCode").type(STRING).description("카카오 인증 코드"));
@@ -102,13 +101,14 @@ public class KakaoLoginTest extends BaseTest {
     @Transactional
     void 카카오_로그인_성공1() throws Exception {
         // given
-        User testUser = userRepository.save(User.createTestKakaoUser());
-        UserImage testUserImage = UserImage.createUserImage(testUser);
-        userImageRepository.save(testUserImage);
+        User testUser = saveUserPort.saveUser(User.createTestKakaoUser());
+        UserImage userImage = UserImage.createUserImage(testUser.getId());
+        saveUserImagePort.saveUserDefaultImage(userImage);
 
         KakaoLoginRequest request = new KakaoLoginRequest("test_code");
         KakaoAuthUser testKakaoUser = KakaoAuthUser.from("test_kakao_id");
-        given(kakaoClient.authenticate(any(KakaoAuthCommand.class))).willReturn(testKakaoUser);
+        given(kakaoOAuthClientPort.authenticate(any(KakaoLoginCommand.class)))
+                .willReturn(testKakaoUser);
 
         // when
         ResultActions resultActions = getResultActions(request);
@@ -134,7 +134,8 @@ public class KakaoLoginTest extends BaseTest {
         // given
         KakaoLoginRequest request = new KakaoLoginRequest("test_code");
         KakaoAuthUser testKakaoUser = KakaoAuthUser.from("test_kakao_id");
-        given(kakaoClient.authenticate(any(KakaoAuthCommand.class))).willReturn(testKakaoUser);
+        given(kakaoOAuthClientPort.authenticate(any(KakaoLoginCommand.class)))
+                .willReturn(testKakaoUser);
 
         // when
         ResultActions resultActions = getResultActions(request);
@@ -161,8 +162,8 @@ public class KakaoLoginTest extends BaseTest {
         // given
         KakaoLoginRequest request = new KakaoLoginRequest("test_code");
         doThrow(new CustomException(ErrorResponseCode.KAKAO_AUTH_TOKEN_EXCHANGE_FAILED))
-                .when(kakaoClient)
-                .authenticate(any(KakaoAuthCommand.class));
+                .when(kakaoOAuthClientPort)
+                .authenticate(any(KakaoLoginCommand.class));
 
         // when
         ResultActions resultActions = getResultActions(request);
@@ -191,8 +192,8 @@ public class KakaoLoginTest extends BaseTest {
         // given
         KakaoLoginRequest request = new KakaoLoginRequest("test_code");
         doThrow(new CustomException(ErrorResponseCode.KAKAO_USER_PROFILE_FETCH_FAILED))
-                .when(kakaoClient)
-                .authenticate(any(KakaoAuthCommand.class));
+                .when(kakaoOAuthClientPort)
+                .authenticate(any(KakaoLoginCommand.class));
 
         // when
         ResultActions resultActions = getResultActions(request);

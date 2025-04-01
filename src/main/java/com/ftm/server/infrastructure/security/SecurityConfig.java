@@ -1,5 +1,6 @@
 package com.ftm.server.infrastructure.security;
 
+import com.ftm.server.adapter.out.security.UserPrincipalAdapter;
 import com.ftm.server.infrastructure.security.handler.PermissionDeniedHandler;
 import com.ftm.server.infrastructure.security.handler.UnauthenticatedAccessHandler;
 import java.util.List;
@@ -129,7 +130,7 @@ public class SecurityConfig {
 
     // 시큐리티 인증을 관리하는 AuthenticationManager 설정
     @Bean
-    public AuthenticationManager authenticationManager(UserPrincipalService userPrincipalService) {
+    public AuthenticationManager authenticationManager(UserPrincipalAdapter userPrincipalService) {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(userPrincipalService);
         provider.setPasswordEncoder(passwordEncoder());

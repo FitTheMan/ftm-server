@@ -1,40 +1,56 @@
 package com.ftm.server.domain.entity;
 
-import jakarta.persistence.*;
+import com.ftm.server.domain.enums.HashTag;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Entity
-@Table(name = "post_product")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PostProduct extends BaseEntity {
+public class PostProduct extends BaseTime {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id")
-    private Post post;
-
-    @Column(nullable = false)
+    private Long postId;
     private String name;
-
-    @Lob private String detail;
-
     private String brand;
-
-    private String link;
+    private HashTag[] hashTags;
 
     @Builder(access = AccessLevel.PRIVATE)
-    private PostProduct(Post post, String name, String detail, String brand, String link) {
-        this.post = post;
+    private PostProduct(
+            Long id,
+            Long postId,
+            String name,
+            String brand,
+            HashTag[] hashTags,
+            LocalDateTime createdAt,
+            LocalDateTime updatedAt) {
+        this.id = id;
+        this.postId = postId;
         this.name = name;
-        this.detail = detail;
         this.brand = brand;
-        this.link = link;
+        this.hashTags = hashTags;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public static PostProduct of(
+            Long id,
+            Long postId,
+            String name,
+            String brand,
+            HashTag[] hashTags,
+            LocalDateTime createdAt,
+            LocalDateTime updatedAt) {
+        return PostProduct.builder()
+                .id(id)
+                .postId(postId)
+                .name(name)
+                .brand(brand)
+                .hashTags(hashTags)
+                .createdAt(createdAt)
+                .updatedAt(updatedAt)
+                .build();
     }
 }

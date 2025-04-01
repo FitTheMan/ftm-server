@@ -1,29 +1,45 @@
 package com.ftm.server.domain.entity;
 
-import jakarta.persistence.*;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Entity
-@Table(name = "post_image")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PostImage extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class PostImage extends BaseTime {
+
     private Long id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id")
-    private Post post;
-
+    private Long postId;
     private String objectKey;
 
     @Builder(access = AccessLevel.PRIVATE)
-    private PostImage(Post post, String objectKey) {
-        this.post = post;
+    private PostImage(
+            Long id,
+            Long postId,
+            String objectKey,
+            LocalDateTime createdAt,
+            LocalDateTime updatedAt) {
+        this.id = id;
+        this.postId = postId;
         this.objectKey = objectKey;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public static PostImage of(
+            Long id,
+            Long postId,
+            String objectKey,
+            LocalDateTime createdAt,
+            LocalDateTime updatedAt) {
+        return PostImage.builder()
+                .id(id)
+                .postId(postId)
+                .objectKey(objectKey)
+                .createdAt(createdAt)
+                .updatedAt(updatedAt)
+                .build();
     }
 }
