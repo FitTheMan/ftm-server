@@ -2,10 +2,10 @@ package com.ftm.server.user;
 
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static com.ftm.server.common.consts.StaticConsts.PENDING_SOCIAL_USER_SESSION_KEY;
-import static org.springframework.restdocs.headers.HeaderDocumentation.*;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.JsonFieldType.STRING;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -13,14 +13,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.ftm.server.BaseTest;
-import com.ftm.server.application.dto.command.SocialUserCreationCommand;
-import com.ftm.server.application.service.UserService;
+import com.ftm.server.adapter.in.web.user.dto.request.SocialUserSignupRequest;
+import com.ftm.server.application.command.user.SocialUserCreationCommand;
+import com.ftm.server.application.port.out.persistence.user.SaveUserPort;
+import com.ftm.server.application.vo.auth.PendingSocialUserVo;
 import com.ftm.server.common.response.enums.ErrorResponseCode;
+import com.ftm.server.domain.entity.User;
 import com.ftm.server.domain.enums.AgeGroup;
 import com.ftm.server.domain.enums.HashTag;
 import com.ftm.server.domain.enums.SocialProvider;
-import com.ftm.server.domain.vo.PendingSocialUserVo;
-import com.ftm.server.web.dto.request.SocialUserSignupRequest;
 import jakarta.servlet.http.Cookie;
 import jakarta.transaction.Transactional;
 import java.util.List;
@@ -38,7 +39,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 public class SocialUserSignupTest extends BaseTest {
 
-    @Autowired private UserService userService;
+    @Autowired private SaveUserPort saveUserPort;
 
     private final List<FieldDescriptor> requestFieldDescriptors =
             List.of(
@@ -179,7 +180,7 @@ public class SocialUserSignupTest extends BaseTest {
                         "닉네임",
                         AgeGroup.FIFTIES,
                         List.of(HashTag.PERFUME));
-        userService.createSocialUser(command);
+        saveUserPort.saveSocialUser(User.createSocailUser(command));
 
         PendingSocialUserVo pendingSocialUserVo =
                 PendingSocialUserVo.from(SocialProvider.KAKAO, "12345");

@@ -1,31 +1,37 @@
 package com.ftm.server.domain.entity;
 
-import jakarta.persistence.*;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Entity
-@Table(name = "bookmark")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Bookmark extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class Bookmark extends BaseTime {
+
     private Long id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id")
-    private Post post;
+    private Long userId;
+    private Long postId;
 
     @Builder(access = AccessLevel.PRIVATE)
-    private Bookmark(User user, Post post) {
-        this.user = user;
-        this.post = post;
+    private Bookmark(
+            Long id, Long userId, Long postId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.id = id;
+        this.userId = userId;
+        this.postId = postId;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public static Bookmark of(
+            Long id, Long userId, Long postId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        return Bookmark.builder()
+                .id(id)
+                .userId(userId)
+                .postId(postId)
+                .createdAt(createdAt)
+                .updatedAt(updatedAt)
+                .build();
     }
 }

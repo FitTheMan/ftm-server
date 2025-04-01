@@ -1,35 +1,50 @@
 package com.ftm.server.domain.entity;
 
-import jakarta.persistence.*;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Entity
-@Table(name = "grooming_test_answer")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class GroomingTestAnswer extends BaseEntity {
+public class GroomingTestAnswer extends BaseTime {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "grooming_test_question_id")
-    private GroomingTestQuestion groomingTestQuestion;
-
-    @Column(nullable = false)
+    private Long groomingTestQuestionId;
     private String answer;
-
     private Integer score;
 
     @Builder(access = AccessLevel.PRIVATE)
     private GroomingTestAnswer(
-            GroomingTestQuestion groomingTestQuestion, String answer, Integer score) {
-        this.groomingTestQuestion = groomingTestQuestion;
+            Long id,
+            Long groomingTestQuestionId,
+            String answer,
+            Integer score,
+            LocalDateTime createdAt,
+            LocalDateTime updatedAt) {
+        this.id = id;
+        this.groomingTestQuestionId = groomingTestQuestionId;
         this.answer = answer;
         this.score = score;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public static GroomingTestAnswer of(
+            Long id,
+            Long groomingTestQuestionId,
+            String answer,
+            Integer score,
+            LocalDateTime createdAt,
+            LocalDateTime updatedAt) {
+        return GroomingTestAnswer.builder()
+                .id(id)
+                .groomingTestQuestionId(groomingTestQuestionId)
+                .answer(answer)
+                .score(score)
+                .createdAt(createdAt)
+                .updatedAt(updatedAt)
+                .build();
     }
 }

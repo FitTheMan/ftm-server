@@ -1,35 +1,55 @@
 package com.ftm.server.domain.entity;
 
-import jakarta.persistence.*;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Entity
-@Table(name = "grooming_level")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class GroomingLevel extends BaseEntity {
+public class GroomingLevel extends BaseTime {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private Integer minScore;
-
     private Integer maxScore;
-
     private String mildLevelName;
-
     private String spicyLevelName;
 
     @Builder(access = AccessLevel.PRIVATE)
     private GroomingLevel(
-            Integer minScore, Integer maxScore, String mildLevelName, String spicyLevelName) {
+            Long id,
+            Integer minScore,
+            Integer maxScore,
+            String mildLevelName,
+            String spicyLevelName,
+            LocalDateTime createdAt,
+            LocalDateTime updatedAt) {
+        this.id = id;
         this.minScore = minScore;
         this.maxScore = maxScore;
         this.mildLevelName = mildLevelName;
         this.spicyLevelName = spicyLevelName;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public static GroomingLevel of(
+            Long id,
+            Integer minScore,
+            Integer maxScore,
+            String mildLevelName,
+            String spicyLevelName,
+            LocalDateTime createdAt,
+            LocalDateTime updatedAt) {
+        return GroomingLevel.builder()
+                .id(id)
+                .minScore(minScore)
+                .maxScore(maxScore)
+                .mildLevelName(mildLevelName)
+                .spicyLevelName(spicyLevelName)
+                .createdAt(createdAt)
+                .updatedAt(updatedAt)
+                .build();
     }
 }

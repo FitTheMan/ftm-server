@@ -3,22 +3,23 @@ package com.ftm.server.user;
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.ftm.server.BaseTest;
-import com.ftm.server.application.dto.command.EmailVerificationLogCreationCommand;
-import com.ftm.server.application.dto.command.GeneralUserCreationCommand;
-import com.ftm.server.application.port.repository.EmailVerificationLogsRepository;
-import com.ftm.server.application.service.UserService;
+import com.ftm.server.adapter.in.web.user.dto.request.GeneralUserSignupRequest;
+import com.ftm.server.adapter.out.persistence.mapper.EmailVerificationLogsMapper;
+import com.ftm.server.adapter.out.persistence.repository.EmailVerificationLogsRepository;
+import com.ftm.server.application.command.user.EmailVerificationLogCreationCommand;
+import com.ftm.server.application.command.user.GeneralUserCreationCommand;
+import com.ftm.server.application.port.out.persistence.user.SaveUserPort;
 import com.ftm.server.common.response.enums.ErrorResponseCode;
 import com.ftm.server.domain.entity.EmailVerificationLogs;
+import com.ftm.server.domain.entity.User;
 import com.ftm.server.domain.enums.AgeGroup;
 import com.ftm.server.domain.enums.HashTag;
-import com.ftm.server.web.dto.request.GeneralUserSignupRequest;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -34,8 +35,8 @@ import org.springframework.test.web.servlet.ResultActions;
 public class GeneralUserSignupTest extends BaseTest {
 
     @Autowired private EmailVerificationLogsRepository emailVerificationLogsRepository;
-
-    @Autowired private UserService userService;
+    @Autowired private SaveUserPort saveUserPort;
+    @Autowired private EmailVerificationLogsMapper emailVerificationLogsMapper;
 
     private final List<FieldDescriptor> requestFieldDescriptors =
             List.of(
@@ -99,7 +100,7 @@ public class GeneralUserSignupTest extends BaseTest {
                 new EmailVerificationLogCreationCommand(email, code);
         EmailVerificationLogs data = EmailVerificationLogs.from(command);
         data.updateVerificationStatus(true);
-        emailVerificationLogsRepository.save(data);
+        emailVerificationLogsRepository.save(emailVerificationLogsMapper.toJpaEntity(data));
 
         GeneralUserSignupRequest request =
                 new GeneralUserSignupRequest(
@@ -145,7 +146,8 @@ public class GeneralUserSignupTest extends BaseTest {
         GeneralUserCreationCommand command =
                 new GeneralUserCreationCommand(
                         email, "qwer1234!", "닉넴", AgeGroup.FIFTIES, hashTags);
-        userService.createGeneralUser(command);
+
+        saveUserPort.saveUser(User.createGeneralUser(command));
 
         GeneralUserSignupRequest request =
                 new GeneralUserSignupRequest(

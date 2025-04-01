@@ -1,40 +1,50 @@
 package com.ftm.server.domain.entity;
 
-import jakarta.persistence.*;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Entity
-@Table(name = "grooming_test_result")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class GroomingTestResult extends BaseEntity {
+public class GroomingTestResult extends BaseTime {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "grooming_test_answer_id")
-    private GroomingTestAnswer groomingTestAnswer;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "grooming_test_question_id")
-    private GroomingTestQuestion groomingTestQuestion;
+    private Long userId;
+    private Long groomingTestQuestionId;
+    private Long groomingTestAnswerId;
 
     @Builder(access = AccessLevel.PRIVATE)
     private GroomingTestResult(
-            User user,
-            GroomingTestAnswer groomingTestAnswer,
-            GroomingTestQuestion groomingTestQuestion) {
-        this.user = user;
-        this.groomingTestAnswer = groomingTestAnswer;
-        this.groomingTestQuestion = groomingTestQuestion;
+            Long id,
+            Long userId,
+            Long groomingTestAnswerId,
+            Long groomingTestQuestionId,
+            LocalDateTime createdAt,
+            LocalDateTime updatedAt) {
+        this.id = id;
+        this.userId = userId;
+        this.groomingTestQuestionId = groomingTestQuestionId;
+        this.groomingTestAnswerId = groomingTestAnswerId;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public static GroomingTestResult of(
+            Long id,
+            Long userId,
+            Long groomingTestQuestionId,
+            Long groomingTestAnswerId,
+            LocalDateTime createdAt,
+            LocalDateTime updatedAt) {
+        return GroomingTestResult.builder()
+                .id(id)
+                .userId(userId)
+                .groomingTestQuestionId(groomingTestQuestionId)
+                .groomingTestAnswerId(groomingTestAnswerId)
+                .createdAt(createdAt)
+                .updatedAt(updatedAt)
+                .build();
     }
 }
