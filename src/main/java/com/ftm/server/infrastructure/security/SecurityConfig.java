@@ -82,6 +82,8 @@ public class SecurityConfig {
                                         .migrateSession() // 세션 고정 보호
                                         .maximumSessions(1) // 동시 로그인 1개 제한
                                         .maxSessionsPreventsLogin(false)) // 기존 세션 만료 후 새 로그인 허용
+                // 인증되지 않은 요청에 대한 요청을 세션에 저장하지 않도록 하기 위한 설정
+                .requestCache(AbstractHttpConfigurer::disable)
                 // 시큐리티 컨텍스트 레포지토리 등록 (시큐리티 6.x 이상부터는 시큐리티가 자동으로 컨텍스트에 로드/저장해주지 않기 때문에 명시해줘야함)
                 .securityContext(
                         context -> context.securityContextRepository(securityContextRepository()))
@@ -105,8 +107,6 @@ public class SecurityConfig {
                                     .permitAll()
                                     .requestMatchers(HttpMethod.POST, POST_ANONYMOUS_MATCHERS)
                                     .permitAll();
-
-                            // TODO: 요청 허용 특정 API 추가 (회원가입, 로그인 등)
 
                             // 그 외 모든 요청은 인증 필요
                             authorize.anyRequest().authenticated();
