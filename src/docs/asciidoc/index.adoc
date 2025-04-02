@@ -109,3 +109,7 @@ include::user-api.adoc[]
 = **인증/인가**
 
 include::auth-api.adoc[]
+
+= **그루밍 테스트**
+
+include::grooming-test-api.adoc[]
