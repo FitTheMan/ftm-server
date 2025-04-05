@@ -148,4 +148,9 @@ public class User extends BaseTime {
                 .role(UserRole.USER)
                 .build();
     }
+
+    public void updateGroomingInfo(Integer groomingScore, Long groomingLevelId) {
+        this.groomingScore = groomingScore;
+        this.groomingLevelId = groomingLevelId;
+    }
 }

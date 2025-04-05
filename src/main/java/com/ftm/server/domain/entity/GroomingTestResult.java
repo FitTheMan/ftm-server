@@ -14,6 +14,7 @@ public class GroomingTestResult extends BaseTime {
     private Long userId;
     private Long groomingTestQuestionId;
     private Long groomingTestAnswerId;
+    private LocalDateTime testedAt;
 
     @Builder(access = AccessLevel.PRIVATE)
     private GroomingTestResult(
@@ -21,12 +22,14 @@ public class GroomingTestResult extends BaseTime {
             Long userId,
             Long groomingTestAnswerId,
             Long groomingTestQuestionId,
+            LocalDateTime testedAt,
             LocalDateTime createdAt,
             LocalDateTime updatedAt) {
         this.id = id;
         this.userId = userId;
         this.groomingTestQuestionId = groomingTestQuestionId;
         this.groomingTestAnswerId = groomingTestAnswerId;
+        this.testedAt = testedAt;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -36,6 +39,7 @@ public class GroomingTestResult extends BaseTime {
             Long userId,
             Long groomingTestQuestionId,
             Long groomingTestAnswerId,
+            LocalDateTime testedAt,
             LocalDateTime createdAt,
             LocalDateTime updatedAt) {
         return GroomingTestResult.builder()
@@ -43,8 +47,22 @@ public class GroomingTestResult extends BaseTime {
                 .userId(userId)
                 .groomingTestQuestionId(groomingTestQuestionId)
                 .groomingTestAnswerId(groomingTestAnswerId)
+                .testedAt(testedAt)
                 .createdAt(createdAt)
                 .updatedAt(updatedAt)
+                .build();
+    }
+
+    public static GroomingTestResult create(
+            Long userId,
+            Long groomingTestQuestionId,
+            Long groomingTestAnswerId,
+            LocalDateTime testedAt) {
+        return GroomingTestResult.builder()
+                .userId(userId)
+                .groomingTestQuestionId(groomingTestQuestionId)
+                .groomingTestAnswerId(groomingTestAnswerId)
+                .testedAt(testedAt)
                 .build();
     }
 }

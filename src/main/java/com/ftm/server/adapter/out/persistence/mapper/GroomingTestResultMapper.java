@@ -17,6 +17,7 @@ public class GroomingTestResultMapper {
                 jpaEntity.getUser().getId(),
                 jpaEntity.getGroomingTestQuestion().getId(),
                 jpaEntity.getGroomingTestAnswer().getId(),
+                jpaEntity.getTestedAt(),
                 jpaEntity.getCreatedAt(),
                 jpaEntity.getUpdatedAt());
     }
@@ -24,8 +25,12 @@ public class GroomingTestResultMapper {
     public GroomingTestResultJpaEntity toJpaEntity(
             UserJpaEntity userJpaEntity,
             GroomingTestQuestionJpaEntity groomingTestQuestionJpaEntity,
-            GroomingTestAnswerJpaEntity groomingTestAnswerJpaEntity) {
+            GroomingTestAnswerJpaEntity groomingTestAnswerJpaEntity,
+            GroomingTestResult domainEntity) {
         return GroomingTestResultJpaEntity.from(
-                userJpaEntity, groomingTestQuestionJpaEntity, groomingTestAnswerJpaEntity);
+                userJpaEntity,
+                groomingTestQuestionJpaEntity,
+                groomingTestAnswerJpaEntity,
+                domainEntity);
     }
 }

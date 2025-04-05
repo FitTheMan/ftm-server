@@ -1,6 +1,8 @@
 package com.ftm.server.adapter.out.persistence.model;
 
+import com.ftm.server.domain.entity.GroomingTestResult;
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,24 +30,30 @@ public class GroomingTestResultJpaEntity extends BaseTimeJpaEntity {
     @JoinColumn(name = "grooming_test_answer_id")
     private GroomingTestAnswerJpaEntity groomingTestAnswer;
 
+    private LocalDateTime testedAt;
+
     @Builder(access = AccessLevel.PRIVATE)
     private GroomingTestResultJpaEntity(
             UserJpaEntity user,
             GroomingTestQuestionJpaEntity groomingTestQuestion,
-            GroomingTestAnswerJpaEntity groomingTestAnswer) {
+            GroomingTestAnswerJpaEntity groomingTestAnswer,
+            LocalDateTime testedAt) {
         this.user = user;
         this.groomingTestQuestion = groomingTestQuestion;
         this.groomingTestAnswer = groomingTestAnswer;
+        this.testedAt = testedAt;
     }
 
     public static GroomingTestResultJpaEntity from(
             UserJpaEntity userJpaEntity,
             GroomingTestQuestionJpaEntity groomingTestQuestionJpaEntity,
-            GroomingTestAnswerJpaEntity groomingTestAnswerJpaEntity) {
+            GroomingTestAnswerJpaEntity groomingTestAnswerJpaEntity,
+            GroomingTestResult groomingTestResult) {
         return GroomingTestResultJpaEntity.builder()
                 .user(userJpaEntity)
                 .groomingTestQuestion(groomingTestQuestionJpaEntity)
                 .groomingTestAnswer(groomingTestAnswerJpaEntity)
+                .testedAt(groomingTestResult.getTestedAt())
                 .build();
     }
 }

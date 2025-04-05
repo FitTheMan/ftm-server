@@ -122,4 +122,12 @@ public class UserJpaEntity extends BaseTimeJpaEntity {
                 .deletedAt(user.getDeletedAt())
                 .build();
     }
+
+    public void updateGroomingScore(User user) {
+        this.groomingScore = user.getGroomingScore();
+    }
+
+    public void updateGroomingLevel(GroomingLevelJpaEntity groomingLevelJpaEntity) {
+        this.groomingLevel = groomingLevelJpaEntity;
+    }
 }
