@@ -11,6 +11,8 @@ public enum ErrorResponseCode {
             HttpStatus.BAD_REQUEST, "E400_001", "클라이언트 요청값의 일부가 잘못된 형식이거나, 필수 데이터가 누락되었습니다."),
     INVALID_SEESION_FOR_SOCIAL_USER_SIGNUP(
             HttpStatus.BAD_REQUEST, "E400_002", "소셜 회원가입을 위한 session 값이 잘못됨"),
+    INVALID_MAX_SCORE(HttpStatus.BAD_REQUEST, "E400_003", "최대 점수 값은 0보다 커야합니다."),
+    INVALID_RATIO_FOR_PERCENTAGE(HttpStatus.BAD_REQUEST, "E400_004", "퍼센트 계산 오류, 잘못된 ratio 값입니다."),
 
     // 401번
     NOT_AUTHENTICATED(HttpStatus.UNAUTHORIZED, "E401_001", "인증되지 않은 사용자입니다."),
@@ -22,6 +24,8 @@ public enum ErrorResponseCode {
     // 404번
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "E404_001", "요청된 사용자를 찾을 수 없습니다."),
     USER_IMAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "E404_002", "요청한 유저 이미지를 찾을 수 없습니다."),
+    GROOMING_LEVEL_NOT_FOUND(HttpStatus.NOT_FOUND, "E404_003", "요청한 그루밍 레벨 정보를 찾을 수 없습니다."),
+    GROOMING_CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, "E404_004", "요창한 그루밍 카테고리 정보를 찾을 수 없습니다."),
 
     // 409번
     USER_ALREADY_EXISTS(HttpStatus.CONFLICT, "E409_001", "이미 존재하는 사용자입니다."),
