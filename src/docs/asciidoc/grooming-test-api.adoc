@@ -9,3 +9,18 @@ include::{snippetsDir}/loadGroomingTests/1/http-response.adoc[]
 include::{snippetsDir}/loadGroomingTests/1/response-fields.adoc[]
 
 ---
+
+=== **2. 그루밍 테스트 제출**
+
+그루밍 테스트 제출(완료) api 입니다.
+
+==== Request
+include::{snippetsDir}/submitGroomingTests/1/http-request.adoc[]
+
+==== 성공 Response
+include::{snippetsDir}/submitGroomingTests/1/http-response.adoc[]
+
+==== Response Body Fields
+include::{snippetsDir}/submitGroomingTests/1/response-fields.adoc[]
+
+---
