@@ -24,3 +24,29 @@ include::{snippetsDir}/submitGroomingTests/1/http-response.adoc[]
 include::{snippetsDir}/submitGroomingTests/1/response-fields.adoc[]
 
 ---
+
+=== **3. 그루밍 테스트 가능 여부 조회**
+
+그루밍 테스트가 가능한지 여부를 체크하는 api 입니다. (인증된 회원)
+
+==== Request
+include::{snippetsDir}/checkGroomingTestAvailability/1/http-request.adoc[]
+
+==== 성공 Response
+성공 1. 마지막 테스트일로부터 7일이 지나지 않아, 그루밍 테스트가 불가능한 경우 (테스트가 가능하기까지 남은 일수, 마지막으로 테스트한 날짜, 테스트가 가능한 날짜 정보 응답)
+
+include::{snippetsDir}/checkGroomingTestAvailability/1/http-response.adoc[]
+
+성공 2. 마지막 테스트일로부터 7일 이상 경과해 그루밍 테스트가 가능한 경우 (마지막으로 테스트한 날짜 정보 응답)
+
+include::{snippetsDir}/checkGroomingTestAvailability/2/http-response.adoc[]
+
+성공 3. 이전 테스트 기록이 없고 즉시 그루밍 테스트가 가능한 경우
+
+include::{snippetsDir}/checkGroomingTestAvailability/3/http-response.adoc[]
+
+==== Response Body Fields
+include::{snippetsDir}/checkGroomingTestAvailability/1/response-fields.adoc[]
+
+==== 실패 Response
+include::{snippetsDir}/checkGroomingTestAvailability/4/http-response.adoc[]
