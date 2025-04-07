@@ -1,5 +1,6 @@
 package com.ftm.server.application.service.user;
 
+import com.ftm.server.adapter.in.web.user.dto.response.GeneralUserSignupResponse;
 import com.ftm.server.application.command.user.GeneralUserCreationCommand;
 import com.ftm.server.application.command.user.GeneralUserSignupCommand;
 import com.ftm.server.application.port.in.user.GeneralUserSignupUseCase;
@@ -35,7 +36,7 @@ public class GeneralUserSignupService implements GeneralUserSignupUseCase {
 
     @Transactional
     @Override
-    public void execute(GeneralUserSignupCommand command) {
+    public GeneralUserSignupResponse execute(GeneralUserSignupCommand command) {
         String email = command.getEmail();
         Optional<EmailVerificationLogs> emailVerificationLogs =
                 loadEmailVerificationLogPort.loadEmailVerificationLogByEmail(
@@ -61,5 +62,6 @@ public class GeneralUserSignupService implements GeneralUserSignupUseCase {
 
         User user = saveUserPort.saveUser(User.createGeneralUser(convertedCommand));
         saveUserImagePort.saveUserDefaultImage(UserImage.createUserImage(user.getId()));
+        return GeneralUserSignupResponse.of(user.getId());
     }
 }

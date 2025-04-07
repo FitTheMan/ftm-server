@@ -59,10 +59,10 @@ public class GeneralUserSignupTest extends BaseTest {
                     fieldWithPath("status").type(JsonFieldType.NUMBER).description("응답 상태"),
                     fieldWithPath("code").type(JsonFieldType.STRING).description("상태 코드"),
                     fieldWithPath("message").type(JsonFieldType.STRING).description("메시지"),
-                    fieldWithPath("data")
-                            .type(JsonFieldType.OBJECT)
-                            .optional()
-                            .description("data"));
+                    fieldWithPath("data").type(JsonFieldType.OBJECT).optional().description("data"),
+                    fieldWithPath("data.userId")
+                            .type(JsonFieldType.NUMBER)
+                            .description("사용자 고유 id"));
 
     private ResultActions getResultActions(GeneralUserSignupRequest request) throws Exception {
         return mockMvc.perform( // api 실행

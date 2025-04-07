@@ -1,6 +1,7 @@
 package com.ftm.server.adapter.in.web.user.controller;
 
 import com.ftm.server.adapter.in.web.user.dto.request.GeneralUserSignupRequest;
+import com.ftm.server.adapter.in.web.user.dto.response.GeneralUserSignupResponse;
 import com.ftm.server.application.command.user.GeneralUserSignupCommand;
 import com.ftm.server.application.port.in.user.GeneralUserSignupUseCase;
 import com.ftm.server.common.response.ApiResponse;
@@ -22,8 +23,9 @@ public class GeneralUserSignupController {
     @PostMapping("/api/users")
     public ResponseEntity<ApiResponse> createGeneralUser(
             @Valid @RequestBody GeneralUserSignupRequest request) {
-        generalUserSignupUseCase.execute(GeneralUserSignupCommand.from(request));
+        GeneralUserSignupResponse response =
+                generalUserSignupUseCase.execute(GeneralUserSignupCommand.from(request));
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(ApiResponse.success(SuccessResponseCode.CREATED));
+                .body(ApiResponse.success(SuccessResponseCode.CREATED, response));
     }
 }
