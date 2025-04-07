@@ -4,4 +4,5 @@ import com.ftm.server.adapter.out.persistence.model.GroomingTestResultJpaEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface GroomingTestResultRepository
-        extends JpaRepository<GroomingTestResultJpaEntity, Long> {}
+        extends JpaRepository<GroomingTestResultJpaEntity, Long>,
+                GroomingTestResultCustomRepository {}

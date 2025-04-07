@@ -6,10 +6,12 @@ import com.ftm.server.adapter.out.persistence.repository.*;
 import com.ftm.server.application.port.out.persistence.grooming.*;
 import com.ftm.server.application.query.FIndGroomingLevelByScoreQuery;
 import com.ftm.server.application.query.FindByIdQuery;
+import com.ftm.server.application.query.FindByUserIdQuery;
 import com.ftm.server.common.annotation.Adapter;
 import com.ftm.server.common.exception.CustomException;
 import com.ftm.server.common.response.enums.ErrorResponseCode;
 import com.ftm.server.domain.entity.*;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -25,7 +27,8 @@ public class GroomingDomainPersistenceAdapter
                 LoadUserForGroomingPort,
                 SaveGroomingTestResultPort,
                 LoadGroomingLevelPort,
-                UpdateUserForGroomingPort {
+                UpdateUserForGroomingPort,
+                LoadGroomingTestResultPort {
 
     // Repository
     private final GroomingTestQuestionRepository groomingTestQuestionRepository;
@@ -112,5 +115,10 @@ public class GroomingDomainPersistenceAdapter
 
         // 유저 그루밍 레벨 업데이트
         userJpaEntity.updateGroomingLevel(groomingLevelJpaEntity);
+    }
+
+    @Override
+    public LocalDateTime loadLatestTestedAtByUserId(FindByUserIdQuery query) {
+        return groomingTestResultRepository.fetchLatestTestedAtByUserId(query);
     }
 }
