@@ -47,13 +47,13 @@ public class SubmitGroomingTestsTest extends BaseTest {
                             .description("질문 그루밍 카테고리"),
                     fieldWithPath("submissions[].answers[]")
                             .type(ARRAY)
-                            .description("질문에 답한 응답 목록"),
+                            .description("질문에 답한 답변 목록"),
                     fieldWithPath("submissions[].answers[].answerId")
                             .type(NUMBER)
-                            .description("응답 ID"),
+                            .description("답변 ID"),
                     fieldWithPath("submissions[].answers[].score")
                             .type(NUMBER)
-                            .description("응답 점수"));
+                            .description("답변 점수"));
 
     private final List<FieldDescriptor> responseFieldSubmitGroomingTests =
             List.of(
