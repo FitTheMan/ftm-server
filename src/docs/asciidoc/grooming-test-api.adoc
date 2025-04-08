@@ -17,6 +17,9 @@ include::{snippetsDir}/loadGroomingTests/1/response-fields.adoc[]
 ==== Request
 include::{snippetsDir}/submitGroomingTests/1/http-request.adoc[]
 
+==== Request Body Fields
+include::{snippetsDir}/submitGroomingTests/1/request-fields.adoc[]
+
 ==== 성공 Response
 include::{snippetsDir}/submitGroomingTests/1/http-response.adoc[]
 
@@ -50,3 +53,29 @@ include::{snippetsDir}/checkGroomingTestAvailability/1/response-fields.adoc[]
 
 ==== 실패 Response
 include::{snippetsDir}/checkGroomingTestAvailability/4/http-response.adoc[]
+
+---
+
+=== **4. 그루밍 테스트 결과 저장**
+
+그루밍 테스트 결과를 저장하는 api 입니다. (비로그인 그루밍 테스트 이후 회원가입 할 때)
+
+==== Request
+include::{snippetsDir}/saveGroomingTestResult/1/http-request.adoc[]
+
+==== Request Body Fields
+include::{snippetsDir}/saveGroomingTestResult/1/request-fields.adoc[]
+
+==== 성공 Response
+include::{snippetsDir}/saveGroomingTestResult/1/http-response.adoc[]
+
+==== Response Body Fields
+include::{snippetsDir}/saveGroomingTestResult/1/response-fields.adoc[]
+
+==== 실패 Response
+실패 1. 존재하지 않는 유저인 경우
+
+include::{snippetsDir}/saveGroomingTestResult/2/http-response.adoc[]
+
+실패 2. 존재하지 않는 그루밍 레벨인 경우
+include::{snippetsDir}/saveGroomingTestResult/3/http-response.adoc[]
