@@ -60,6 +60,9 @@ dependencies {
     // Redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
+    // Caffeine Cache
+    implementation 'com.github.ben-manes.caffeine:caffeine'
+
     // AWS SDK
     implementation 'software.amazon.awssdk:s3:2.20.140' // 최신 버전 확인 후 적용
     implementation 'software.amazon.awssdk:auth:2.20.140' // IAM 인증 관련
@@ -77,7 +80,6 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-
 }
 
 jar.enabled = false
