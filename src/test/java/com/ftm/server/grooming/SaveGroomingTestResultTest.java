@@ -165,4 +165,66 @@ public class SaveGroomingTestResultTest extends BaseTest {
         // documentation
         resultActions.andDo(getDocument(3));
     }
+
+    @Test
+    @Transactional
+    void 그루밍_테스트_결과_저장_실패3() throws Exception {
+        // given
+        User user =
+                loadUserForAuthPort.loadUserByEmail(FindByEmailQuery.of("test@gmail.com")).get();
+        List<SaveGroomingTestResultRequest.GroomingTestResult> results =
+                List.of(new SaveGroomingTestResultRequest.GroomingTestResult(1000L, List.of()));
+        SaveGroomingTestResultRequest request =
+                new SaveGroomingTestResultRequest(user.getId(), 1L, 10, results);
+
+        // when
+        ResultActions resultActions = getResultActions(request);
+
+        // then
+        resultActions
+                .andExpect(
+                        status().is(
+                                        ErrorResponseCode.INVALID_GROOMING_TEST_QUESTION_ID
+                                                .getHttpStatus()
+                                                .value()))
+                .andExpect(
+                        jsonPath("code")
+                                .value(
+                                        ErrorResponseCode.INVALID_GROOMING_TEST_QUESTION_ID
+                                                .getCode()))
+                .andDo(print());
+
+        // documentation
+        resultActions.andDo(getDocument(4));
+    }
+
+    @Test
+    @Transactional
+    void 그루밍_테스트_결과_저장_실패4() throws Exception {
+        // given
+        User user =
+                loadUserForAuthPort.loadUserByEmail(FindByEmailQuery.of("test@gmail.com")).get();
+        List<SaveGroomingTestResultRequest.GroomingTestResult> results =
+                List.of(new SaveGroomingTestResultRequest.GroomingTestResult(1L, List.of(100L)));
+        SaveGroomingTestResultRequest request =
+                new SaveGroomingTestResultRequest(user.getId(), 1L, 10, results);
+
+        // when
+        ResultActions resultActions = getResultActions(request);
+
+        // then
+        resultActions
+                .andExpect(
+                        status().is(
+                                        ErrorResponseCode.INVALID_GROOMING_TEST_ANSWER_ID
+                                                .getHttpStatus()
+                                                .value()))
+                .andExpect(
+                        jsonPath("code")
+                                .value(ErrorResponseCode.INVALID_GROOMING_TEST_ANSWER_ID.getCode()))
+                .andDo(print());
+
+        // documentation
+        resultActions.andDo(getDocument(5));
+    }
 }

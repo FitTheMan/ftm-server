@@ -6,6 +6,7 @@ import com.ftm.server.application.port.out.persistence.grooming.LoadUserForGroom
 import com.ftm.server.application.port.out.persistence.grooming.SaveGroomingTestResultPort;
 import com.ftm.server.application.port.out.persistence.grooming.UpdateUserForGroomingPort;
 import com.ftm.server.application.query.FindByIdQuery;
+import com.ftm.server.application.vo.grooming.SubmitGroomingTestVo;
 import com.ftm.server.common.exception.CustomException;
 import com.ftm.server.domain.entity.GroomingTestResult;
 import com.ftm.server.domain.entity.User;
@@ -23,9 +24,15 @@ public class SaveGroomingTestResultService implements SaveGroomingTestResultUseC
     private final UpdateUserForGroomingPort updateUserForGroomingPort;
     private final LoadUserForGroomingPort loadUserForGroomingPort;
 
+    private final GroomingTestValidator groomingTestValidator;
+
     @Override
     @Transactional
     public void execute(SaveGroomingTestResultCommand command) {
+        // 그루밍 테스트 유효성 검증
+        List<SubmitGroomingTestVo> submissions = SubmitGroomingTestVo.from(command);
+        groomingTestValidator.execute(submissions);
+
         User user =
                 loadUserForGroomingPort
                         .loadUser(FindByIdQuery.of(command.getUserId()))
