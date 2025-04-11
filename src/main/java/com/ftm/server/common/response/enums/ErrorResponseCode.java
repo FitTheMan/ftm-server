@@ -13,6 +13,10 @@ public enum ErrorResponseCode {
             HttpStatus.BAD_REQUEST, "E400_002", "소셜 회원가입을 위한 session 값이 잘못됨"),
     INVALID_MAX_SCORE(HttpStatus.BAD_REQUEST, "E400_003", "최대 점수 값은 0보다 커야합니다."),
     INVALID_RATIO_FOR_PERCENTAGE(HttpStatus.BAD_REQUEST, "E400_004", "퍼센트 계산 오류, 잘못된 ratio 값입니다."),
+    INVALID_GROOMING_TEST_QUESTION_ID(
+            HttpStatus.BAD_REQUEST, "E400_005", "유효하지 않은 그루밍 테스트 질문 정보입니다."),
+    INVALID_GROOMING_TEST_ANSWER_ID(
+            HttpStatus.BAD_REQUEST, "E400_006", "유효하지 않은 그루밍 테스트 답변 정보입니다."),
 
     // 401번
     NOT_AUTHENTICATED(HttpStatus.UNAUTHORIZED, "E401_001", "인증되지 않은 사용자입니다."),
