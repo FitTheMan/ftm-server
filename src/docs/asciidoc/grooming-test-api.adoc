@@ -21,10 +21,23 @@ include::{snippetsDir}/submitGroomingTests/1/http-request.adoc[]
 include::{snippetsDir}/submitGroomingTests/1/request-fields.adoc[]
 
 ==== 성공 Response
+성공 1. 인증된 유저인 경우
 include::{snippetsDir}/submitGroomingTests/1/http-response.adoc[]
+
+성공 2. 인증되지 않은 유저인 경우
+include::{snippetsDir}/submitGroomingTests/2/http-response.adoc[]
 
 ==== Response Body Fields
 include::{snippetsDir}/submitGroomingTests/1/response-fields.adoc[]
+
+==== 실패 Response
+실패 3. 유효하지 않은 그루밍 테스트 질문 ID일 경우 (존재하지 않는 질문 ID, 중복된 질문 ID)
+
+include::{snippetsDir}/submitGroomingTests/3/http-response.adoc[]
+
+실패 4. 유효하지 않은 그루밍 테스트 답변 ID일 경우 (존재하지 않는 답변 ID, 질문과 잘못 매핑된 답변 ID, 중복된 답변 ID)
+
+include::{snippetsDir}/submitGroomingTests/4/http-response.adoc[]
 
 ---
 
@@ -58,7 +71,7 @@ include::{snippetsDir}/checkGroomingTestAvailability/4/http-response.adoc[]
 
 === **4. 그루밍 테스트 결과 저장**
 
-그루밍 테스트 결과를 저장하는 api 입니다. (비로그인 그루밍 테스트 이후 회원가입 할 때)
+그루밍 테스트 결과를 저장하는 api 입니다.
 
 ==== Request
 include::{snippetsDir}/saveGroomingTestResult/1/http-request.adoc[]
@@ -78,4 +91,15 @@ include::{snippetsDir}/saveGroomingTestResult/1/response-fields.adoc[]
 include::{snippetsDir}/saveGroomingTestResult/2/http-response.adoc[]
 
 실패 2. 존재하지 않는 그루밍 레벨인 경우
+
 include::{snippetsDir}/saveGroomingTestResult/3/http-response.adoc[]
+
+실패 3. 유효하지 않은 그루밍 테스트 질문 ID일 경우 (존재하지 않는 질문 ID, 중복된 질문 ID)
+
+include::{snippetsDir}/saveGroomingTestResult/4/http-response.adoc[]
+
+실패 4. 유효하지 않은 그루밍 테스트 답변 ID일 경우 (존재하지 않는 답변 ID, 질문과 잘못 매핑된 답변 ID, 중복된 답변 ID)
+
+include::{snippetsDir}/saveGroomingTestResult/5/http-response.adoc[]
+
+---
