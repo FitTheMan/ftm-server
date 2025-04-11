@@ -1,19 +1,22 @@
 package com.ftm.server.grooming;
 
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.JsonFieldType.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.ftm.server.BaseTest;
+import com.ftm.server.application.port.out.cache.LoadGroomingTestsWithCachePort;
 import java.util.List;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.FieldDescriptor;
@@ -21,6 +24,10 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
 public class LoadGroomingTestsTest extends BaseTest {
+
+    @SuppressWarnings("removal")
+    @SpyBean
+    private LoadGroomingTestsWithCachePort loadGroomingTestsWithCachePort;
 
     private final List<FieldDescriptor> responseFieldLoadGroomingTests =
             List.of(
@@ -47,15 +54,9 @@ public class LoadGroomingTestsTest extends BaseTest {
                     fieldWithPath("data.groomingTests[].answers[].groomingTestAnswerId")
                             .type(NUMBER)
                             .description("그루밍 테스트 답변 id"),
-                    fieldWithPath("data.groomingTests[].answers[].groomingTestQuestionId")
-                            .type(NUMBER)
-                            .description("그루밍 테스트 답변이 속한 질문 id"),
                     fieldWithPath("data.groomingTests[].answers[].answer")
                             .type(STRING)
-                            .description("그루밍 테스트 답변 내용"),
-                    fieldWithPath("data.groomingTests[].answers[].score")
-                            .type(NUMBER)
-                            .description("그루밍 테스트 답변 점수"));
+                            .description("그루밍 테스트 답변 내용"));
 
     private RestDocumentationResultHandler getDocument(Integer identifier) {
         return document(
@@ -75,12 +76,17 @@ public class LoadGroomingTestsTest extends BaseTest {
     @Test
     @Transactional
     void 그루밍_테스트_목록_조회_성공() throws Exception {
-        // when
-        ResultActions resultActions =
-                mockMvc.perform(RestDocumentationRequestBuilders.get("/api/grooming/tests"));
-
         // then
-        resultActions.andExpect(status().isOk()).andDo(print());
+        // 첫번째 호출 -> 캐시 miss -> 실제 메서드 실행
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/grooming/tests"))
+                .andExpect(status().isOk());
+
+        // 두번째 호출 -> 캐시 HIT -> 메소드 호출 없이 응답
+        ResultActions resultActions =
+                mockMvc.perform(RestDocumentationRequestBuilders.get("/api/grooming/tests"))
+                        .andExpect(status().isOk());
+
+        verify(loadGroomingTestsWithCachePort, times(1)).loadGroomingTestsCache();
 
         // documentation
         resultActions.andDo(getDocument(1));
