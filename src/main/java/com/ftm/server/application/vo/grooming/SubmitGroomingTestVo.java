@@ -25,13 +25,7 @@ public class SubmitGroomingTestVo {
                 .map(
                         submission ->
                                 SubmitGroomingTestVo.of(
-                                        submission.getQuestionId(),
-                                        submission.getAnswers().stream()
-                                                .map(
-                                                        SubmitGroomingTestCommand.SubmittedQuestion
-                                                                        .SelectedAnswer
-                                                                ::getAnswerId)
-                                                .toList()))
+                                        submission.getQuestionId(), submission.getAnswerIds()))
                 .toList();
     }
 

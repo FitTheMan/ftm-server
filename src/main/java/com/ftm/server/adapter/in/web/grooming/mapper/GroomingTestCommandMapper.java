@@ -17,16 +17,7 @@ public class GroomingTestCommandMapper {
                                         SubmitGroomingTestCommand.SubmittedQuestion.of(
                                                 item.getQuestionId(),
                                                 item.getGroomingCategory(),
-                                                item.getAnswers().stream()
-                                                        .map(
-                                                                answer ->
-                                                                        SubmitGroomingTestCommand
-                                                                                .SubmittedQuestion
-                                                                                .SelectedAnswer.of(
-                                                                                answer
-                                                                                        .getAnswerId(),
-                                                                                answer.getScore()))
-                                                        .toList()))
+                                                item.getAnswerIds()))
                         .toList();
 
         return SubmitGroomingTestCommand.from(userId, submissions);
