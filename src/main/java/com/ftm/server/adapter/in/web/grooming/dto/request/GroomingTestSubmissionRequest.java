@@ -16,13 +16,6 @@ public class GroomingTestSubmissionRequest {
 
         private Long questionId;
         private String groomingCategory;
-        private List<SelectedAnswer> answers;
-
-        @Getter
-        @AllArgsConstructor
-        public static class SelectedAnswer {
-            private Long answerId;
-            private Integer score;
-        }
+        private List<Long> answerIds;
     }
 }

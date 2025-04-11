@@ -19,6 +19,7 @@ import com.ftm.server.application.command.user.GeneralUserCreationCommand;
 import com.ftm.server.application.port.out.persistence.user.SaveUserImagePort;
 import com.ftm.server.application.port.out.persistence.user.SaveUserPort;
 import com.ftm.server.application.port.out.security.SecurityAuthenticationPort;
+import com.ftm.server.common.response.enums.ErrorResponseCode;
 import com.ftm.server.domain.entity.User;
 import com.ftm.server.domain.entity.UserImage;
 import java.util.List;
@@ -45,15 +46,9 @@ public class SubmitGroomingTestsTest extends BaseTest {
                     fieldWithPath("submissions[].groomingCategory")
                             .type(STRING)
                             .description("질문 그루밍 카테고리"),
-                    fieldWithPath("submissions[].answers[]")
+                    fieldWithPath("submissions[].answerIds[]")
                             .type(ARRAY)
-                            .description("질문에 답한 답변 목록"),
-                    fieldWithPath("submissions[].answers[].answerId")
-                            .type(NUMBER)
-                            .description("답변 ID"),
-                    fieldWithPath("submissions[].answers[].score")
-                            .type(NUMBER)
-                            .description("답변 점수"));
+                            .description("질문에 답한 답변 ID 목록"));
 
     private final List<FieldDescriptor> responseFieldSubmitGroomingTests =
             List.of(
@@ -61,6 +56,7 @@ public class SubmitGroomingTestsTest extends BaseTest {
                     fieldWithPath("code").type(STRING).description("상태 코드"),
                     fieldWithPath("message").type(STRING).description("메시지"),
                     fieldWithPath("data").type(OBJECT).optional().description("응답 데이터"),
+                    fieldWithPath("data.authenticated").type(BOOLEAN).description("인증 여부"),
                     fieldWithPath("data.scores").type(OBJECT).description("그루밍 테스트 카테고리 별 결과 점수"),
                     fieldWithPath("data.scores.beautyScore").type(NUMBER).description("뷰티 영역 점수"),
                     fieldWithPath("data.scores.hygieneScore").type(NUMBER).description("위생 영역 점수"),
@@ -117,45 +113,15 @@ public class SubmitGroomingTestsTest extends BaseTest {
         List<GroomingTestSubmissionRequest.SubmittedQuestion> submissions =
                 List.of(
                         new GroomingTestSubmissionRequest.SubmittedQuestion(
-                                1L,
-                                "BEAUTY",
-                                List.of(
-                                        new GroomingTestSubmissionRequest.SubmittedQuestion
-                                                .SelectedAnswer(1L, 1),
-                                        new GroomingTestSubmissionRequest.SubmittedQuestion
-                                                .SelectedAnswer(2L, 1),
-                                        new GroomingTestSubmissionRequest.SubmittedQuestion
-                                                .SelectedAnswer(3L, 2))),
+                                1L, "BEAUTY", List.of(1L, 2L, 3L)),
                         new GroomingTestSubmissionRequest.SubmittedQuestion(
-                                6L,
-                                "HYGIENE",
-                                List.of(
-                                        new GroomingTestSubmissionRequest.SubmittedQuestion
-                                                .SelectedAnswer(16L, 1))),
+                                6L, "HYGIENE", List.of(16L)),
                         new GroomingTestSubmissionRequest.SubmittedQuestion(
-                                10L,
-                                "HAIR",
-                                List.of(
-                                        new GroomingTestSubmissionRequest.SubmittedQuestion
-                                                .SelectedAnswer(28L, 1))),
+                                10L, "HAIR", List.of(28L)),
                         new GroomingTestSubmissionRequest.SubmittedQuestion(
-                                15L,
-                                "WORKOUT",
-                                List.of(
-                                        new GroomingTestSubmissionRequest.SubmittedQuestion
-                                                .SelectedAnswer(41L, 1),
-                                        new GroomingTestSubmissionRequest.SubmittedQuestion
-                                                .SelectedAnswer(42L, 1),
-                                        new GroomingTestSubmissionRequest.SubmittedQuestion
-                                                .SelectedAnswer(43L, 1),
-                                        new GroomingTestSubmissionRequest.SubmittedQuestion
-                                                .SelectedAnswer(44L, 1))),
+                                15L, "WORKOUT", List.of(41L, 42L, 43L, 44L)),
                         new GroomingTestSubmissionRequest.SubmittedQuestion(
-                                18L,
-                                "FASHION",
-                                List.of(
-                                        new GroomingTestSubmissionRequest.SubmittedQuestion
-                                                .SelectedAnswer(61L, 4))));
+                                18L, "FASHION", List.of(61L)));
         return new GroomingTestSubmissionRequest(submissions);
     }
 
@@ -220,7 +186,6 @@ public class SubmitGroomingTestsTest extends BaseTest {
     @Transactional
     void 그루밍_테스트_제출_성공2() throws Exception {
         // given
-        // given
         GroomingTestSubmissionRequest request = getRequest();
 
         // when
@@ -235,5 +200,71 @@ public class SubmitGroomingTestsTest extends BaseTest {
 
         // documentation
         resultActions.andDo(getDocument(2));
+    }
+
+    @Test
+    @Transactional
+    void 그루밍_테스트_제출_실패1() throws Exception {
+        // given
+        List<GroomingTestSubmissionRequest.SubmittedQuestion> submissions =
+                List.of(
+                        new GroomingTestSubmissionRequest.SubmittedQuestion(
+                                1000L, "BEAUTY", List.of(1L)));
+        GroomingTestSubmissionRequest request = new GroomingTestSubmissionRequest(submissions);
+
+        // when
+        ResultActions resultActions =
+                mockMvc.perform(
+                        RestDocumentationRequestBuilders.post("/api/grooming/tests/submission")
+                                .contentType(APPLICATION_JSON_VALUE)
+                                .content(mapper.writeValueAsString(request)));
+
+        resultActions
+                .andExpect(
+                        status().is(
+                                        ErrorResponseCode.INVALID_GROOMING_TEST_QUESTION_ID
+                                                .getHttpStatus()
+                                                .value()))
+                .andExpect(
+                        jsonPath("code")
+                                .value(
+                                        ErrorResponseCode.INVALID_GROOMING_TEST_QUESTION_ID
+                                                .getCode()))
+                .andDo(print());
+
+        // documentation
+        resultActions.andDo(getDocument(3));
+    }
+
+    @Test
+    @Transactional
+    void 그루밍_테스트_제출_실패2() throws Exception {
+        // given
+        List<GroomingTestSubmissionRequest.SubmittedQuestion> submissions =
+                List.of(
+                        new GroomingTestSubmissionRequest.SubmittedQuestion(
+                                1L, "BEAUTY", List.of(1000L)));
+        GroomingTestSubmissionRequest request = new GroomingTestSubmissionRequest(submissions);
+
+        // when
+        ResultActions resultActions =
+                mockMvc.perform(
+                        RestDocumentationRequestBuilders.post("/api/grooming/tests/submission")
+                                .contentType(APPLICATION_JSON_VALUE)
+                                .content(mapper.writeValueAsString(request)));
+
+        resultActions
+                .andExpect(
+                        status().is(
+                                        ErrorResponseCode.INVALID_GROOMING_TEST_ANSWER_ID
+                                                .getHttpStatus()
+                                                .value()))
+                .andExpect(
+                        jsonPath("code")
+                                .value(ErrorResponseCode.INVALID_GROOMING_TEST_ANSWER_ID.getCode()))
+                .andDo(print());
+
+        // documentation
+        resultActions.andDo(getDocument(4));
     }
 }

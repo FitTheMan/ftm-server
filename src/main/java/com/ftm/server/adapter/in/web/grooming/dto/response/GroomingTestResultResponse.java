@@ -9,11 +9,13 @@ import lombok.Getter;
 @Getter
 public class GroomingTestResultResponse {
 
+    private final boolean isAuthenticated;
     private final GroomingTestResultScoresVo scores;
     private final GroomingTestResultGradesVo grades;
     private final GroomingLevelVo level;
 
     private GroomingTestResultResponse(GroomingTestResultVo result) {
+        this.isAuthenticated = result.isAuthenticated();
         this.scores = result.getScores();
         this.grades = result.getGrades();
         this.level = result.getLevel();
