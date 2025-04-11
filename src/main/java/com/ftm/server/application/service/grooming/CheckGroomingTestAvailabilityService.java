@@ -12,6 +12,7 @@ import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -20,6 +21,7 @@ public class CheckGroomingTestAvailabilityService implements CheckGroomingTestAv
     private final LoadGroomingTestResultPort loadGroomingTestResultPort;
 
     @Override
+    @Transactional(readOnly = true)
     public GroomingTestAvailabilityVo execute(FindByUserIdQuery query) {
         // 가장 최근 테스트 날짜 조회
         LocalDateTime lastTestDateTime =
