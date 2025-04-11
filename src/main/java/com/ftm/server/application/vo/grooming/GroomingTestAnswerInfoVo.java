@@ -9,13 +9,11 @@ import lombok.NoArgsConstructor;
 public class GroomingTestAnswerInfoVo {
 
     private Long groomingTestAnswerId;
-    private Long groomingTestQuestionId;
     private String answer;
     private Integer score;
 
     private GroomingTestAnswerInfoVo(GroomingTestAnswer groomingTestAnswer) {
         this.groomingTestAnswerId = groomingTestAnswer.getId();
-        this.groomingTestQuestionId = groomingTestAnswer.getGroomingTestQuestionId();
         this.answer = groomingTestAnswer.getAnswer();
         this.score = groomingTestAnswer.getScore();
     }
