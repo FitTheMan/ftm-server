@@ -7,6 +7,7 @@ import com.ftm.server.application.port.out.persistence.grooming.*;
 import com.ftm.server.application.query.FIndGroomingLevelByScoreQuery;
 import com.ftm.server.application.query.FindByIdQuery;
 import com.ftm.server.application.query.FindByUserIdQuery;
+import com.ftm.server.application.query.FindGroomingTestResultByUserIdAndTestedAtQuery;
 import com.ftm.server.common.annotation.Adapter;
 import com.ftm.server.common.exception.CustomException;
 import com.ftm.server.common.response.enums.ErrorResponseCode;
@@ -120,5 +121,19 @@ public class GroomingDomainPersistenceAdapter
     @Override
     public LocalDateTime loadLatestTestedAtByUserId(FindByUserIdQuery query) {
         return groomingTestResultRepository.fetchLatestTestedAtByUserId(query);
+    }
+
+    @Override
+    public List<LocalDateTime> loadRecentTestedAtListByUserId(FindByUserIdQuery query) {
+        return groomingTestResultRepository.fetchRecentTestedAtListByUserId(query);
+    }
+
+    @Override
+    public List<GroomingTestResult> loadByUserIdAndTestedAt(
+            FindGroomingTestResultByUserIdAndTestedAtQuery query) {
+        List<GroomingTestResultJpaEntity> results =
+                groomingTestResultRepository.loadByUserIdAndTestedAt(query);
+
+        return results.stream().map(groomingTestResultMapper::toDomainEntity).toList();
     }
 }
