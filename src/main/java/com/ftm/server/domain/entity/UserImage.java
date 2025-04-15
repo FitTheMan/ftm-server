@@ -1,5 +1,6 @@
 package com.ftm.server.domain.entity;
 
+import com.ftm.server.common.consts.PropertiesHolder;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -12,7 +13,7 @@ public class UserImage extends BaseTime {
 
     private Long id;
     private Long userId;
-    private String objectKey = "default-image";
+    private String objectKey = PropertiesHolder.USER_DEFAULT_IMAGE;
 
     @Builder(access = AccessLevel.PRIVATE)
     private UserImage(
@@ -44,6 +45,17 @@ public class UserImage extends BaseTime {
     }
 
     public static UserImage createUserImage(Long userId) {
-        return UserImage.builder().userId(userId).objectKey("users/default-image.png").build();
+        return UserImage.builder()
+                .userId(userId)
+                .objectKey(PropertiesHolder.USER_DEFAULT_IMAGE)
+                .build();
+    }
+
+    public void updateDefaultUserImage() {
+        this.objectKey = PropertiesHolder.USER_DEFAULT_IMAGE;
+    }
+
+    public void updateUserImage(String objectKey) {
+        this.objectKey = objectKey;
     }
 }

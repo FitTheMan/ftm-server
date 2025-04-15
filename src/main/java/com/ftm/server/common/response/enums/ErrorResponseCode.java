@@ -17,6 +17,8 @@ public enum ErrorResponseCode {
             HttpStatus.BAD_REQUEST, "E400_005", "유효하지 않은 그루밍 테스트 질문 정보입니다."),
     INVALID_GROOMING_TEST_ANSWER_ID(
             HttpStatus.BAD_REQUEST, "E400_006", "유효하지 않은 그루밍 테스트 답변 정보입니다."),
+    INVALID_IMAGE_FORMAT(
+            HttpStatus.BAD_REQUEST, "E400_007", "유효하지 않은 이미지입니다. 포맷, 크기(최대 10MB), 존재 유무를 확인해 주세요."),
 
     // 401번
     NOT_AUTHENTICATED(HttpStatus.UNAUTHORIZED, "E401_001", "인증되지 않은 사용자입니다."),
@@ -40,6 +42,8 @@ public enum ErrorResponseCode {
     // 500번
     UNKNOWN_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "E500_001", "알 수 없는 서버 에러가 발생했습니다."),
     FAIL_TO_SEND_EMAIL(HttpStatus.INTERNAL_SERVER_ERROR, "E500_002", "서버 내부 문제로 메일 전송에 실패했습니다."),
+    FAIL_TO_UPLOAD_IMAGE(
+            HttpStatus.INTERNAL_SERVER_ERROR, "E500_003", "알 수 없는 이유로 이미지 업로드에 실패했습니다."),
 
     // 502번 (외부 서비스에서 문제 발생)
     KAKAO_AUTH_TOKEN_EXCHANGE_FAILED(HttpStatus.BAD_GATEWAY, "E502_001", "카카오 인증 토큰 요청에 실패했습니다."),

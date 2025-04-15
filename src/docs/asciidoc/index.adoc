@@ -102,6 +102,23 @@ Content-Type: application/json
 
 ---
 
+== 이미지 파일 요청
+
+원본 이미지 url 예시 : https://{cdn-url}/users/default-image.jpg
+
+썸네일 이미지 url 예시 : https://{cdn-url}/users/default-image.jpg?w=100&h=100
+
+==== 썸네일 이미지 요청 Query Parameter
+
+[cols="4,4,4,4,4", options="header"]
+|===
+| param | description  | type | required | 비고
+| w | 가로 크기 | int | true |
+| h | 세로 크기 | int | true |
+| f | 반환 이미지 format | string | false (default : jpg) | jpg, png, jpeg
+|===
+
+
 =  **회원**
 
 include::user-api.adoc[]

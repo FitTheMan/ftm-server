@@ -4,6 +4,7 @@ import com.ftm.server.adapter.out.persistence.mapper.EmailVerificationLogsMapper
 import com.ftm.server.adapter.out.persistence.mapper.UserImageMapper;
 import com.ftm.server.adapter.out.persistence.mapper.UserMapper;
 import com.ftm.server.adapter.out.persistence.model.EmailVerificationLogsJpaEntity;
+import com.ftm.server.adapter.out.persistence.model.GroomingLevelJpaEntity;
 import com.ftm.server.adapter.out.persistence.model.UserImageJpaEntity;
 import com.ftm.server.adapter.out.persistence.model.UserJpaEntity;
 import com.ftm.server.adapter.out.persistence.repository.EmailVerificationLogsRepository;
@@ -14,6 +15,7 @@ import com.ftm.server.application.command.user.EmailVerificationLogCreationComma
 import com.ftm.server.application.port.out.persistence.user.*;
 import com.ftm.server.application.query.*;
 import com.ftm.server.common.annotation.Adapter;
+import com.ftm.server.common.exception.CustomException;
 import com.ftm.server.domain.entity.EmailVerificationLogs;
 import com.ftm.server.domain.entity.User;
 import com.ftm.server.domain.entity.UserImage;
@@ -24,13 +26,17 @@ import lombok.extern.slf4j.Slf4j;
 @Adapter
 @RequiredArgsConstructor
 @Slf4j
-public class UserDomainPersistenceAdapterForAuthForAuth
+public class UserDomainPersistenceAdapter
         implements LoadEmailVerificationLogPort,
                 SaveEmailVerificationLogPort,
                 UpdateEmailVerificationLogPort,
                 CheckUserPort,
                 SaveUserPort,
-                SaveUserImagePort {
+                SaveUserImagePort,
+                LoadUserPort,
+                LoadUserImagePort,
+                UpdateUserInfoPort,
+                UpdateUserImagePort {
 
     // repository
     private final EmailVerificationLogsRepository emailVerificationLogsRepository;
@@ -103,5 +109,51 @@ public class UserDomainPersistenceAdapterForAuthForAuth
         UserJpaEntity userJpaEntity = userMapper.toJpaEntity(user, null);
         UserJpaEntity savedUser = userRepository.save(userJpaEntity);
         return userMapper.toDomainEntity(savedUser);
+    }
+
+    @Override
+    public User loadUserById(FindByUserIdQuery query) {
+        UserJpaEntity userJpaEntity =
+                userRepository
+                        .findById(query.getUserId())
+                        .orElseThrow(() -> CustomException.USER_NOT_FOUND);
+        return userMapper.toDomainEntity(userJpaEntity);
+    }
+
+    @Override
+    public UserImage loadUserImageByUserId(FindByUserIdQuery query) {
+        UserImageJpaEntity userImageJpaEntity =
+                userImageRepository.findByUserId(query.getUserId()).orElse(null);
+        if (userImageJpaEntity != null) {
+            return userImageMapper.toDomainEntity(userImageJpaEntity);
+        }
+        return null;
+    }
+
+    @Override
+    public void updateUserInfo(User user) {
+        UserJpaEntity savedUser =
+                userRepository
+                        .findById(user.getId())
+                        .orElseThrow(() -> CustomException.USER_NOT_FOUND);
+        GroomingLevelJpaEntity groomingLevelJpaEntity =
+                user.getGroomingLevelId() == null
+                        ? null
+                        : groomingLevelRepository.findById(user.getGroomingLevelId()).orElse(null);
+
+        savedUser.updateFromDomainEntity(user, groomingLevelJpaEntity);
+
+        userRepository.save(savedUser);
+    }
+
+    @Override
+    public void updateUserImage(UserImage userImage) {
+        UserImageJpaEntity userImageJpaEntity =
+                userImageRepository.findByUserId(userImage.getUserId()).orElse(null);
+        if (userImageJpaEntity == null) {
+            log.error("[USER_IMAGE_NOT_FOUND] : 사용자의 이미지 data를 찾을 수 없음.");
+        }
+
+        userImageJpaEntity.updateFromDomainEntity(userImage);
     }
 }
