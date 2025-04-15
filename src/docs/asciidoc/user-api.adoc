@@ -122,3 +122,43 @@ include::{snippetsDir}/socialUserSignUp/1/response-fields.adoc[]
 include::{snippetsDir}/socialUserSignUp/2/http-response.adoc[]
 실패 2
 include::{snippetsDir}/socialUserSignUp/3/http-response.adoc[]
+
+
+=== **7. 사용자 정보 간단 조회 api**
+
+사용자 정보 수정 시 노출되는 정보를 제공
+
+==== Request
+include::{snippetsDir}/userSimpleInfo/1/http-request.adoc[]
+
+==== 성공 Response
+include::{snippetsDir}/userSimpleInfo/1/http-response.adoc[]
+
+==== Response Body Fields
+include::{snippetsDir}/userSimpleInfo/1/response-fields.adoc[]
+
+
+=== **8. 사용자 정보 수정 api**
+
+사용자 정보를 수정합니다. 수정이 필요한 항목만 수정을 요청해 주세요.
+
+==== Request
+include::{snippetsDir}/userInfoUpdate/1/curl-request.adoc[]
+
+==== Request Parts
+include::{snippetsDir}/userInfoUpdate/1/request-parts.adoc[]
+
+==== Request Parts : **data** - Detail Fields
+include::{snippetsDir}/userInfoUpdate/1/request-part-data-fields.adoc[]
+
+==== 성공 Response
+include::{snippetsDir}/userInfoUpdate/1/http-response.adoc[]
+
+==== Response Body Fields
+include::{snippetsDir}/userInfoUpdate/1/response-fields.adoc[]
+
+==== 실패 Response
+실패1.
+include::{snippetsDir}/userInfoUpdate/2/http-response.adoc[]
+실패 2
+include::{snippetsDir}/userInfoUpdate/3/http-response.adoc[]

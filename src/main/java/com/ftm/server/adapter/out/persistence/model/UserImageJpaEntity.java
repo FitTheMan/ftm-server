@@ -39,4 +39,8 @@ public class UserImageJpaEntity extends BaseTimeJpaEntity {
     public static UserImageJpaEntity createUserImage(UserJpaEntity user) {
         return UserImageJpaEntity.builder().user(user).objectKey("users/default-image.png").build();
     }
+
+    public void updateFromDomainEntity(UserImage userImage) {
+        this.objectKey = userImage.getObjectKey();
+    }
 }

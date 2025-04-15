@@ -153,4 +153,16 @@ public class User extends BaseTime {
         this.groomingScore = groomingScore;
         this.groomingLevelId = groomingLevelId;
     }
+
+    public void updateUserNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void updateHashtag(HashTag[] hashTags) {
+        this.favoriteHashtags = hashTags;
+    }
+
+    public void updateAge(AgeGroup ageGroup) {
+        this.ageGroup = ageGroup;
+    }
 }

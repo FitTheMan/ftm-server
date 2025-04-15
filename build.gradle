@@ -80,6 +80,9 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    //이미지 타입 검사 라이브러리
+    implementation 'org.apache.tika:tika-core:2.5.0'
 }
 
 jar.enabled = false

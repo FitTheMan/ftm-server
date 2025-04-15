@@ -7,3 +7,7 @@ aws:
   s3:
     bucket-name: ${S3_BUCKET_NAME}
     region: ${AWS_REGION}
+    default:
+      user : "users/default-image.jpg"
+    path:
+      user: "users"

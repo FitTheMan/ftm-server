@@ -4,7 +4,17 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.modifyHeaders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ftm.server.application.command.user.GeneralUserCreationCommand;
+import com.ftm.server.application.port.out.persistence.user.SaveUserImagePort;
+import com.ftm.server.application.port.out.persistence.user.SaveUserPort;
+import com.ftm.server.domain.entity.User;
+import com.ftm.server.domain.entity.UserImage;
+import com.ftm.server.domain.enums.AgeGroup;
+import com.ftm.server.domain.enums.HashTag;
+import com.ftm.server.domain.enums.UserRole;
+import com.ftm.server.infrastructure.security.UserPrincipal;
 import groovy.util.logging.Slf4j;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +22,16 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.operation.preprocess.HeadersModifyingOperationPreprocessor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
@@ -37,6 +53,9 @@ public class BaseTest {
 
     protected final ObjectMapper mapper = new ObjectMapper();
 
+    @Autowired private SaveUserPort saveUserPort;
+    @Autowired private SaveUserImagePort saveUserImagePort;
+
     @BeforeEach
     void setup(WebApplicationContext context, RestDocumentationContextProvider restDocumentation) {
         this.mockMvc =
@@ -57,5 +76,46 @@ public class BaseTest {
                 .remove("Content-Length")
                 .remove("X-Frame-Options")
                 .remove("Vary");
+    }
+
+    // 사용자 생성 및 저장
+    protected User createTestUser(String email, String password) {
+        User user =
+                User.createGeneralUser(
+                        GeneralUserCreationCommand.of(
+                                email,
+                                password,
+                                "test 사용자",
+                                AgeGroup.FIFTIES,
+                                List.of(HashTag.PERFUME)));
+        User testUser = saveUserPort.saveUser(user);
+        saveUserImagePort.saveUserDefaultImage(UserImage.createUserImage(testUser.getId()));
+        return testUser;
+    }
+
+    protected MockHttpSession createUserAndLogin() {
+        return createUserAndLogin("test@gmail.com", "123456qwe!");
+    }
+
+    // test 사용자 생성 후 mock session 생성
+    protected MockHttpSession createUserAndLogin(String email, String password) {
+
+        // 사용자 생성
+        User user = createTestUser(email, password);
+
+        // session 생성
+        SecurityContext context = SecurityContextHolder.createEmptyContext();
+        UsernamePasswordAuthenticationToken auth =
+                new UsernamePasswordAuthenticationToken(
+                        UserPrincipal.of(user),
+                        null,
+                        List.of(new SimpleGrantedAuthority(UserRole.USER.name())));
+        context.setAuthentication(auth);
+
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute(
+                HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, context);
+
+        return session;
     }
 }
