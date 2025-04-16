@@ -1,5 +1,6 @@
 package com.ftm.server.domain.entity;
 
+import com.ftm.server.application.command.post.SavePostCommand;
 import com.ftm.server.domain.enums.GroomingCategory;
 import com.ftm.server.domain.enums.HashTag;
 import java.time.LocalDateTime;
@@ -77,6 +78,19 @@ public class Post extends BaseTime {
                 .deletedAt(deletedAt)
                 .createdAt(createdAt)
                 .updatedAt(updatedAt)
+                .build();
+    }
+
+    public static Post create(SavePostCommand command) {
+        return Post.builder()
+                .userId(command.getUserId())
+                .title(command.getTitle())
+                .content(command.getContent())
+                .groomingCategory(command.getGroomingCategory())
+                .hashtags(command.getHashTags())
+                .viewCount(0)
+                .likeCount(0)
+                .isDeleted(false)
                 .build();
     }
 }

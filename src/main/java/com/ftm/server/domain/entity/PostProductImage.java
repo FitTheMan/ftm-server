@@ -1,5 +1,7 @@
 package com.ftm.server.domain.entity;
 
+import static com.ftm.server.common.consts.PropertiesHolder.PRODUCT_DEFAULT_IMAGE;
+
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -40,6 +42,17 @@ public class PostProductImage extends BaseTime {
                 .objectKey(objectKey)
                 .createdAt(createdAt)
                 .updatedAt(updatedAt)
+                .build();
+    }
+
+    public static PostProductImage create(Long postProductId, String objectKey) {
+        return PostProductImage.builder().postProductId(postProductId).objectKey(objectKey).build();
+    }
+
+    public static PostProductImage createDefault(Long postProductId) {
+        return PostProductImage.builder()
+                .postProductId(postProductId)
+                .objectKey(PRODUCT_DEFAULT_IMAGE)
                 .build();
     }
 }

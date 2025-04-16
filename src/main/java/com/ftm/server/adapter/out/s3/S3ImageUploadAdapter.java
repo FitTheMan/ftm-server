@@ -6,6 +6,8 @@ import com.ftm.server.common.annotation.Adapter;
 import com.ftm.server.common.exception.CustomException;
 import com.ftm.server.common.response.enums.ErrorResponseCode;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,25 +32,45 @@ public class S3ImageUploadAdapter implements S3ImageUploadPort {
     private String bucket;
 
     @Override
-    public String updateImage(MultipartFile imageFile, String dirName) {
+    public String uploadImage(MultipartFile imageFile, String dirName) {
 
-        // 이미지 검증 : 사이즈, 타입, empty 여부
-        String type = null;
-        try {
-            type = tikaFileTypeDetectionPort.detectFileType(imageFile); // 이미지 타입 추출
-        } catch (IOException e) {
-            throw new CustomException(ErrorResponseCode.INVALID_IMAGE_FORMAT);
-        }
-        if (imageFile == null
-                || imageFile.isEmpty()
-                || (float) imageFile.getSize() / (1024.0 * 1024.0) > (float) 10
-                || !type.startsWith("image/")) {
-            throw new CustomException(ErrorResponseCode.INVALID_IMAGE_FORMAT);
-        }
+        // 사전 이미지 검증
+        validateImageFile(imageFile);
 
         String originalFileName = imageFile.getOriginalFilename();
         String fileName = dirName + "/" + UUID.randomUUID() + "_" + originalFileName;
 
+        // 이미지 업로드 + 재시도
+        uploadImageWithRetry(fileName, imageFile);
+
+        return fileName;
+    }
+
+    @Override
+    public List<String> uploadImages(List<MultipartFile> imageFiles, String dirName) {
+        List<String> uploadedFileNames = new ArrayList<>();
+
+        // 사전 이미지 검증
+        for (MultipartFile imageFile : imageFiles) {
+            validateImageFile(imageFile);
+        }
+
+        // 이미지 업로드
+        for (MultipartFile imageFile : imageFiles) {
+            String originalFileName = imageFile.getOriginalFilename();
+            String fileName = dirName + "/" + UUID.randomUUID() + "_" + originalFileName;
+
+            // 이미지 업로드 + 재시도
+            uploadImageWithRetry(fileName, imageFile);
+            uploadedFileNames.add(fileName);
+        }
+
+        return uploadedFileNames;
+    }
+
+    // 이미지 업로드 + 재시도
+    private void uploadImageWithRetry(String fileName, MultipartFile imageFile) {
+        // S3 이미지 요청 객체
         PutObjectRequest putObjectRequest =
                 PutObjectRequest.builder()
                         .bucket(bucket)
@@ -66,7 +88,8 @@ public class S3ImageUploadAdapter implements S3ImageUploadPort {
                         putObjectRequest,
                         RequestBody.fromInputStream(
                                 imageFile.getInputStream(), imageFile.getSize()));
-                return fileName;
+
+                return;
             } catch (AwsServiceException | SdkClientException | IOException e) {
                 attempt++;
                 log.warn(
@@ -79,6 +102,7 @@ public class S3ImageUploadAdapter implements S3ImageUploadPort {
                     // 재시도 끝까지 실패하면 예외 던지기
                     throw new CustomException(ErrorResponseCode.FAIL_TO_UPLOAD_IMAGE);
                 }
+
                 try {
                     Thread.sleep(1000L * attempt); // 1초, 2초, 3초 점진적 딜레이
                 } catch (InterruptedException ie) {
@@ -86,6 +110,25 @@ public class S3ImageUploadAdapter implements S3ImageUploadPort {
                     throw new CustomException(ErrorResponseCode.FAIL_TO_UPLOAD_IMAGE);
                 }
             }
+        }
+    }
+
+    // 이미지 검증 : 사이즈, 타입, empty 여부
+    private void validateImageFile(MultipartFile imageFile) {
+        if (imageFile == null || imageFile.isEmpty()) {
+            throw new CustomException(ErrorResponseCode.INVALID_IMAGE_FORMAT);
+        }
+
+        String type;
+        try {
+            type = tikaFileTypeDetectionPort.detectFileType(imageFile); // 이미지 타입 추출
+        } catch (IOException e) {
+            throw new CustomException(ErrorResponseCode.INVALID_IMAGE_FORMAT);
+        }
+
+        if ((float) imageFile.getSize() / (1024.0 * 1024.0) > (float) 10
+                || !type.startsWith("image/")) {
+            throw new CustomException(ErrorResponseCode.INVALID_IMAGE_FORMAT);
         }
     }
 }

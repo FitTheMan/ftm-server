@@ -2,6 +2,7 @@ package com.ftm.server.adapter.out.s3;
 
 import com.ftm.server.application.port.out.s3.S3ImageDeletePort;
 import com.ftm.server.common.annotation.Adapter;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import software.amazon.awssdk.services.s3.S3Client;
@@ -23,5 +24,16 @@ public class S3ImageDeleteAdapter implements S3ImageDeletePort {
                 DeleteObjectRequest.builder().bucket(bucket).key(objectKey).build();
 
         s3Client.deleteObject(deleteRequest);
+    }
+
+    @Override
+    public void deleteImages(List<String> objectKeys) {
+        if (objectKeys == null || objectKeys.isEmpty()) return;
+        for (String objectKey : objectKeys) {
+            DeleteObjectRequest deleteRequest =
+                    DeleteObjectRequest.builder().bucket(bucket).key(objectKey).build();
+
+            s3Client.deleteObject(deleteRequest);
+        }
     }
 }

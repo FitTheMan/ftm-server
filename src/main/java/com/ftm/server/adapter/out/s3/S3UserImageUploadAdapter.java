@@ -18,6 +18,6 @@ public class S3UserImageUploadAdapter implements S3UserImageUploadPort {
 
     @Override
     public String uploadImage(MultipartFile imageFile) {
-        return s3ImageUploadPort.updateImage(imageFile, path);
+        return s3ImageUploadPort.uploadImage(imageFile, path);
     }
 }

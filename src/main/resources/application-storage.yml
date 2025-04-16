@@ -8,6 +8,10 @@ aws:
     bucket-name: ${S3_BUCKET_NAME}
     region: ${AWS_REGION}
     default:
-      user : "users/default-image.jpg"
+      user: "users/default-image.jpg"
+      post: "posts/default-image.jpg"
+      product: "products/default-image.jpg"
     path:
       user: "users"
+      post: "posts"
+      product: "products"
