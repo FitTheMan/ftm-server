@@ -13,12 +13,22 @@ public class PropertiesHolder {
     @Value("${aws.s3.default.user}")
     private String userDefaultImage;
 
-    public static String USER_DEFAULT_IMAGE;
+    @Value("${aws.s3.default.post}")
+    private String postDefaultImage;
+
+    @Value("${aws.s3.default.product}")
+    private String productDefaultImage;
+
     public static String CDN_PATH;
+    public static String USER_DEFAULT_IMAGE;
+    public static String POST_DEFAULT_IMAGE;
+    public static String PRODUCT_DEFAULT_IMAGE;
 
     @PostConstruct
     public void init() {
         CDN_PATH = cdnPathValue;
         USER_DEFAULT_IMAGE = userDefaultImage;
+        POST_DEFAULT_IMAGE = postDefaultImage;
+        PRODUCT_DEFAULT_IMAGE = productDefaultImage;
     }
 }

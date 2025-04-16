@@ -1,5 +1,6 @@
 package com.ftm.server.domain.entity;
 
+import com.ftm.server.application.command.post.SavePostProductCommand;
 import com.ftm.server.domain.enums.HashTag;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
@@ -51,6 +52,15 @@ public class PostProduct extends BaseTime {
                 .hashTags(hashTags)
                 .createdAt(createdAt)
                 .updatedAt(updatedAt)
+                .build();
+    }
+
+    public static PostProduct create(SavePostProductCommand command) {
+        return PostProduct.builder()
+                .postId(command.getPostId())
+                .name(command.getName())
+                .brand(command.getBrand())
+                .hashTags(command.getHashTags())
                 .build();
     }
 }
