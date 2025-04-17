@@ -130,3 +130,7 @@ include::auth-api.adoc[]
 = **그루밍 테스트**
 
 include::grooming-test-api.adoc[]
+
+= **유저픽 게시글**
+
+include::post-api.adoc[]

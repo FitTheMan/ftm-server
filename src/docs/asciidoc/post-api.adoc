@@ -1,0 +1,43 @@
+=== **1. 게시글 저장**
+
+유저픽 게시글 저장, 등록 api 입니다. +
+게시글, 게시글 이미지, 상품 , 상품 이미지를 함께 저장합니다. +
+상품 요청 데이터의 `imageIndex` 는 해당 상품의 이미지가 `productImageFiles` 리스트 중 몇 번째에 위치하는지를 나타냅니다. +
+`imageIndex` 는 **1부터 시작하는 인덱스**이며, 이미지가 없는 경우 `-1` 을 입력해야 합니다. +
+`-1`, `1 ~ 이미지 총 개수` 를 제외한 인덱스로 요청 시 검증 로직에서 필터링되면서 예외발생 합니다. +
+클라이언트는 `productImageFiles` 의 순서와 각 상품의 `imageIndex` 값이 정확히 매핑되도록 주의해야 합니다.
+
+==== Request
+include::{snippetsDir}/savePost/1/curl-request.adoc[]
+
+==== Request Parts
+include::{snippetsDir}/savePost/1/request-parts.adoc[]
+
+==== Request Parts : **data** - Detail Fields
+include::{snippetsDir}/savePost/1/request-part-data-fields.adoc[]
+
+==== 성공 Response
+include::{snippetsDir}/savePost/1/http-response.adoc[]
+
+==== 실패 Response
+실패 1. 인증되지 않은 유저일 경우
+
+include::{snippetsDir}/savePost/2/http-response.adoc[]
+
+실패 2. 이미지와 상품 정보가 매핑되지 않을 경우 +
+- 상품 정보 imageIndex 중복 +
+- 이미지 개수와 상품 개수 불일치 (이미지를 등록하지 않은 상품을 제외한 개수로 비교) +
+
+include::{snippetsDir}/savePost/3/http-response.adoc[]
+
+실패 3. 유효하지 않은 요청 데이터일 경우
+
+include::{snippetsDir}/savePost/4/http-response.adoc[]
+
+실패 4. 요청한 파일 목록 검증에 실패할 경우 (이미지 파일 X, 사이즈)
+
+include::{snippetsDir}/savePost/5/http-response.adoc[]
+
+실패 5. 이미지 파일 업로드에 실패할 경우
+
+include::{snippetsDir}/savePost/6/http-response.adoc[]
