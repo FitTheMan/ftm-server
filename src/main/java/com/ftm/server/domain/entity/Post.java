@@ -93,4 +93,8 @@ public class Post extends BaseTime {
                 .isDeleted(false)
                 .build();
     }
+
+    public void updateViewCount(int viewCount) {
+        this.viewCount = viewCount;
+    }
 }
