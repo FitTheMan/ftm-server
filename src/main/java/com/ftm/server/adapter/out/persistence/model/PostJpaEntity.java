@@ -91,4 +91,15 @@ public class PostJpaEntity extends BaseTimeJpaEntity {
                 .deletedAt(post.getDeletedAt())
                 .build();
     }
+
+    public void updatePostForDomainEntity(Post post) {
+        this.title = post.getTitle();
+        this.content = post.getContent();
+        this.groomingCategory = post.getGroomingCategory();
+        this.hashtags = post.getHashtags();
+        this.viewCount = post.getViewCount();
+        this.likeCount = post.getLikeCount();
+        this.isDeleted = post.getIsDeleted();
+        this.deletedAt = post.getDeletedAt();
+    }
 }
