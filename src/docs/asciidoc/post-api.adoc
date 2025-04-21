@@ -44,3 +44,27 @@ include::{snippetsDir}/savePost/5/http-response.adoc[]
 실패 5. 이미지 파일 업로드에 실패할 경우
 
 include::{snippetsDir}/savePost/6/http-response.adoc[]
+
+---
+
+=== **2. 게시글 상세 조회**
+
+유저픽 게시글 상세 조회 api 입니다.
+
+==== Request
+include::{snippetsDir}/loadPostDetail/1/http-request.adoc[]
+
+==== Request Path Parameters
+include::{snippetsDir}/loadPostDetail/1/path-parameters.adoc[]
+
+==== 성공 Response
+include::{snippetsDir}/loadPostDetail/1/http-response.adoc[]
+
+==== Response Body Fields
+include::{snippetsDir}/loadPostDetail/1/response-fields.adoc[]
+
+==== 실패 Response
+
+실패 1. 존재하지 않는 게시글이거나, 삭제된 게시글인 경우
+
+include::{snippetsDir}/loadPostDetail/2/http-response.adoc[]
