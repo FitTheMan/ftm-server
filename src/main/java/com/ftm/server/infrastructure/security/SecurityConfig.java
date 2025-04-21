@@ -51,7 +51,10 @@ public class SecurityConfig {
                     "https://fittheman.site"); // 개발 환경 클라이언트 도메인
 
     private static final String[] GET_ANONYMOUS_MATCHERS = {
-        "/api/users/email/duplication", "/api/users/options", "/api/grooming/tests"
+        "/api/users/email/duplication",
+        "/api/users/options",
+        "/api/grooming/tests",
+        "/api/auth/session/validity"
     };
 
     private static final String[] POST_ANONYMOUS_MATCHERS = {
