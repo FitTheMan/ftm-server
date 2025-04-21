@@ -70,3 +70,23 @@ include::{snippetsDir}/logout/1/response-fields.adoc[]
 
 ==== 실패 Response
 include::{snippetsDir}/logout/2/http-response.adoc[]
+
+
+=== **4. Session 유효성 확인 API**
+
+Session 유효성 확인 api입니다.
+
+==== Request
+include::{snippetsDir}/sessionValidityCheck/1/http-request.adoc[]
+
+==== 성공 Response
+성공 1. 유효한 경우
+include::{snippetsDir}/sessionValidityCheck/1/http-response.adoc[]
+
+성공 2. 유효하지 않은 경우
+include::{snippetsDir}/sessionValidityCheck/2/http-response.adoc[]
+
+==== Response Body Fields
+include::{snippetsDir}/sessionValidityCheck/1/response-fields.adoc[]
+
+
