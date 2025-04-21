@@ -19,6 +19,9 @@ include::{snippetsDir}/savePost/1/request-part-data-fields.adoc[]
 ==== 성공 Response
 include::{snippetsDir}/savePost/1/http-response.adoc[]
 
+==== Response Body Fields
+include::{snippetsDir}/savePost/1/response-fields.adoc[]
+
 ==== 실패 Response
 실패 1. 인증되지 않은 유저일 경우
 

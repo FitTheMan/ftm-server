@@ -89,7 +89,10 @@ public class SavePostTest extends BaseTest {
                     fieldWithPath("status").type(NUMBER).description("응답 상태"),
                     fieldWithPath("code").type(STRING).description("상태 코드"),
                     fieldWithPath("message").type(STRING).description("메시지"),
-                    fieldWithPath("data").type(OBJECT).optional().description("응답 데이터"));
+                    fieldWithPath("data").type(OBJECT).optional().description("응답 데이터"),
+                    fieldWithPath("data.postId").type(NUMBER).description("생성된 유저픽 게시글 ID"),
+                    fieldWithPath("data.createdAt").type(STRING).description("게시글 생성 날짜"),
+                    fieldWithPath("data.updatedAt").type(STRING).description("게시글 수정 날짜"));
 
     private ResultActions getResultActions(
             MockHttpSession session,
