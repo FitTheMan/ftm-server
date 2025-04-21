@@ -11,6 +11,7 @@ import com.ftm.server.application.port.out.s3.S3ImageDeletePort;
 import com.ftm.server.application.port.out.s3.S3PostImageUploadPort;
 import com.ftm.server.application.port.out.s3.S3PostProductImageUploadPort;
 import com.ftm.server.application.port.out.transcation.AfterRollbackExecutorPort;
+import com.ftm.server.application.vo.post.PostInfoVo;
 import com.ftm.server.common.exception.CustomException;
 import com.ftm.server.common.response.enums.ErrorResponseCode;
 import com.ftm.server.domain.entity.Post;
@@ -44,7 +45,7 @@ public class SavePostService implements SavePostUseCase {
 
     @Override
     @Transactional
-    public void execute(SavePostCommand command) {
+    public PostInfoVo execute(SavePostCommand command) {
 
         // 상품, 상품이미지 검증
         validateProductImages(command.getProducts(), command.getProductImages());
@@ -98,6 +99,8 @@ public class SavePostService implements SavePostUseCase {
             postProductImages.add(PostProductImage.createDefault(postProduct.getId()));
         }
         savePostProductImagePort.savePostProductImages(postProductImages);
+
+        return PostInfoVo.from(post);
     }
 
     private void validateProductImages(

@@ -1,8 +1,10 @@
 package com.ftm.server.adapter.in.web.post.controller;
 
 import com.ftm.server.adapter.in.web.post.dto.request.SavePostRequest;
+import com.ftm.server.adapter.in.web.post.dto.response.SavePostResponse;
 import com.ftm.server.application.command.post.SavePostCommand;
 import com.ftm.server.application.port.in.post.SavePostUseCase;
+import com.ftm.server.application.vo.post.PostInfoVo;
 import com.ftm.server.common.response.ApiResponse;
 import com.ftm.server.common.response.enums.SuccessResponseCode;
 import com.ftm.server.infrastructure.security.UserPrincipal;
@@ -24,17 +26,18 @@ public class SavePostController {
     private final SavePostUseCase savePostUseCase;
 
     @PostMapping("/api/posts")
-    public ResponseEntity<ApiResponse<Void>> savePost(
+    public ResponseEntity<ApiResponse<SavePostResponse>> savePost(
             @RequestPart(value = "data") @Valid SavePostRequest request,
             @RequestPart(value = "postImageFiles", required = false)
                     List<MultipartFile> postImageFiles,
             @RequestPart(value = "productImageFiles", required = false)
                     List<MultipartFile> productImageFiles,
             @AuthenticationPrincipal UserPrincipal userPrincipal) {
-        savePostUseCase.execute(
-                SavePostCommand.from(
-                        userPrincipal.getId(), request, postImageFiles, productImageFiles));
+        PostInfoVo vo =
+                savePostUseCase.execute(
+                        SavePostCommand.from(
+                                userPrincipal.getId(), request, postImageFiles, productImageFiles));
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(ApiResponse.success(SuccessResponseCode.CREATED));
+                .body(ApiResponse.success(SuccessResponseCode.CREATED, SavePostResponse.from(vo)));
     }
 }

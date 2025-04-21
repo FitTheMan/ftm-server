@@ -27,7 +27,7 @@ public class SavePostCommand {
             List<MultipartFile> productImages) {
         this.userId = userId;
         this.title = request.getTitle();
-        this.groomingCategory = getGroomingCategory();
+        this.groomingCategory = request.getGroomingCategory();
         this.hashTags = request.getHashtags().toArray(new HashTag[0]);
         this.content = request.getContent();
         this.postImages = postImages;
