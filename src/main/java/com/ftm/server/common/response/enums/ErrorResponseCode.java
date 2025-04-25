@@ -23,6 +23,9 @@ public enum ErrorResponseCode {
             HttpStatus.BAD_REQUEST,
             "E400_008",
             "상품과 이미지 간의 매핑이 올바르지 않습니다. imageIndex와 이미지 수를 확인해주세요."),
+    CANNOT_DELETE_DEFAULT_IMAGE(HttpStatus.BAD_REQUEST, "E400_009", "기본 이미지는 삭제할 수 없습니다."),
+    POST_PRODUCT_IMAGE_ALREADY_EXISTS(
+            HttpStatus.BAD_REQUEST, "E400_010", "이미 이미지가 존재합니다. 기존 이미지를 삭제하고 업로드 해주세요."),
 
     // 401번
     NOT_AUTHENTICATED(HttpStatus.UNAUTHORIZED, "E401_001", "인증되지 않은 사용자입니다."),
@@ -30,6 +33,11 @@ public enum ErrorResponseCode {
 
     // 403번
     NOT_AUTHORIZATION(HttpStatus.FORBIDDEN, "E403_001", "인증된 사용자이나 해당 자원에 대한 접근 권한이 없습니다."),
+    UNAUTHORIZED_POST_ACCESS(HttpStatus.FORBIDDEN, "E403_002", "해당 게시글에 대한 권한이 없습니다."),
+    UNAUTHORIZED_POST_IMAGE_ACCESS(HttpStatus.FORBIDDEN, "E403_003", "해당 게시글 이미지에 대한 권한이 없습니다."),
+    UNAUTHORIZED_POST_PRODUCT_ACCESS(HttpStatus.FORBIDDEN, "E403_004", "해당 상품에 대한 권한이 없습니다."),
+    UNAUTHORIZED_POST_PRODUCT_IMAGE_ACCESS(
+            HttpStatus.FORBIDDEN, "E403_005", "해당 상품 이미지에 대한 권한이 없습니다."),
 
     // 404번
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "E404_001", "요청된 사용자를 찾을 수 없습니다."),

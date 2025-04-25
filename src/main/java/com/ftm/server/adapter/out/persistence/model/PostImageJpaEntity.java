@@ -34,4 +34,8 @@ public class PostImageJpaEntity extends BaseTimeJpaEntity {
                 .objectKey(postImage.getObjectKey())
                 .build();
     }
+
+    public void updatePostImageForDomainEntity(PostImage postImage) {
+        this.objectKey = objectKey;
+    }
 }

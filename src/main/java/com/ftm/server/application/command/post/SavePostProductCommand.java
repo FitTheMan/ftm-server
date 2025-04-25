@@ -5,7 +5,7 @@ import com.ftm.server.domain.enums.HashTag;
 import lombok.Getter;
 
 @Getter
-public class SavePostProductCommand {
+public class SavePostProductCommand implements HasImageIndex {
 
     private final Long postId; // null 가능 (저장 전)
     private final String name;

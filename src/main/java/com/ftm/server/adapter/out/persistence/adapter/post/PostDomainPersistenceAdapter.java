@@ -4,10 +4,7 @@ import com.ftm.server.adapter.out.persistence.mapper.*;
 import com.ftm.server.adapter.out.persistence.model.*;
 import com.ftm.server.adapter.out.persistence.repository.*;
 import com.ftm.server.application.port.out.persistence.post.*;
-import com.ftm.server.application.query.FindByIdQuery;
-import com.ftm.server.application.query.FindByPostIdQuery;
-import com.ftm.server.application.query.FindByPostProductIdsQuery;
-import com.ftm.server.application.query.FindByUserIdQuery;
+import com.ftm.server.application.query.*;
 import com.ftm.server.common.annotation.Adapter;
 import com.ftm.server.common.exception.CustomException;
 import com.ftm.server.common.response.enums.ErrorResponseCode;
@@ -32,7 +29,12 @@ public class PostDomainPersistenceAdapter
                 LoadPostProductImagePort,
                 LoadUserForPostPort,
                 LoadUserImageForPostPort,
-                UpdatePostPort {
+                UpdatePostPort,
+                UpdatePostProductPort,
+                UpdatePostProductImagePort,
+                DeletePostImagePort,
+                DeletePostProductPort,
+                DeletePostProductImagePort {
 
     private final PostRepository postRepository;
     private final PostImageRepository postImageRepository;
@@ -162,14 +164,20 @@ public class PostDomainPersistenceAdapter
     }
 
     @Override
-    public Map<Long, PostProductImage> loadPostProductImagesByPostProductIds(
-            FindByPostProductIdsQuery query) {
+    public List<PostProduct> loadPostProductsByIds(FindByIdsQuery query) {
+        return postProductRepository.findAllById(query.getIds()).stream()
+                .map(postProductMapper::toDomainEntity)
+                .toList();
+    }
+
+    @Override
+    public List<PostProductImage> loadPostProductImagesByPostProductIds(FindByIdsQuery query) {
         List<PostProductImageJpaEntity> postProductImageJpaEntities =
                 postProductImageRepository.findByPostProductIds(query);
 
         return postProductImageJpaEntities.stream()
                 .map(postProductImageMapper::toDomainEntity)
-                .collect(Collectors.toMap(PostProductImage::getPostProductId, Function.identity()));
+                .toList();
     }
 
     @Override
@@ -197,5 +205,56 @@ public class PostDomainPersistenceAdapter
                         .orElseThrow(() -> new CustomException(ErrorResponseCode.POST_NOT_FOUND));
 
         postJpaEntity.updatePostForDomainEntity(post);
+    }
+
+    @Override
+    public void updatePostProducts(List<PostProduct> postProducts) {
+        List<Long> ids = postProducts.stream().map(PostProduct::getId).toList();
+        Map<Long, PostProductJpaEntity> postProductJpaEntityMap =
+                postProductRepository.findAllById(ids).stream()
+                        .collect(
+                                Collectors.toMap(PostProductJpaEntity::getId, Function.identity()));
+
+        for (PostProduct postProduct : postProducts) {
+            PostProductJpaEntity postProductJpaEntity =
+                    postProductJpaEntityMap.get(postProduct.getId());
+            postProductJpaEntity.updatePostProductForDomainEntity(postProduct);
+        }
+    }
+
+    @Override
+    public void updatePostProductImages(List<PostProductImage> postProductImages) {
+        List<Long> ids = postProductImages.stream().map(PostProductImage::getId).toList();
+        Map<Long, PostProductImageJpaEntity> postProductImageJpaEntityMap =
+                postProductImageRepository.findAllById(ids).stream()
+                        .collect(
+                                Collectors.toMap(
+                                        PostProductImageJpaEntity::getId, Function.identity()));
+
+        for (PostProductImage postProductImage : postProductImages) {
+            PostProductImageJpaEntity postProductImageJpaEntity =
+                    postProductImageJpaEntityMap.get(postProductImage.getId());
+            postProductImageJpaEntity.updatePostProductImageForDomainEntity(postProductImage);
+        }
+    }
+
+    public void deletePostImages(List<PostImage> postImages) {
+        List<Long> ids = postImages.stream().map(PostImage::getId).toList();
+
+        postImageRepository.deleteAllById(ids);
+    }
+
+    @Override
+    public void deletePostProducts(List<PostProduct> postProducts) {
+        List<Long> ids = postProducts.stream().map(PostProduct::getId).toList();
+
+        postProductRepository.deleteAllById(ids);
+    }
+
+    @Override
+    public void deletePostProductImages(List<PostProductImage> postProductImages) {
+        List<Long> ids = postProductImages.stream().map(PostProductImage::getId).toList();
+
+        postProductImageRepository.deleteAllById(ids);
     }
 }

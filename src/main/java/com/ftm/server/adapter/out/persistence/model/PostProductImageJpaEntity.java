@@ -35,4 +35,8 @@ public class PostProductImageJpaEntity extends BaseTimeJpaEntity {
                 .objectKey(postProductImage.getObjectKey())
                 .build();
     }
+
+    public void updatePostProductImageForDomainEntity(PostProductImage postProductImage) {
+        this.objectKey = postProductImage.getObjectKey();
+    }
 }

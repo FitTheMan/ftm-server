@@ -1,8 +1,12 @@
 package com.ftm.server.domain.entity;
 
 import com.ftm.server.application.command.post.SavePostProductCommand;
+import com.ftm.server.application.command.post.UpdatePostProductCommand;
+import com.ftm.server.common.exception.CustomException;
+import com.ftm.server.common.response.enums.ErrorResponseCode;
 import com.ftm.server.domain.enums.HashTag;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -62,5 +66,17 @@ public class PostProduct extends BaseTime {
                 .brand(command.getBrand())
                 .hashTags(command.getHashTags())
                 .build();
+    }
+
+    public void update(UpdatePostProductCommand command) {
+        if (command.getName() != null) this.name = command.getName();
+        if (command.getBrand() != null) this.brand = command.getBrand();
+        if (command.getHashTags() != null) this.hashTags = command.getHashTags();
+    }
+
+    public void validatePost(Long postId) {
+        if (!Objects.equals(this.postId, postId)) {
+            throw new CustomException(ErrorResponseCode.UNAUTHORIZED_POST_PRODUCT_ACCESS);
+        }
     }
 }

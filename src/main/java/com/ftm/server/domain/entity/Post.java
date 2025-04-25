@@ -1,9 +1,13 @@
 package com.ftm.server.domain.entity;
 
 import com.ftm.server.application.command.post.SavePostCommand;
+import com.ftm.server.application.command.post.UpdatePostCommand;
+import com.ftm.server.common.exception.CustomException;
+import com.ftm.server.common.response.enums.ErrorResponseCode;
 import com.ftm.server.domain.enums.GroomingCategory;
 import com.ftm.server.domain.enums.HashTag;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -96,5 +100,25 @@ public class Post extends BaseTime {
 
     public void updateViewCount(int viewCount) {
         this.viewCount = viewCount;
+    }
+
+    public void update(UpdatePostCommand command) {
+        if (command.getTitle() != null) this.title = command.getTitle();
+        if (command.getContent() != null) this.content = command.getContent();
+        if (command.getGroomingCategory() != null)
+            this.groomingCategory = command.getGroomingCategory();
+        if (command.getHashTags() != null) this.hashtags = command.getHashTags();
+    }
+
+    public void validateDeleted() {
+        if (this.isDeleted && this.deletedAt != null) {
+            throw new CustomException(ErrorResponseCode.POST_NOT_FOUND);
+        }
+    }
+
+    public void validateWriter(Long userId) {
+        if (!Objects.equals(this.userId, userId)) {
+            throw new CustomException(ErrorResponseCode.UNAUTHORIZED_POST_ACCESS);
+        }
     }
 }

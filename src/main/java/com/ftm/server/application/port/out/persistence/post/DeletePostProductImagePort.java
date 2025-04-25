@@ -1,12 +1,11 @@
 package com.ftm.server.application.port.out.persistence.post;
 
-import com.ftm.server.application.query.FindByIdsQuery;
 import com.ftm.server.common.annotation.Port;
 import com.ftm.server.domain.entity.PostProductImage;
 import java.util.List;
 
 @Port
-public interface LoadPostProductImagePort {
+public interface DeletePostProductImagePort {
 
-    List<PostProductImage> loadPostProductImagesByPostProductIds(FindByIdsQuery query);
+    void deletePostProductImages(List<PostProductImage> postProductImages);
 }
