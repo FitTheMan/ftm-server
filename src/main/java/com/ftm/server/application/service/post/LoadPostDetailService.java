@@ -2,16 +2,15 @@ package com.ftm.server.application.service.post;
 
 import com.ftm.server.application.port.in.post.LoadPostDetailUseCase;
 import com.ftm.server.application.port.out.persistence.post.*;
-import com.ftm.server.application.query.FindByIdQuery;
-import com.ftm.server.application.query.FindByPostIdQuery;
-import com.ftm.server.application.query.FindByPostProductIdsQuery;
-import com.ftm.server.application.query.FindByUserIdQuery;
+import com.ftm.server.application.query.*;
 import com.ftm.server.application.vo.post.PostDetailVo;
 import com.ftm.server.common.exception.CustomException;
 import com.ftm.server.common.response.enums.ErrorResponseCode;
 import com.ftm.server.domain.entity.*;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -38,9 +37,7 @@ public class LoadPostDetailService implements LoadPostDetailUseCase {
                 loadPostPort
                         .loadPost(query)
                         .orElseThrow(() -> new CustomException(ErrorResponseCode.POST_NOT_FOUND));
-        if (post.getIsDeleted()) { // 게시글이 삭제된 경우 예외처리
-            throw new CustomException(ErrorResponseCode.POST_NOT_FOUND);
-        }
+        post.validateDeleted();
 
         // 조회수 업데이트
         post.updateViewCount(post.getViewCount() + 1);
@@ -68,10 +65,16 @@ public class LoadPostDetailService implements LoadPostDetailUseCase {
                 loadPostProductPort.loadPostProductsByPostId(FindByPostIdQuery.of(post.getId()));
 
         // 게시글 상품 별 이미지 Map, 여러 상품의 이미지 정보 한번에 조회
-        Map<Long, PostProductImage> postProductImageMap =
+        List<PostProductImage> postProductImages =
                 loadPostProductImagePort.loadPostProductImagesByPostProductIds(
-                        FindByPostProductIdsQuery.of(
+                        FindByIdsQuery.from(
                                 postProducts.stream().map(PostProduct::getId).toList()));
+
+        Map<Long, PostProductImage> postProductImageMap =
+                postProductImages.stream()
+                        .collect(
+                                Collectors.toMap(
+                                        PostProductImage::getPostProductId, Function.identity()));
 
         return PostDetailVo.from(
                 post, user, userImage, postImages, postProducts, postProductImageMap);
