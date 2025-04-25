@@ -2,7 +2,10 @@ package com.ftm.server.domain.entity;
 
 import static com.ftm.server.common.consts.PropertiesHolder.PRODUCT_DEFAULT_IMAGE;
 
+import com.ftm.server.common.exception.CustomException;
+import com.ftm.server.common.response.enums.ErrorResponseCode;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -54,5 +57,15 @@ public class PostProductImage extends BaseTime {
                 .postProductId(postProductId)
                 .objectKey(PRODUCT_DEFAULT_IMAGE)
                 .build();
+    }
+
+    public void updateObjectKey(String objectKey) {
+        this.objectKey = objectKey;
+    }
+
+    public void validateId(Long postProductImageId) {
+        if (!Objects.equals(this.id, postProductImageId)) {
+            throw new CustomException(ErrorResponseCode.UNAUTHORIZED_POST_PRODUCT_IMAGE_ACCESS);
+        }
     }
 }

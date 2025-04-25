@@ -56,4 +56,10 @@ public class PostProductJpaEntity extends BaseTimeJpaEntity {
                 .hashtags(postProduct.getHashTags())
                 .build();
     }
+
+    public void updatePostProductForDomainEntity(PostProduct postProduct) {
+        this.name = postProduct.getName();
+        this.brand = postProduct.getBrand();
+        this.hashtags = postProduct.getHashTags();
+    }
 }

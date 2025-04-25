@@ -3,7 +3,7 @@ package com.ftm.server.adapter.out.persistence.repository;
 import static com.ftm.server.adapter.out.persistence.model.QPostProductImageJpaEntity.postProductImageJpaEntity;
 
 import com.ftm.server.adapter.out.persistence.model.PostProductImageJpaEntity;
-import com.ftm.server.application.query.FindByPostProductIdsQuery;
+import com.ftm.server.application.query.FindByIdsQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -16,10 +16,10 @@ public class PostProductImageCustomRepositoryImpl implements PostProductImageCus
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<PostProductImageJpaEntity> findByPostProductIds(FindByPostProductIdsQuery query) {
+    public List<PostProductImageJpaEntity> findByPostProductIds(FindByIdsQuery query) {
         return queryFactory
                 .selectFrom(postProductImageJpaEntity)
-                .where(postProductImageJpaEntity.postProduct.id.in(query.getPostProductIds()))
+                .where(postProductImageJpaEntity.postProduct.id.in(query.getIds()))
                 .fetch();
     }
 }
