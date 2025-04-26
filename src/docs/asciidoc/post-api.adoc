@@ -68,3 +68,99 @@ include::{snippetsDir}/loadPostDetail/1/response-fields.adoc[]
 실패 1. 존재하지 않는 게시글이거나, 삭제된 게시글인 경우
 
 include::{snippetsDir}/loadPostDetail/2/http-response.adoc[]
+
+---
+
+=== **3. 게시글 수정**
+
+유저픽 게시글 수정 api 입니다. +
+수정한 필드에 대해서만 요청 데이터에 담아서 요청하면 됩니다. +
+다음과 같이 수정 요청 가능합니다. +
+- 기존 게시글 내용 수정 +
+- 새로운 게시글 이미지 추가 +
+- 기존 게시글 이미지 삭제 +
+- 새로운 상품 추가 +
+- 기존 상품 내용 수정 +
+- 기존 상품 삭제 +
+- 새로운 상품 이미지 추가 +
+- 기존 상품 이미지 삭제 +
+기존 상품의 이미지를 변경할 때, 기존 이미지를 삭제한다면 `deleteProductImageId` 필드에 꼭 상품 이미지 ID를 기재하고, 새로운 이미지를 등록하면 `imageIndex` 필드에 관련 상품 이미지 파일의 인덱스를 꼭 기재해야 합니다. +
+`imageIndex` 관련 내용은 게시글 저장 API와 동일합니다.
+
+==== Request
+include::{snippetsDir}/updatePost/1/curl-request.adoc[]
+
+==== Request Path Parameters
+include::{snippetsDir}/updatePost/1/path-parameters.adoc[]
+
+==== Request Parts
+include::{snippetsDir}/updatePost/1/request-parts.adoc[]
+
+==== Request Parts : **data** - Detail Fields
+include::{snippetsDir}/updatePost/1/request-part-data-fields.adoc[]
+
+==== 성공 Response
+include::{snippetsDir}/updatePost/1/http-response.adoc[]
+
+==== Response Body Fields
+include::{snippetsDir}/updatePost/1/response-fields.adoc[]
+
+==== 실패 Response
+실패 1. 인증되지 않은 유저일 경우
+
+include::{snippetsDir}/updatePost/2/http-response.adoc[]
+
+실패 2. 존재하지 않는 게시글일 경우
+
+include::{snippetsDir}/updatePost/3/http-response.adoc[]
+
+실패 3. 게시글을 조작할 권한이 없을 경우 (요청한 유저 != 작성한 유저)
+
+include::{snippetsDir}/updatePost/4/http-response.adoc[]
+
+
+실패 4. 이미지와 상품 정보가 매핑되지 않을 경우 +
+- 상품 정보 imageIndex 중복 +
+- 이미지 개수와 상품 개수 불일치 (이미지를 등록하지 않은 상품을 제외한 개수로 비교) +
+
+include::{snippetsDir}/updatePost/5/http-response.adoc[]
+
+
+실패 5. 요청한 파일 목록 검증에 실패할 경우 (이미지 파일 X, 사이즈)
+
+include::{snippetsDir}/updatePost/6/http-response.adoc[]
+
+실패 6. 이미지 파일 업로드에 실패할 경우
+
+include::{snippetsDir}/updatePost/7/http-response.adoc[]
+
+실패 7. 요청 데이터의 게시글 이미지가 해당 게시글의 이미지가 아닐 경우 +
+- 게시글 이미지 삭제 +
+- deletePostImageIds +
+
+include::{snippetsDir}/updatePost/8/http-response.adoc[]
+
+실패 8. 요청 데이터의 상품 정보가 해당 게시글의 상품이 아닐 경우 +
+- 상품 삭제 +
+- 상품 업데이트 +
+- deleteProductIds, updateProducts.id +
+
+include::{snippetsDir}/updatePost/9/http-response.adoc[]
+
+실패 9. 요청 데이터의 상품 이미지 정보가 해당 상품의 이미지가 아닐 경우 +
+- 상품 이미지 변경 시 삭제 +
+- updateProducts.deleteProductImageId +
+
+include::{snippetsDir}/updatePost/10/http-response.adoc[]
+
+실패 10. 기본 상품 이미지 삭제를 요청할 경우
+
+include::{snippetsDir}/updatePost/11/http-response.adoc[]
+
+실패 11. 기존 상품 이미지가 존재하지만, 새로운 이미지 등록을 요청할 경우
+
+include::{snippetsDir}/updatePost/12/http-response.adoc[]
+
+
+
+
