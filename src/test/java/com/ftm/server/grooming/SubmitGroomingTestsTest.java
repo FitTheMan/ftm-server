@@ -115,13 +115,13 @@ public class SubmitGroomingTestsTest extends BaseTest {
                         new GroomingTestSubmissionRequest.SubmittedQuestion(
                                 1L, "BEAUTY", List.of(1L, 2L, 3L)),
                         new GroomingTestSubmissionRequest.SubmittedQuestion(
-                                6L, "HYGIENE", List.of(16L)),
+                                6L, "HYGIENE", List.of(18L)),
                         new GroomingTestSubmissionRequest.SubmittedQuestion(
-                                10L, "HAIR", List.of(28L)),
+                                10L, "HAIR", List.of(32L)),
                         new GroomingTestSubmissionRequest.SubmittedQuestion(
-                                15L, "WORKOUT", List.of(41L, 42L, 43L, 44L)),
+                                15L, "WORKOUT", List.of(46L, 47L, 48L)),
                         new GroomingTestSubmissionRequest.SubmittedQuestion(
-                                18L, "FASHION", List.of(61L)));
+                                18L, "FASHION", List.of(67L, 68L)));
         return new GroomingTestSubmissionRequest(submissions);
     }
 
