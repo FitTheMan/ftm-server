@@ -5,8 +5,10 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.mo
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ftm.server.application.command.user.GeneralUserCreationCommand;
+import com.ftm.server.application.port.out.persistence.auth.LoadUserForAuthPort;
 import com.ftm.server.application.port.out.persistence.user.SaveUserImagePort;
 import com.ftm.server.application.port.out.persistence.user.SaveUserPort;
+import com.ftm.server.application.query.FindByEmailQuery;
 import com.ftm.server.domain.entity.User;
 import com.ftm.server.domain.entity.UserImage;
 import com.ftm.server.domain.enums.AgeGroup;
@@ -15,6 +17,7 @@ import com.ftm.server.domain.enums.UserRole;
 import com.ftm.server.infrastructure.security.UserPrincipal;
 import groovy.util.logging.Slf4j;
 import java.util.List;
+import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +58,7 @@ public class BaseTest {
 
     @Autowired private SaveUserPort saveUserPort;
     @Autowired private SaveUserImagePort saveUserImagePort;
+    @Autowired private LoadUserForAuthPort loadUserForAuthPort;
 
     @BeforeEach
     void setup(WebApplicationContext context, RestDocumentationContextProvider restDocumentation) {
@@ -80,12 +84,13 @@ public class BaseTest {
 
     // 사용자 생성 및 저장
     protected User createTestUser(String email, String password) {
+        String nickname = "test " + UUID.randomUUID();
         User user =
                 User.createGeneralUser(
                         GeneralUserCreationCommand.of(
                                 email,
                                 password,
-                                "test 사용자",
+                                nickname,
                                 AgeGroup.FIFTIES,
                                 List.of(HashTag.PERFUME)));
         User testUser = saveUserPort.saveUser(user);
@@ -102,6 +107,25 @@ public class BaseTest {
 
         // 사용자 생성
         User user = createTestUser(email, password);
+
+        // session 생성
+        SecurityContext context = SecurityContextHolder.createEmptyContext();
+        UsernamePasswordAuthenticationToken auth =
+                new UsernamePasswordAuthenticationToken(
+                        UserPrincipal.of(user),
+                        null,
+                        List.of(new SimpleGrantedAuthority(UserRole.USER.name())));
+        context.setAuthentication(auth);
+
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute(
+                HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, context);
+
+        return session;
+    }
+
+    protected MockHttpSession login(String email) {
+        User user = loadUserForAuthPort.loadUserByEmail(FindByEmailQuery.of(email)).get();
 
         // session 생성
         SecurityContext context = SecurityContextHolder.createEmptyContext();
