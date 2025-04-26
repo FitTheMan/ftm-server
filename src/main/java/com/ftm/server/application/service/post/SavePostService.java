@@ -11,17 +11,14 @@ import com.ftm.server.application.port.out.s3.S3ImageDeletePort;
 import com.ftm.server.application.port.out.s3.S3PostImageUploadPort;
 import com.ftm.server.application.port.out.s3.S3PostProductImageUploadPort;
 import com.ftm.server.application.port.out.transcation.AfterRollbackExecutorPort;
+import com.ftm.server.application.validator.PostProductValidator;
 import com.ftm.server.application.vo.post.PostInfoVo;
-import com.ftm.server.common.exception.CustomException;
-import com.ftm.server.common.response.enums.ErrorResponseCode;
 import com.ftm.server.domain.entity.Post;
 import com.ftm.server.domain.entity.PostImage;
 import com.ftm.server.domain.entity.PostProduct;
 import com.ftm.server.domain.entity.PostProductImage;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -48,7 +45,7 @@ public class SavePostService implements SavePostUseCase {
     public PostInfoVo execute(SavePostCommand command) {
 
         // 상품, 상품이미지 검증
-        validateProductImages(command.getProducts(), command.getProductImages());
+        validateProductsWithImages(command.getProducts(), command.getProductImages());
 
         // 이미지 업로드 로직 먼저 수행
         List<String> uploadedPostImageKeys =
@@ -103,32 +100,10 @@ public class SavePostService implements SavePostUseCase {
         return PostInfoVo.from(post);
     }
 
-    private void validateProductImages(
+    private void validateProductsWithImages(
             List<SavePostProductCommand> products, List<MultipartFile> productImages) {
-
-        List<Integer> imageIndexes =
-                products.stream()
-                        .map(SavePostProductCommand::getImageIndex)
-                        .filter(index -> index > 0)
-                        .toList();
-
-        // 중복된 이미지 인덱스 검증
-        Set<Integer> seen = new HashSet<>();
-        for (int index : imageIndexes) {
-            if (!seen.add(index)) {
-                log.warn("중복된 imageIndex : index={}", index);
-                throw new CustomException(ErrorResponseCode.INVALID_POST_PRODUCT_IMAGE_MAPPING);
-            }
-        }
-
-        // 이미지와 매핑된 상품 정보와 요청한 상품 이미지의 개수가 다를 경우
-        // 중복된 imageIndex, 업로드할 이미지가 이미지와 매핑된 상품 정보 개수보다 많을 경우, 업도드할 이미지가 이미지와 매핑된 상품 정보 개수보다 적을 경우
-        if (imageIndexes.size() != productImages.size()) {
-            log.warn(
-                    "상품과 업로드할 상품 이미지 1:1 매핑 실패 : 이미지와 매핑된 상품 개수={}, 업로드할 이미지 개수={}",
-                    imageIndexes.size(),
-                    productImages.size());
-            throw new CustomException(ErrorResponseCode.INVALID_POST_PRODUCT_IMAGE_MAPPING);
-        }
+        PostProductValidator.validateImageIndexRange(products, productImages);
+        PostProductValidator.validateImageIndexDuplication(products);
+        PostProductValidator.validateOneToOneImageProductMapping(products, productImages);
     }
 }
