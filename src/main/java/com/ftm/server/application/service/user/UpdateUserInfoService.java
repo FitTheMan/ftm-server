@@ -5,7 +5,7 @@ import com.ftm.server.application.port.in.user.UpdateUserInfoUseCase;
 import com.ftm.server.application.port.out.persistence.user.LoadUserImagePort;
 import com.ftm.server.application.port.out.persistence.user.LoadUserPort;
 import com.ftm.server.application.port.out.persistence.user.UpdateUserImagePort;
-import com.ftm.server.application.port.out.persistence.user.UpdateUserInfoPort;
+import com.ftm.server.application.port.out.persistence.user.UpdateUserPort;
 import com.ftm.server.application.port.out.s3.S3ImageDeletePort;
 import com.ftm.server.application.port.out.s3.S3UserImageUploadPort;
 import com.ftm.server.application.port.out.transcation.AfterCommitExecutorPort;
@@ -28,7 +28,7 @@ public class UpdateUserInfoService implements UpdateUserInfoUseCase {
     private final LoadUserImagePort loadUserImagePort;
     private final LoadUserPort loadUserPort;
 
-    private final UpdateUserInfoPort updateUserInfoPort;
+    private final UpdateUserPort updateUserPort;
     private final UpdateUserImagePort updateUserImagePort;
 
     private final S3UserImageUploadPort s3UserImageUploadPort;
@@ -87,7 +87,7 @@ public class UpdateUserInfoService implements UpdateUserInfoUseCase {
             }
         }
 
-        updateUserInfoPort.updateUserInfo(user);
+        updateUserPort.updateUser(user);
         updateUserImagePort.updateUserImage(userImage);
 
         return UserWithImageVo.of(user, userImage);
