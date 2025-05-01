@@ -1,24 +1,20 @@
 package com.ftm.server.adapter.out.persistence.adapter.user;
 
 import com.ftm.server.adapter.out.persistence.mapper.EmailVerificationLogsMapper;
+import com.ftm.server.adapter.out.persistence.mapper.PostMapper;
 import com.ftm.server.adapter.out.persistence.mapper.UserImageMapper;
 import com.ftm.server.adapter.out.persistence.mapper.UserMapper;
-import com.ftm.server.adapter.out.persistence.model.EmailVerificationLogsJpaEntity;
-import com.ftm.server.adapter.out.persistence.model.GroomingLevelJpaEntity;
-import com.ftm.server.adapter.out.persistence.model.UserImageJpaEntity;
-import com.ftm.server.adapter.out.persistence.model.UserJpaEntity;
-import com.ftm.server.adapter.out.persistence.repository.EmailVerificationLogsRepository;
-import com.ftm.server.adapter.out.persistence.repository.GroomingLevelRepository;
-import com.ftm.server.adapter.out.persistence.repository.UserImageRepository;
-import com.ftm.server.adapter.out.persistence.repository.UserRepository;
-import com.ftm.server.application.command.user.EmailVerificationLogCreationCommand;
+import com.ftm.server.adapter.out.persistence.model.*;
+import com.ftm.server.adapter.out.persistence.repository.*;
+import com.ftm.server.application.command.user.*;
 import com.ftm.server.application.port.out.persistence.user.*;
 import com.ftm.server.application.query.*;
 import com.ftm.server.common.annotation.Adapter;
 import com.ftm.server.common.exception.CustomException;
-import com.ftm.server.domain.entity.EmailVerificationLogs;
-import com.ftm.server.domain.entity.User;
-import com.ftm.server.domain.entity.UserImage;
+import com.ftm.server.domain.entity.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,19 +31,29 @@ public class UserDomainPersistenceAdapter
                 SaveUserImagePort,
                 LoadUserPort,
                 LoadUserImagePort,
-                UpdateUserInfoPort,
-                UpdateUserImagePort {
+                UpdateUserPort,
+                UpdateUserImagePort,
+                LoadPostUserDomainPort,
+                UpdatePostUserDomainPort,
+                DeleteUserImagePort,
+                DeleteGroomingTestResultPort,
+                DeleteUserPort,
+                DeleteBookmarkPort {
 
     // repository
     private final EmailVerificationLogsRepository emailVerificationLogsRepository;
     private final UserRepository userRepository;
     private final GroomingLevelRepository groomingLevelRepository;
     private final UserImageRepository userImageRepository;
+    private final PostRepository postRepository;
+    private final BookmarkRepository bookmarkRepository;
+    private final GroomingTestResultRepository groomingTestResultRepository;
 
     // mapper
     private final EmailVerificationLogsMapper emailVerificationLogsMapper;
     private final UserMapper userMapper;
     private final UserImageMapper userImageMapper;
+    private final PostMapper postMapper;
 
     @Override
     public Optional<EmailVerificationLogs> loadEmailVerificationLogByEmail(FindByEmailQuery query) {
@@ -115,9 +121,25 @@ public class UserDomainPersistenceAdapter
     public User loadUserById(FindByUserIdQuery query) {
         UserJpaEntity userJpaEntity =
                 userRepository
-                        .findById(query.getUserId())
+                        .findByIdAndIsDeleted(query.getUserId(), false)
                         .orElseThrow(() -> CustomException.USER_NOT_FOUND);
         return userMapper.toDomainEntity(userJpaEntity);
+    }
+
+    @Override
+    public User loadUserByRole(FindUserByRoleQuery query) {
+        UserJpaEntity userJpaEntity = userRepository.findByRole(query.getUserRole()).get();
+        return userMapper.toDomainEntity(userJpaEntity);
+    }
+
+    @Override
+    public List<User> loadUserByDeleteOption(FindUserByDeleteOptionQuery query) {
+        return userRepository
+                .findAllByDeletedBefore(
+                        query.getIsDeleted(), query.getDeletedAt().atTime(23, 59, 59))
+                .stream()
+                .map(userMapper::toDomainEntity)
+                .toList();
     }
 
     @Override
@@ -131,7 +153,7 @@ public class UserDomainPersistenceAdapter
     }
 
     @Override
-    public void updateUserInfo(User user) {
+    public void updateUser(User user) {
         UserJpaEntity savedUser =
                 userRepository
                         .findById(user.getId())
@@ -155,5 +177,50 @@ public class UserDomainPersistenceAdapter
         }
 
         userImageJpaEntity.updateFromDomainEntity(userImage);
+    }
+
+    @Override
+    public List<Post> loadPostListByUser(FindByUserIdQuery query) {
+        return postRepository.findByUserId(query.getUserId()).stream()
+                .map(postMapper::toDomainEntity)
+                .toList();
+    }
+
+    @Override
+    public void updatePostListBySystemUser(List<Post> postList) {
+        UserJpaEntity systemUser = userRepository.findById(postList.get(0).getUserId()).get();
+
+        Map<Long, Post> map = new HashMap<>();
+        postList.forEach(p -> map.put(p.getId(), p));
+
+        List<PostJpaEntity> postJpaEntityList =
+                postRepository.findAllById(postList.stream().map(Post::getId).toList());
+
+        postJpaEntityList.forEach(
+                pj -> pj.updatePostForDomainEntity(map.get(pj.getId()), systemUser));
+    }
+
+    @Override
+    public void deleteGroomingTestResultByUserList(
+            DeleteGroomingTestResultByUserIdCommand command) {
+        groomingTestResultRepository.deleteAllByUserIdList(command.getUserIdList());
+    }
+
+    @Override
+    public List<String> deleteUserImageByUserList(DeleteUserImageByUserIdCommand command) {
+        List<String> imageKeyList =
+                userImageRepository.findAllByUserIdList(command.getUserIdList());
+        userImageRepository.deleteAllByUserIdList(command.getUserIdList());
+        return imageKeyList;
+    }
+
+    @Override
+    public void deleteAllUserByIdList(DeleteAllUserByIdListCommand command) {
+        userRepository.deleteAllByUserIdList(command.getUserIdList());
+    }
+
+    @Override
+    public void deleteBookmarkByUserList(DeleteBookmarkByUserIdCommand command) {
+        bookmarkRepository.deleteAllByUserIdList(command.getUserIdList());
     }
 }

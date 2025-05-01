@@ -165,4 +165,12 @@ public class User extends BaseTime {
     public void updateAge(AgeGroup ageGroup) {
         this.ageGroup = ageGroup;
     }
+
+    public void updateIsDeleted(Boolean isDeleted) {
+        this.isDeleted = isDeleted;
+    }
+
+    public void updateDeletedAt(LocalDateTime deletedAt) {
+        this.deletedAt = deletedAt;
+    }
 }

@@ -162,3 +162,17 @@ include::{snippetsDir}/userInfoUpdate/1/response-fields.adoc[]
 include::{snippetsDir}/userInfoUpdate/2/http-response.adoc[]
 실패 2
 include::{snippetsDir}/userInfoUpdate/3/http-response.adoc[]
+
+
+=== **9. 회원 탈퇴 api**
+
+회원 탈퇴를 진행
+
+==== Request
+include::{snippetsDir}/userExit/1/http-request.adoc[]
+
+==== 성공 Response
+include::{snippetsDir}/userExit/1/http-response.adoc[]
+
+==== Response Body Fields
+include::{snippetsDir}/userExit/1/response-fields.adoc[]

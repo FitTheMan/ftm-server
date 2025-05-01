@@ -4,6 +4,6 @@ import com.ftm.server.common.annotation.Port;
 import com.ftm.server.domain.entity.User;
 
 @Port
-public interface UpdateUserInfoPort {
-    void updateUserInfo(User user);
+public interface UpdateUserPort {
+    void updateUser(User user);
 }

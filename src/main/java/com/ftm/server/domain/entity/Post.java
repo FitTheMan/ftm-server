@@ -121,4 +121,8 @@ public class Post extends BaseTime {
             throw new CustomException(ErrorResponseCode.UNAUTHORIZED_POST_ACCESS);
         }
     }
+
+    public void updateUserId(Long userId) {
+        this.userId = userId;
+    }
 }
