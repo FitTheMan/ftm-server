@@ -32,6 +32,7 @@ public class PostDomainPersistenceAdapter
                 UpdatePostPort,
                 UpdatePostProductPort,
                 UpdatePostProductImagePort,
+                DeletePostPort,
                 DeletePostImagePort,
                 DeletePostProductPort,
                 DeletePostProductImagePort {
@@ -140,6 +141,13 @@ public class PostDomainPersistenceAdapter
     }
 
     @Override
+    public List<Post> loadPostsByDeleteOption(FindPostByDeleteOptionQuery query) {
+        return postRepository.findAllByDeletedBefore(query).stream()
+                .map(postMapper::toDomainEntity)
+                .toList();
+    }
+
+    @Override
     public List<PostImage> loadPostImagesByPostId(FindByPostIdQuery query) {
         PostJpaEntity postJpaEntity =
                 postRepository
@@ -147,6 +155,13 @@ public class PostDomainPersistenceAdapter
                         .orElseThrow(() -> new CustomException(ErrorResponseCode.POST_NOT_FOUND));
 
         return postImageRepository.findAllByPost(postJpaEntity).stream()
+                .map(postImageMapper::toDomainEntity)
+                .toList();
+    }
+
+    @Override
+    public List<PostImage> loadPostImagesByPostIds(FindByIdsQuery query) {
+        return postImageRepository.findAllByPostIdIn(query.getIds()).stream()
                 .map(postImageMapper::toDomainEntity)
                 .toList();
     }
@@ -171,9 +186,16 @@ public class PostDomainPersistenceAdapter
     }
 
     @Override
+    public List<PostProduct> loadPostProductsByPostIds(FindByIdsQuery query) {
+        return postProductRepository.findAllByPostIdIn(query.getIds()).stream()
+                .map(postProductMapper::toDomainEntity)
+                .toList();
+    }
+
+    @Override
     public List<PostProductImage> loadPostProductImagesByPostProductIds(FindByIdsQuery query) {
         List<PostProductImageJpaEntity> postProductImageJpaEntities =
-                postProductImageRepository.findByPostProductIds(query);
+                postProductImageRepository.findAllByPostProductIdIn(query.getIds());
 
         return postProductImageJpaEntities.stream()
                 .map(postProductImageMapper::toDomainEntity)
@@ -238,23 +260,31 @@ public class PostDomainPersistenceAdapter
         }
     }
 
+    @Override
+    public void deletePostsByIds(List<Long> postIds) {
+        postRepository.deleteAllByIdInBatch(postIds);
+    }
+
+    @Override
     public void deletePostImages(List<PostImage> postImages) {
         List<Long> ids = postImages.stream().map(PostImage::getId).toList();
-
-        postImageRepository.deleteAllById(ids);
+        postImageRepository.deleteAllByIdInBatch(ids);
     }
 
     @Override
     public void deletePostProducts(List<PostProduct> postProducts) {
         List<Long> ids = postProducts.stream().map(PostProduct::getId).toList();
+        postProductRepository.deleteAllByIdInBatch(ids);
+    }
 
-        postProductRepository.deleteAllById(ids);
+    @Override
+    public void deletePostProductsByIds(List<Long> postProductIds) {
+        postProductRepository.deleteAllByIdInBatch(postProductIds);
     }
 
     @Override
     public void deletePostProductImages(List<PostProductImage> postProductImages) {
         List<Long> ids = postProductImages.stream().map(PostProductImage::getId).toList();
-
-        postProductImageRepository.deleteAllById(ids);
+        postProductImageRepository.deleteAllByIdInBatch(ids);
     }
 }

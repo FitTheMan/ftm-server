@@ -8,4 +8,6 @@ import java.util.List;
 public interface DeletePostProductPort {
 
     void deletePostProducts(List<PostProduct> postProducts);
+
+    void deletePostProductsByIds(List<Long> postProductIds);
 }

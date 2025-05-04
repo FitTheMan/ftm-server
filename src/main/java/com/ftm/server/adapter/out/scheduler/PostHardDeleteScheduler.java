@@ -1,6 +1,6 @@
 package com.ftm.server.adapter.out.scheduler;
 
-import com.ftm.server.application.port.in.user.UserHardDeleteUseCase;
+import com.ftm.server.application.port.in.post.PostHardDeleteUseCase;
 import com.ftm.server.common.annotation.Adapter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -11,17 +11,17 @@ import org.springframework.scheduling.annotation.Scheduled;
 @Slf4j
 @Adapter
 @RequiredArgsConstructor
-public class UserHardDeleteScheduler {
+public class PostHardDeleteScheduler {
 
-    private final UserHardDeleteUseCase userHardDeleteUseCase;
+    private final PostHardDeleteUseCase postHardDeleteUseCase;
 
-    // 매일 새벽 3시 hard delete 진행
+    // 매일 오전 3시 hard delete 진행
     @Scheduled(cron = "0 0 3 * * *", zone = "Asia/Seoul")
     public void run() {
         log.info(
-                "Users Hard Delete started at {}",
+                "Posts Hard Delete started at {}",
                 LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-        userHardDeleteUseCase.execute();
-        log.info("Users Hard Deleted Finish.");
+        postHardDeleteUseCase.execute();
+        log.info("Posts Hard Deleted Finish.");
     }
 }
