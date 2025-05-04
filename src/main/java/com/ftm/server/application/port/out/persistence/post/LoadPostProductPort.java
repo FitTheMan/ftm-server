@@ -12,4 +12,6 @@ public interface LoadPostProductPort {
     List<PostProduct> loadPostProductsByPostId(FindByPostIdQuery query);
 
     List<PostProduct> loadPostProductsByIds(FindByIdsQuery query);
+
+    List<PostProduct> loadPostProductsByPostIds(FindByIdsQuery query);
 }

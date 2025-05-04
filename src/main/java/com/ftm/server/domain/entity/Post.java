@@ -98,10 +98,6 @@ public class Post extends BaseTime {
                 .build();
     }
 
-    public void updateViewCount(int viewCount) {
-        this.viewCount = viewCount;
-    }
-
     public void update(UpdatePostCommand command) {
         if (command.getTitle() != null) this.title = command.getTitle();
         if (command.getContent() != null) this.content = command.getContent();
@@ -110,10 +106,20 @@ public class Post extends BaseTime {
         if (command.getHashTags() != null) this.hashtags = command.getHashTags();
     }
 
-    public void validateDeleted() {
-        if (this.isDeleted && this.deletedAt != null) {
-            throw new CustomException(ErrorResponseCode.POST_NOT_FOUND);
-        }
+    public void updateUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public void updateViewCount(int viewCount) {
+        this.viewCount = viewCount;
+    }
+
+    public void updateIsDeleted(Boolean isDeleted) {
+        this.isDeleted = isDeleted;
+    }
+
+    public void updateDeletedAt(LocalDateTime deletedAt) {
+        this.deletedAt = deletedAt;
     }
 
     public void validateWriter(Long userId) {
@@ -122,7 +128,9 @@ public class Post extends BaseTime {
         }
     }
 
-    public void updateUserId(Long userId) {
-        this.userId = userId;
+    public void validateDeleted() {
+        if (this.isDeleted && this.deletedAt != null) {
+            throw new CustomException(ErrorResponseCode.POST_NOT_FOUND);
+        }
     }
 }
