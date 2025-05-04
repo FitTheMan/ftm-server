@@ -161,6 +161,40 @@ include::{snippetsDir}/updatePost/11/http-response.adoc[]
 
 include::{snippetsDir}/updatePost/12/http-response.adoc[]
 
+---
+
+=== **4. 게시글 삭제**
+
+유저픽 게시글 삭제 api 입니다. +
+`Soft Delete` 전략을 사용해 `isDeleted` , `deletedAt` 필드를 업데이트함으로써 실제 데이터를 물리적으로 삭제하지 않고 삭제된 것으로 간주하여 처리했습니다.  +
+스케쥴러를 통해 매일 오전 6시에 전체 게시글을 조회하면서 삭제 처리된지 30일이 지난 데이터는 `Hard Delete` 를 수행합니다.
+
+==== Request
+include::{snippetsDir}/deletePost/1/http-request.adoc[]
+
+==== Request Path Parameters
+include::{snippetsDir}/deletePost/1/path-parameters.adoc[]
+
+==== 성공 Response
+include::{snippetsDir}/deletePost/1/http-response.adoc[]
+
+==== Response Body Fields
+include::{snippetsDir}/deletePost/1/response-fields.adoc[]
+
+==== 실패 Response
+실패 1. 인증되지 않은 유저일 경우
+
+include::{snippetsDir}/deletePost/2/http-response.adoc[]
+
+실패 2. 존재하지 않는 게시글 ID일 경우
+
+include::{snippetsDir}/deletePost/3/http-response.adoc[]
+
+실패 3. 게시글을 삭제할 권한이 없을 경우 (해당 게시글의 작성자가 아닐 경우)
+
+include::{snippetsDir}/deletePost/4/http-response.adoc[]
+
+
 
 
 
