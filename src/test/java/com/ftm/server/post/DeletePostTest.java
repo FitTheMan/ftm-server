@@ -8,9 +8,11 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.JsonFieldType.*;
+import static org.springframework.restdocs.payload.JsonFieldType.STRING;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.restdocs.request.RequestDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -34,6 +36,7 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.FieldDescriptor;
@@ -42,7 +45,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
-public class LoadPostDetailTest extends BaseTest {
+public class DeletePostTest extends BaseTest {
 
     @Autowired private SavePostUseCase savePostUseCase;
     @MockitoSpyBean private S3PostImageUploadPort s3PostImageUploadPort;
@@ -53,74 +56,34 @@ public class LoadPostDetailTest extends BaseTest {
     private final ParameterDescriptor pathParametersForPostId =
             parameterWithName("postId").description("게시글 ID");
 
-    private final List<FieldDescriptor> responseFieldLoadPostDetail =
+    private final List<FieldDescriptor> responseFieldDeletePost =
             List.of(
                     fieldWithPath("status").type(NUMBER).description("응답 상태"),
                     fieldWithPath("code").type(STRING).description("상태 코드"),
                     fieldWithPath("message").type(STRING).description("메시지"),
-                    fieldWithPath("data").type(OBJECT).optional().description("응답 데이터"),
-                    fieldWithPath("data.postId").type(NUMBER).description("게시글 ID"),
-                    fieldWithPath("data.title").type(STRING).description("게시글 제목"),
-                    fieldWithPath("data.content").type(STRING).description("게시글 내용"),
-                    fieldWithPath("data.groomingCategory").type(STRING).description("게시글 그루밍 카테고리"),
-                    fieldWithPath("data.hashTags[]").type(ARRAY).description("게시글 해시태그 목록"),
-                    fieldWithPath("data.viewCount").type(NUMBER).description("게시글 조회수"),
-                    fieldWithPath("data.likeCount").type(NUMBER).description("게시글 좋아요 수"),
-                    fieldWithPath("data.createdAt").type(STRING).description("게시글 생성 날짜"),
-                    fieldWithPath("data.updatedAt").type(STRING).description("게시글 수정 날짜"),
-                    fieldWithPath("data.postImages[]").type(ARRAY).description("게시글 이미지 목록 정보"),
-                    fieldWithPath("data.postImages[].postImageId")
-                            .type(NUMBER)
-                            .description("게시글 이미지 ID"),
-                    fieldWithPath("data.postImages[].imageUrl")
-                            .type(STRING)
-                            .description("게시글 이미지 URL"),
-                    fieldWithPath("data.writer").type(OBJECT).description("게시글 작성자 정보"),
-                    fieldWithPath("data.writer.userId").type(NUMBER).description("게시글 작성자 ID"),
-                    fieldWithPath("data.writer.nickname").type(STRING).description("게시글 작성자 닉네임"),
-                    fieldWithPath("data.writer.imageUrl")
-                            .type(STRING)
-                            .description("게시글 작성자 프로필 이미지 URL"),
-                    fieldWithPath("data.postProducts[]").type(ARRAY).description("게시글 상품 목록 정보"),
-                    fieldWithPath("data.postProducts[].postProductId")
-                            .type(NUMBER)
-                            .description("게시글 상품 ID"),
-                    fieldWithPath("data.postProducts[].name").type(STRING).description("게시글 상품 이름"),
-                    fieldWithPath("data.postProducts[].brand")
-                            .type(STRING)
-                            .description("게시글 상품 브랜드"),
-                    fieldWithPath("data.postProducts[].hashTags[]")
-                            .type(ARRAY)
-                            .description("게시글 상품 해시태그 목록"),
-                    fieldWithPath("data.postProducts[].postProductImage")
-                            .type(OBJECT)
-                            .description("게시글 상품 이미지 정보"),
-                    fieldWithPath("data.postProducts[].postProductImage.postProductImageId")
-                            .type(NUMBER)
-                            .description("게시글 상품 이미지 ID"),
-                    fieldWithPath("data.postProducts[].postProductImage.imageUrl")
-                            .type(STRING)
-                            .description("게시글 상품 이미지 URL"));
+                    fieldWithPath("data").type(OBJECT).optional().description("응답 데이터"));
 
     private Long savedPostId;
 
-    private ResultActions getResultActions(Long postId) throws Exception {
-        return mockMvc.perform(RestDocumentationRequestBuilders.get("/api/posts/{postId}", postId));
+    private ResultActions getResultActions(MockHttpSession session, Long postId) throws Exception {
+        return mockMvc.perform(
+                RestDocumentationRequestBuilders.delete("/api/posts/{postId}", postId)
+                        .session(session));
     }
 
     private RestDocumentationResultHandler getDocument(Integer identifier) {
         return document(
-                "loadPostDetail/" + identifier,
+                "deletePost/" + identifier,
                 preprocessRequest(prettyPrint()),
                 preprocessResponse(prettyPrint(), getModifiedHeader()),
                 pathParameters(pathParametersForPostId),
-                responseFields(responseFieldLoadPostDetail),
+                responseFields(responseFieldDeletePost),
                 resource(
                         ResourceSnippetParameters.builder()
                                 .tag("유저픽 게시글")
-                                .summary("유저픽 게시글 상세 조회 api")
-                                .description("유저픽 게시글 상세 조회 api 입니다.")
-                                .responseFields(responseFieldLoadPostDetail)
+                                .summary("유저픽 게시글 삭제 api")
+                                .description("유저픽 게시글 삭제 api 입니다.")
+                                .responseFields(responseFieldDeletePost)
                                 .build()));
     }
 
@@ -152,22 +115,46 @@ public class LoadPostDetailTest extends BaseTest {
 
     @Test
     @Transactional
-    void 유저픽_게시글_상세_조회_성공() throws Exception {
+    void 게시글_삭제_성공() throws Exception {
+        // given
+        MockHttpSession session = login("test@gmail.com");
+
         // when
-        ResultActions resultActions = getResultActions(savedPostId);
+        ResultActions resultActions = getResultActions(session, savedPostId);
 
         // then
         resultActions.andExpect(status().isOk()).andDo(print());
 
-        // document
+        // Document
         resultActions.andDo(getDocument(1));
     }
 
     @Test
     @Transactional
-    void 유저픽_게시글_상세_조회_실패() throws Exception {
+    void 게시글_삭제_실패1() throws Exception {
         // when
-        ResultActions resultActions = getResultActions(1000L);
+        ResultActions resultActions =
+                mockMvc.perform(
+                        RestDocumentationRequestBuilders.delete(
+                                "/api/posts/{postId}", savedPostId));
+
+        // then
+        resultActions
+                .andExpect(status().is(ErrorResponseCode.NOT_AUTHENTICATED.getHttpStatus().value()))
+                .andDo(print());
+
+        // document
+        resultActions.andDo(getDocument(2));
+    }
+
+    @Test
+    @Transactional
+    void 게시글_삭제_실패2() throws Exception {
+        // given
+        MockHttpSession session = login("test@gmail.com");
+
+        // when
+        ResultActions resultActions = getResultActions(session, 100000L);
 
         // then
         resultActions
@@ -175,6 +162,28 @@ public class LoadPostDetailTest extends BaseTest {
                 .andDo(print());
 
         // document
-        resultActions.andDo(getDocument(2));
+        resultActions.andDo(getDocument(3));
+    }
+
+    @Test
+    @Transactional
+    void 게시글_삭제_실패3() throws Exception {
+        // given
+        MockHttpSession session = createUserAndLogin("test12@gmail.com", "ddddd!");
+
+        // when
+        ResultActions resultActions = getResultActions(session, savedPostId);
+
+        // then
+        resultActions
+                .andExpect(
+                        status().is(
+                                        ErrorResponseCode.UNAUTHORIZED_POST_ACCESS
+                                                .getHttpStatus()
+                                                .value()))
+                .andDo(print());
+
+        // document
+        resultActions.andDo(getDocument(4));
     }
 }
