@@ -27,6 +27,10 @@ public enum ErrorResponseCode {
     POST_PRODUCT_IMAGE_ALREADY_EXISTS(
             HttpStatus.BAD_REQUEST, "E400_010", "이미 이미지가 존재합니다. 기존 이미지를 삭제하고 업로드 해주세요."),
 
+    BAD_REQUEST_PAGING_INDEX_RANGE(HttpStatus.BAD_REQUEST, "E400_011", "페이지 번호는 최소 0 이상이여야 합니다."),
+    BAD_REQUEST_PAGING_SIZE_RANGE(
+            HttpStatus.BAD_REQUEST, "E400_012", "페이지당 개수는 최소 1 이상, 10 이하여야 합니다."),
+
     // 401번
     NOT_AUTHENTICATED(HttpStatus.UNAUTHORIZED, "E401_001", "인증되지 않은 사용자입니다."),
     INVALID_CREDENTIALS(HttpStatus.UNAUTHORIZED, "E401_002", "인증에 실패하였습니다."),
