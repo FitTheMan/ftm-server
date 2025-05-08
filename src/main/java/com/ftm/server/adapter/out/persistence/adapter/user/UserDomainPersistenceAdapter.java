@@ -16,6 +16,7 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Slice;
 
 @Adapter
 @RequiredArgsConstructor
@@ -32,6 +33,7 @@ public class UserDomainPersistenceAdapter
                 UpdateUserPort,
                 UpdateUserImagePort,
                 LoadPostUserDomainPort,
+                LoadPostImageUserDomainPort,
                 UpdatePostUserDomainPort,
                 DeleteUserImagePort,
                 DeleteGroomingTestResultPort,
@@ -47,6 +49,7 @@ public class UserDomainPersistenceAdapter
     private final GroomingLevelRepository groomingLevelRepository;
     private final UserImageRepository userImageRepository;
     private final PostRepository postRepository;
+    private final PostImageRepository postImageRepository;
     private final BookmarkRepository bookmarkRepository;
     private final GroomingTestResultRepository groomingTestResultRepository;
 
@@ -56,6 +59,7 @@ public class UserDomainPersistenceAdapter
     private final UserImageMapper userImageMapper;
     private final PostMapper postMapper;
     private final BookmarkMapper bookmarkMapper;
+    private final PostImageMapper postImageMapper;
 
     @Override
     public Optional<EmailVerificationLogs> loadEmailVerificationLogByEmail(FindByEmailQuery query) {
@@ -190,6 +194,18 @@ public class UserDomainPersistenceAdapter
     public List<Post> loadPostListByUser(FindByUserIdQuery query) {
         return postRepository.findByUserId(query.getUserId()).stream()
                 .map(postMapper::toDomainEntity)
+                .toList();
+    }
+
+    @Override
+    public Slice<Post> loadPostsByUserIdWithPaging(FindPostsByPagingQuery query) {
+        return postRepository.findAllByUserIdWithPaging(query).map(postMapper::toDomainEntity);
+    }
+
+    @Override
+    public List<PostImage> loadRepresentativeImagesByPostIds(FindByIdsQuery query) {
+        return postImageRepository.findRepresentativeImagesByPostIdIn(query).stream()
+                .map(postImageMapper::toDomainEntity)
                 .toList();
     }
 
