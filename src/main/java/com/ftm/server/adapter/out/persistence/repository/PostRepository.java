@@ -14,4 +14,6 @@ public interface PostRepository extends JpaRepository<PostJpaEntity, Long>, Post
     @Modifying
     @Query("DELETE FROM PostJpaEntity p WHERE p.id IN (:postIds)")
     void deleteAllByIdInBatch(@Param("postIds") List<Long> postIds);
+
+    boolean existsById(Long id);
 }

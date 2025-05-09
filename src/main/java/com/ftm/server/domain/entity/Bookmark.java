@@ -34,4 +34,8 @@ public class Bookmark extends BaseTime {
                 .updatedAt(updatedAt)
                 .build();
     }
+
+    public static Bookmark createBookmark(Long userId, Long postId) {
+        return Bookmark.builder().userId(userId).postId(postId).build();
+    }
 }
