@@ -142,4 +142,32 @@ public class BaseTest {
 
         return session;
     }
+
+    public record SessionAndUser(MockHttpSession mockHttpSession, User user) {}
+
+    // Session과 함께 User도 반환
+    protected SessionAndUser createUserAndLoginAndReturnUser() {
+        return createUserAndLoginAndReturnUser("test@gmail.com", "123456qwe!");
+    }
+
+    protected SessionAndUser createUserAndLoginAndReturnUser(String email, String password) {
+
+        // 사용자 생성
+        User user = createTestUser(email, password);
+
+        // session 생성
+        SecurityContext context = SecurityContextHolder.createEmptyContext();
+        UsernamePasswordAuthenticationToken auth =
+                new UsernamePasswordAuthenticationToken(
+                        UserPrincipal.of(user),
+                        null,
+                        List.of(new SimpleGrantedAuthority(UserRole.USER.name())));
+        context.setAuthentication(auth);
+
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute(
+                HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, context);
+
+        return new SessionAndUser(session, user);
+    }
 }

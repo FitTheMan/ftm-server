@@ -176,3 +176,27 @@ include::{snippetsDir}/userExit/1/http-response.adoc[]
 
 ==== Response Body Fields
 include::{snippetsDir}/userExit/1/response-fields.adoc[]
+
+=== **10. 북마크 생성 api**
+
+게시글 북마크를 생성
+
+==== Request
+include::{snippetsDir}/createBookmark/1/http-request.adoc[]
+
+==== Request Body Fields
+include::{snippetsDir}/createBookmark/1/request-fields.adoc[]
+
+==== 성공 Response
+성공 1. 북마크가 새롭게 생성된 경우 : CREATED
+include::{snippetsDir}/createBookmark/1/http-response.adoc[]
+
+성공 2. 이미 존재하는 북마크에 대해 생성 요청을 보낸 경우 : OK
+include::{snippetsDir}/createBookmark/2/http-response.adoc[]
+
+==== Response Body Fields
+include::{snippetsDir}/createBookmark/1/response-fields.adoc[]
+
+==== 실패 Response
+실패1.
+include::{snippetsDir}/createBookmark/3/http-response.adoc[]

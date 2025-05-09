@@ -11,4 +11,16 @@ public interface BookmarkRepository extends JpaRepository<BookmarkJpaEntity, Lon
     @Modifying
     @Query("DELETE FROM BookmarkJpaEntity b WHERE b.user.id in (:userIds)")
     void deleteAllByUserIdList(@Param("userIds") List<Long> userIds);
+
+    @Modifying
+    @Query(
+            value =
+                    "INSERT INTO bookmark (user_id, post_id) "
+                            + "VALUES (:userId, :postId) "
+                            + "ON CONFLICT (user_id, post_id) "
+                            + "DO NOTHING;",
+            nativeQuery = true)
+    int saveOrUpdate(@Param("userId") Long userId, @Param("postId") Long postId);
+
+    Boolean existsByUserIdAndPostId(Long userId, Long postId);
 }

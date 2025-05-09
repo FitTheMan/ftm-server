@@ -1,9 +1,6 @@
 package com.ftm.server.adapter.out.persistence.adapter.user;
 
-import com.ftm.server.adapter.out.persistence.mapper.EmailVerificationLogsMapper;
-import com.ftm.server.adapter.out.persistence.mapper.PostMapper;
-import com.ftm.server.adapter.out.persistence.mapper.UserImageMapper;
-import com.ftm.server.adapter.out.persistence.mapper.UserMapper;
+import com.ftm.server.adapter.out.persistence.mapper.*;
 import com.ftm.server.adapter.out.persistence.model.*;
 import com.ftm.server.adapter.out.persistence.repository.*;
 import com.ftm.server.application.command.user.*;
@@ -18,6 +15,7 @@ import java.util.Map;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 
 @Adapter
 @RequiredArgsConstructor
@@ -38,7 +36,10 @@ public class UserDomainPersistenceAdapter
                 DeleteUserImagePort,
                 DeleteGroomingTestResultPort,
                 DeleteUserPort,
-                DeleteBookmarkPort {
+                DeleteBookmarkPort,
+                SaveBookmarkPort,
+                CheckBookmarkPort,
+                CheckPostPort {
 
     // repository
     private final EmailVerificationLogsRepository emailVerificationLogsRepository;
@@ -54,6 +55,7 @@ public class UserDomainPersistenceAdapter
     private final UserMapper userMapper;
     private final UserImageMapper userImageMapper;
     private final PostMapper postMapper;
+    private final BookmarkMapper bookmarkMapper;
 
     @Override
     public Optional<EmailVerificationLogs> loadEmailVerificationLogByEmail(FindByEmailQuery query) {
@@ -108,6 +110,11 @@ public class UserDomainPersistenceAdapter
     public Boolean checksUserBySocialValue(FindBySocialValueQuery query) {
         return userRepository.existsBySocialIdAndSocialProvider(
                 query.getSocialId(), query.getSocialProvider());
+    }
+
+    @Override
+    public Boolean checksUserById(FindByUserIdQuery query) {
+        return userRepository.existsById(query.getUserId());
     }
 
     @Override
@@ -222,5 +229,31 @@ public class UserDomainPersistenceAdapter
     @Override
     public void deleteBookmarkByUserList(DeleteBookmarkByUserIdCommand command) {
         bookmarkRepository.deleteAllByUserIdList(command.getUserIdList());
+    }
+
+    @Override
+    public Boolean saveBookmark(Bookmark bookmark) {
+        // 이미 생성된 북마크인 경우  -> false
+        // 새롭게 생성된 북마크인 경우  -> true
+        int isCreated;
+        try {
+            isCreated = bookmarkRepository.saveOrUpdate(bookmark.getUserId(), bookmark.getPostId());
+        } catch (
+                DataIntegrityViolationException
+                        e) { // on conflict로 문제 예방 했지만, 동시성 문제로 unique key 위반 에러 나는 경우, 에러 반환하지 않고
+            // 그냥 처리(북마크 생성하지 않고 OK 반환)
+            return false;
+        }
+        return isCreated == 1;
+    }
+
+    @Override
+    public Boolean checkIfBookmarkExists(FindBookmarkByUserIdAndPostIdQuery query) {
+        return bookmarkRepository.existsByUserIdAndPostId(query.getUserId(), query.getPostId());
+    }
+
+    @Override
+    public Boolean checksPostById(FindByPostIdQuery query) {
+        return postRepository.existsById(query.getPostId());
     }
 }
