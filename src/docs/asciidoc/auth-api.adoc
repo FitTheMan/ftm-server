@@ -54,7 +54,7 @@ include::{snippetsDir}/kakaoLogin/4/http-response.adoc[]
 
 === **3. 로그아웃**
 
-로그아웃 api 입니다. 요청 헤더에 Key=Cookie, Value="SESSION=" 형식의 세션 쿠키가 존재해야합니다.
+로그아웃 api 입니다.
 
 ==== Request
 include::{snippetsDir}/logout/1/http-request.adoc[]
@@ -68,13 +68,10 @@ include::{snippetsDir}/logout/1/http-response.adoc[]
 ==== Response Body Fields
 include::{snippetsDir}/logout/1/response-fields.adoc[]
 
-==== 실패 Response
-include::{snippetsDir}/logout/2/http-response.adoc[]
-
 
 === **4. Session 유효성 확인 API**
 
-Session 유효성 확인 api입니다.
+Session 유효성 확인 api 입니다.
 
 ==== Request
 include::{snippetsDir}/sessionValidityCheck/1/http-request.adoc[]
