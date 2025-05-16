@@ -256,6 +256,11 @@ public class UserDomainPersistenceAdapter
     }
 
     @Override
+    public void deleteBookmarkById(DeleteBookmarkByIdCommand command) {
+        bookmarkRepository.deleteAllById(List.of(command.getBookmarkId()));
+    }
+
+    @Override
     public Boolean saveBookmark(Bookmark bookmark) {
         // 이미 생성된 북마크인 경우  -> false
         // 새롭게 생성된 북마크인 경우  -> true
@@ -286,5 +291,13 @@ public class UserDomainPersistenceAdapter
         return bookmarkRepository
                 .findAllByUserIdWithPaging(query)
                 .map(bookmarkMapper::toDomainEntity);
+    }
+
+    @Override
+    public Optional<Bookmark> loadBookmarkByUserIdAndPostId(
+            FindBookmarkByUserIdAndPostIdQuery query) {
+        Optional<BookmarkJpaEntity> bookmarkJpaEntity =
+                bookmarkRepository.findByUserIdAndPostId(query.getUserId(), query.getPostId());
+        return bookmarkJpaEntity.map(bookmarkMapper::toDomainEntity);
     }
 }

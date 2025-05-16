@@ -267,3 +267,23 @@ include::{snippetsDir}/loadMyBookmarkPosts/3/http-response.adoc[]
 실패 3. 요청 페이지당 개수 유효성 검증에 실패할 경우
 
 include::{snippetsDir}/loadMyBookmarkPosts/4/http-response.adoc[]
+
+=== **13. 북마크 삭제 api**
+
+사용자가 등록한 북마크를 삭제합니다.
+
+==== Request
+include::{snippetsDir}/deleteBookmark/1/http-request.adoc[]
+
+==== Request Body Fields
+include::{snippetsDir}/deleteBookmark/1/request-fields.adoc[]
+
+==== 성공 Response
+include::{snippetsDir}/deleteBookmark/1/http-response.adoc[]
+
+==== 실패 Response
+실패 1. 해당 사용자와 게시글로 구성된 북마크가 존재하지 않음.
+include::{snippetsDir}/deleteBookmark/2/http-response.adoc[]
+
+==== Response Body Fields
+include::{snippetsDir}/deleteBookmark/2/response-fields.adoc[]

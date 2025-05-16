@@ -51,6 +51,7 @@ public enum ErrorResponseCode {
     POST_NOT_FOUND(HttpStatus.NOT_FOUND, "E404_005", "요청한 게시글을 찾을 수 없습니다."),
     POST_PRODUCT_NOT_FOUND(HttpStatus.NOT_FOUND, "E404_006", "요청한 상품을 찾을 수 없습니다."),
     POST_PRODUCT_IMAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "E404_007", "요청한 상품 이미지를 찾을 수 없습니다."),
+    BOOKMARK_NOT_FOUND(HttpStatus.NOT_FOUND, "E404_008", "요청된 사용자와 게시글에 부합하는 북마크를 찾을 수 없습니다."),
 
     // 409번
     USER_ALREADY_EXISTS(HttpStatus.CONFLICT, "E409_001", "이미 존재하는 사용자입니다."),
