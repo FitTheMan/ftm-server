@@ -41,7 +41,8 @@ public class UserDomainPersistenceAdapter
                 DeleteBookmarkPort,
                 SaveBookmarkPort,
                 CheckBookmarkPort,
-                CheckPostPort {
+                CheckPostPort,
+                LoadBookmarkPort {
 
     // repository
     private final EmailVerificationLogsRepository emailVerificationLogsRepository;
@@ -203,6 +204,13 @@ public class UserDomainPersistenceAdapter
     }
 
     @Override
+    public List<Post> loadPostsByIds(FindByIdsQuery query) {
+        return postRepository.findAllById(query.getIds()).stream()
+                .map(postMapper::toDomainEntity)
+                .toList();
+    }
+
+    @Override
     public List<PostImage> loadRepresentativeImagesByPostIds(FindByIdsQuery query) {
         return postImageRepository.findRepresentativeImagesByPostIdIn(query).stream()
                 .map(postImageMapper::toDomainEntity)
@@ -271,5 +279,12 @@ public class UserDomainPersistenceAdapter
     @Override
     public Boolean checksPostById(FindByPostIdQuery query) {
         return postRepository.existsById(query.getPostId());
+    }
+
+    @Override
+    public Slice<Bookmark> loadBookmarksByUserIdWithPaging(FindBookmarksByPagingQuery query) {
+        return bookmarkRepository
+                .findAllByUserIdWithPaging(query)
+                .map(bookmarkMapper::toDomainEntity);
     }
 }

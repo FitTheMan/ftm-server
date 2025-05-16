@@ -39,7 +39,7 @@ public class PostCustomRepositoryImpl implements PostCustomRepository {
                         .where(postJpaEntity.user.id.eq(query.getUserId()))
                         .offset(pageable.getOffset())
                         .limit(pageable.getPageSize() + 1) // 한 개 더 가져와서 hasNext 판별
-                        .orderBy(postJpaEntity.createdAt.desc())
+                        .orderBy(postJpaEntity.createdAt.desc(), postJpaEntity.id.desc())
                         .fetch();
 
         List<PostJpaEntity> result = content;
