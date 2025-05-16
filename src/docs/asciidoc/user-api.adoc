@@ -207,7 +207,8 @@ include::{snippetsDir}/createBookmark/3/http-response.adoc[]
 
 마이페이지 > 작성한 게시글 목록 > 더보기 버튼 클릭 시 내가 작성한 유저픽 게시글 목록을 조회하는 api 입니다. +
 무한 스크롤, 더보기 형식으로 조회하여 모든 데이터 개수와 번호를 부여하는 Page 방식이 아닌, +
-다음 페이지의 데이터가 존재하는지의 여부를 함께 응답하는 Slice 방식을 사용했습니다.
+다음 페이지의 데이터가 존재하는지의 여부를 함께 응답하는 Slice 방식을 사용했습니다. +
+최신순으로 조회합니다.
 
 ==== Request
 include::{snippetsDir}/loadMyPosts/1/http-request.adoc[]
@@ -233,3 +234,36 @@ include::{snippetsDir}/loadMyPosts/3/http-response.adoc[]
 실패 3. 요청 페이지당 개수 유효성 검증에 실패할 경우
 
 include::{snippetsDir}/loadMyPosts/4/http-response.adoc[]
+
+
+=== **12. 내가 북마크한 유저픽 게시글 목록 조회**
+
+마이페이지 > 북마크한 게시글 목록 > 더보기 버튼 클릭 시 내가 작성한 유저픽 게시글 목록을 조회하는 api 입니다. +
+무한 스크롤, 더보기 형식으로 조회하여 모든 데이터 개수와 번호를 부여하는 Page 방식이 아닌, +
+다음 페이지의 데이터가 존재하는지의 여부를 함께 응답하는 Slice 방식을 사용했습니다. +
+최신순으로 조회합니다.
+
+==== Request
+include::{snippetsDir}/loadMyBookmarkPosts/1/http-request.adoc[]
+
+==== Request Query Parameter Fields
+include::{snippetsDir}/loadMyBookmarkPosts/1/query-parameters.adoc[]
+
+==== 성공 Response
+include::{snippetsDir}/loadMyBookmarkPosts/1/http-response.adoc[]
+
+==== Response Body Fields
+include::{snippetsDir}/loadMyBookmarkPosts/1/response-fields.adoc[]
+
+==== 실패 Response
+실패 1. 인증되지 않은 유저인 경우
+
+include::{snippetsDir}/loadMyBookmarkPosts/2/http-response.adoc[]
+
+실패 2. 요청 페이지 번호 유효성 검증에 실패할 경우
+
+include::{snippetsDir}/loadMyBookmarkPosts/3/http-response.adoc[]
+
+실패 3. 요청 페이지당 개수 유효성 검증에 실패할 경우
+
+include::{snippetsDir}/loadMyBookmarkPosts/4/http-response.adoc[]
