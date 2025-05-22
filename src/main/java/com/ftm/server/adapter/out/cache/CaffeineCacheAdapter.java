@@ -7,6 +7,7 @@ import com.ftm.server.adapter.out.persistence.mapper.GroomingTestAnswerMapper;
 import com.ftm.server.adapter.out.persistence.mapper.GroomingTestQuestionMapper;
 import com.ftm.server.adapter.out.persistence.repository.GroomingTestAnswerRepository;
 import com.ftm.server.adapter.out.persistence.repository.GroomingTestQuestionRepository;
+import com.ftm.server.application.port.out.cache.InvalidGroomingTestsWithCachePort;
 import com.ftm.server.application.port.out.cache.LoadGroomingTestsWithCachePort;
 import com.ftm.server.application.vo.grooming.GroomingTestAnswerInfoVo;
 import com.ftm.server.application.vo.grooming.GroomingTestQuestionWithAnswersVo;
@@ -19,12 +20,14 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 
 @Slf4j
 @Adapter
 @RequiredArgsConstructor
-public class CaffeineCacheAdapter implements LoadGroomingTestsWithCachePort {
+public class CaffeineCacheAdapter
+        implements LoadGroomingTestsWithCachePort, InvalidGroomingTestsWithCachePort {
 
     private final GroomingTestQuestionRepository groomingTestQuestionRepository;
     private final GroomingTestAnswerRepository groomingTestAnswerRepository;
@@ -68,4 +71,8 @@ public class CaffeineCacheAdapter implements LoadGroomingTestsWithCachePort {
                                                 question.getId(), List.of())))
                 .collect(Collectors.toCollection(ArrayList::new));
     }
+
+    @CacheEvict(value = GROOMING_TESTS_INFO_CACHE_NAME, key = GROOMING_TESTS_INFO_CACHE_KEY_ALL)
+    @Override
+    public void invalidGroomingTestsCache() {}
 }

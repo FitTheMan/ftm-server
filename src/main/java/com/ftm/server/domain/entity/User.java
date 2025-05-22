@@ -149,6 +149,15 @@ public class User extends BaseTime {
                 .build();
     }
 
+    public static User createAdminUser(String email, String password, String nickname) {
+        return User.builder()
+                .email(email)
+                .password(password)
+                .nickname(nickname)
+                .role(UserRole.ADMIN)
+                .build();
+    }
+
     public void updateGroomingInfo(Integer groomingScore, Long groomingLevelId) {
         this.groomingScore = groomingScore;
         this.groomingLevelId = groomingLevelId;

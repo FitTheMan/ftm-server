@@ -1,5 +1,7 @@
 package com.ftm.server.domain.entity;
 
+import com.ftm.server.application.command.grooming.SaveGroomingTestQuestionCommand;
+import com.ftm.server.application.command.grooming.UpdateGroomingTestQuestionCommand;
 import com.ftm.server.domain.enums.GroomingCategory;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
@@ -42,5 +44,18 @@ public class GroomingTestQuestion extends BaseTime {
                 .createdAt(createdAt)
                 .updatedAt(updatedAt)
                 .build();
+    }
+
+    public static GroomingTestQuestion create(SaveGroomingTestQuestionCommand command) {
+        return GroomingTestQuestion.builder()
+                .groomingCategory(command.getGroomingCategory())
+                .question(command.getQuestion())
+                .build();
+    }
+
+    public void update(UpdateGroomingTestQuestionCommand command) {
+        if (command.getGroomingCategory() != null)
+            this.groomingCategory = command.getGroomingCategory();
+        if (command.getQuestion() != null) this.question = command.getQuestion();
     }
 }

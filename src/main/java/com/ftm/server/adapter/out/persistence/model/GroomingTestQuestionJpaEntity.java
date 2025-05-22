@@ -39,4 +39,10 @@ public class GroomingTestQuestionJpaEntity extends BaseTimeJpaEntity {
                 .question(groomingTestQuestion.getQuestion())
                 .build();
     }
+
+    public void updateGroomingTestQuestionForDomainEntity(
+            GroomingTestQuestion groomingTestQuestion) {
+        this.groomingCategory = groomingTestQuestion.getGroomingCategory();
+        this.question = groomingTestQuestion.getQuestion();
+    }
 }

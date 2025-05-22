@@ -29,7 +29,11 @@ public class GroomingDomainPersistenceAdapter
                 SaveGroomingTestResultPort,
                 LoadGroomingLevelPort,
                 UpdateUserForGroomingPort,
-                LoadGroomingTestResultPort {
+                LoadGroomingTestResultPort,
+                SaveGroomingTestQuestionPort,
+                UpdateGroomingTestQuestionPort,
+                DeleteGroomingTestQuestionPort,
+                DeleteGroomingTestAnswerPort {
 
     // Repository
     private final GroomingTestQuestionRepository groomingTestQuestionRepository;
@@ -51,6 +55,13 @@ public class GroomingDomainPersistenceAdapter
         return questions.stream()
                 .map(groomingTestQuestionMapper::toDomain)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<GroomingTestQuestion> loadGroomingTestQuestionById(FindByIdQuery query) {
+        return groomingTestQuestionRepository
+                .findById(query.getId())
+                .map(groomingTestQuestionMapper::toDomain);
     }
 
     @Override
@@ -135,5 +146,36 @@ public class GroomingDomainPersistenceAdapter
                 groomingTestResultRepository.loadByUserIdAndTestedAt(query);
 
         return results.stream().map(groomingTestResultMapper::toDomainEntity).toList();
+    }
+
+    @Override
+    public void saveGroomingTestQuestion(GroomingTestQuestion groomingTestQuestion) {
+        groomingTestQuestionRepository.save(
+                groomingTestQuestionMapper.toJpaEntity(groomingTestQuestion));
+    }
+
+    @Override
+    public void updateGroomingTestQuestion(GroomingTestQuestion groomingTestQuestion) {
+        GroomingTestQuestionJpaEntity groomingTestQuestionJpaEntity =
+                groomingTestQuestionRepository
+                        .findById(groomingTestQuestion.getId())
+                        .orElseThrow(
+                                () ->
+                                        new CustomException(
+                                                ErrorResponseCode
+                                                        .GROOMING_TEST_QUESTION_NOT_FOUND));
+
+        groomingTestQuestionJpaEntity.updateGroomingTestQuestionForDomainEntity(
+                groomingTestQuestion);
+    }
+
+    @Override
+    public void deleteGroomingTestQuestionById(Long id) {
+        groomingTestQuestionRepository.deleteById(id);
+    }
+
+    @Override
+    public void deleteGroomingTestAnswersByQuestionId(Long questionId) {
+        groomingTestAnswerRepository.deleteAllByGroomingTestQuestionId(questionId);
     }
 }
