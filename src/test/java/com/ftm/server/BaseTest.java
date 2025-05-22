@@ -170,4 +170,27 @@ public class BaseTest {
 
         return new SessionAndUser(session, user);
     }
+
+    protected MockHttpSession createAdminUserAndLogin() {
+        String email = "admin@gmail.com";
+        String password = "admin1234!";
+        String nickname = "admintest";
+
+        User admin = User.createAdminUser(email, password, nickname);
+
+        // session 생성
+        SecurityContext context = SecurityContextHolder.createEmptyContext();
+        UsernamePasswordAuthenticationToken auth =
+                new UsernamePasswordAuthenticationToken(
+                        UserPrincipal.of(admin),
+                        null,
+                        List.of(new SimpleGrantedAuthority("ROLE_" + UserRole.ADMIN.name())));
+        context.setAuthentication(auth);
+
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute(
+                HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, context);
+
+        return session;
+    }
 }

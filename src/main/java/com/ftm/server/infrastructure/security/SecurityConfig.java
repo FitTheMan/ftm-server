@@ -1,6 +1,7 @@
 package com.ftm.server.infrastructure.security;
 
 import com.ftm.server.adapter.out.security.UserPrincipalAdapter;
+import com.ftm.server.domain.enums.UserRole;
 import com.ftm.server.infrastructure.security.handler.PermissionDeniedHandler;
 import com.ftm.server.infrastructure.security.handler.UnauthenticatedAccessHandler;
 import java.util.List;
@@ -115,6 +116,10 @@ public class SecurityConfig {
                                     .permitAll()
                                     .requestMatchers(HttpMethod.POST, POST_ANONYMOUS_MATCHERS)
                                     .permitAll();
+
+                            authorize
+                                    .requestMatchers("/api/grooming/tests/questions/**")
+                                    .hasRole(UserRole.ADMIN.getValue());
 
                             // 그 외 모든 요청은 인증 필요
                             authorize.anyRequest().authenticated();
