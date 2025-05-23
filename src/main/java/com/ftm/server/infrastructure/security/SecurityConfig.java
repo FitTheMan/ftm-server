@@ -119,7 +119,9 @@ public class SecurityConfig {
 
                             authorize
                                     .requestMatchers("/api/grooming/tests/questions/**")
-                                    .hasRole(UserRole.ADMIN.getValue());
+                                    .hasRole(UserRole.ADMIN.name())
+                                    .requestMatchers("/api/grooming/tests/answers/**")
+                                    .hasRole(UserRole.ADMIN.name());
 
                             // 그 외 모든 요청은 인증 필요
                             authorize.anyRequest().authenticated();

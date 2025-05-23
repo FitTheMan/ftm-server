@@ -33,7 +33,9 @@ public class GroomingDomainPersistenceAdapter
                 SaveGroomingTestQuestionPort,
                 UpdateGroomingTestQuestionPort,
                 DeleteGroomingTestQuestionPort,
-                DeleteGroomingTestAnswerPort {
+                DeleteGroomingTestAnswerPort,
+                SaveGroomingTestAnswerPort,
+                UpdateGroomingTestAnswerPort {
 
     // Repository
     private final GroomingTestQuestionRepository groomingTestQuestionRepository;
@@ -70,6 +72,13 @@ public class GroomingDomainPersistenceAdapter
         return answers.stream()
                 .map(groomingTestAnswerMapper::toDomain)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<GroomingTestAnswer> loadGroomingTestAnswerById(FindByIdQuery query) {
+        return groomingTestAnswerRepository
+                .findById(query.getId())
+                .map(groomingTestAnswerMapper::toDomain);
     }
 
     @Override
@@ -177,5 +186,57 @@ public class GroomingDomainPersistenceAdapter
     @Override
     public void deleteGroomingTestAnswersByQuestionId(Long questionId) {
         groomingTestAnswerRepository.deleteAllByGroomingTestQuestionId(questionId);
+    }
+
+    @Override
+    public void deleteGroomingTestAnswerById(Long id) {
+        groomingTestAnswerRepository.deleteById(id);
+    }
+
+    @Override
+    public void saveGroomingTestAnswer(GroomingTestAnswer groomingTestAnswer) {
+        GroomingTestQuestionJpaEntity groomingTestQuestionJpaEntity =
+                groomingTestQuestionRepository
+                        .findById(groomingTestAnswer.getGroomingTestQuestionId())
+                        .orElseThrow(
+                                () ->
+                                        new CustomException(
+                                                ErrorResponseCode
+                                                        .GROOMING_TEST_QUESTION_NOT_FOUND));
+
+        groomingTestAnswerRepository.save(
+                groomingTestAnswerMapper.toJpaEntity(
+                        groomingTestAnswer, groomingTestQuestionJpaEntity));
+    }
+
+    @Override
+    public void updateGroomingTestAnswer(
+            GroomingTestAnswer groomingTestAnswer, boolean isQuestionModified) {
+        GroomingTestAnswerJpaEntity groomingTestAnswerJpaEntity =
+                groomingTestAnswerRepository
+                        .findById(groomingTestAnswer.getId())
+                        .orElseThrow(
+                                () ->
+                                        new CustomException(
+                                                ErrorResponseCode.GROOMING_TEST_ANSWER_NOT_FOUND));
+
+        // 답변이 속한 질문을 수정했을 경우, 질문 정보까지 함께 수정
+        if (isQuestionModified) {
+            GroomingTestQuestionJpaEntity groomingTestQuestionJpaEntity =
+                    groomingTestQuestionRepository
+                            .findById(groomingTestAnswer.getGroomingTestQuestionId())
+                            .orElseThrow(
+                                    () ->
+                                            new CustomException(
+                                                    ErrorResponseCode
+                                                            .GROOMING_TEST_QUESTION_NOT_FOUND));
+
+            groomingTestAnswerJpaEntity.updateGroomingTestAnswerForDomainEntity(
+                    groomingTestQuestionJpaEntity, groomingTestAnswer);
+            return;
+        }
+
+        // 질문 정보를 제외한 나머지 필드 수정
+        groomingTestAnswerJpaEntity.updateGroomingTestAnswerForDomainEntity(groomingTestAnswer);
     }
 }
