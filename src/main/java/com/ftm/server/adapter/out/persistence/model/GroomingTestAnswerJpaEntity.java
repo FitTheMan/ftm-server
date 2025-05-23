@@ -43,4 +43,17 @@ public class GroomingTestAnswerJpaEntity extends BaseTimeJpaEntity {
                 .score(groomingTestAnswer.getScore())
                 .build();
     }
+
+    public void updateGroomingTestAnswerForDomainEntity(
+            GroomingTestQuestionJpaEntity groomingTestQuestionJpaEntity,
+            GroomingTestAnswer groomingTestAnswer) {
+        this.groomingTestQuestion = groomingTestQuestionJpaEntity;
+        this.answer = groomingTestAnswer.getAnswer();
+        this.score = groomingTestAnswer.getScore();
+    }
+
+    public void updateGroomingTestAnswerForDomainEntity(GroomingTestAnswer groomingTestAnswer) {
+        this.answer = groomingTestAnswer.getAnswer();
+        this.score = groomingTestAnswer.getScore();
+    }
 }

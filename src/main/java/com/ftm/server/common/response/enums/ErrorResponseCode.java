@@ -54,6 +54,8 @@ public enum ErrorResponseCode {
     BOOKMARK_NOT_FOUND(HttpStatus.NOT_FOUND, "E404_008", "요청된 사용자와 게시글에 부합하는 북마크를 찾을 수 없습니다."),
     GROOMING_TEST_QUESTION_NOT_FOUND(
             HttpStatus.NOT_FOUND, "E404_009", "요청한 그루밍 테스트 질문 정보를 찾을 수 없습니다."),
+    GROOMING_TEST_ANSWER_NOT_FOUND(
+            HttpStatus.NOT_FOUND, "E404_010", "요청한 그루밍 테스트 답변 정보를 찾을 수 없습니다."),
 
     // 409번
     USER_ALREADY_EXISTS(HttpStatus.CONFLICT, "E409_001", "이미 존재하는 사용자입니다."),

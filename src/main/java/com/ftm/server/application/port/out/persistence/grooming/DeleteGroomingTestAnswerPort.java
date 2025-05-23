@@ -6,4 +6,6 @@ import com.ftm.server.common.annotation.Port;
 public interface DeleteGroomingTestAnswerPort {
 
     void deleteGroomingTestAnswersByQuestionId(Long questionId);
+
+    void deleteGroomingTestAnswerById(Long id);
 }
