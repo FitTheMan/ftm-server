@@ -15,4 +15,7 @@ public class StaticConsts {
     public static final int PENDING_SOCIAL_USER_SESSION_TTL = 300; //  5분
     public static final String GROOMING_TESTS_INFO_CACHE_NAME = "ftm:grooming:tests:info";
     public static final String GROOMING_TESTS_INFO_CACHE_KEY_ALL = "'all'";
+
+    public static final String TRENDING_POSTS_CACHE_NAME = "ftm:posts:trend";
+    public static final String TRENDING_POSTS_CACHE_KEY_ALL = "'all'";
 }
