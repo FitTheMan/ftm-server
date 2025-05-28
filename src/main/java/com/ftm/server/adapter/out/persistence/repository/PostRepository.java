@@ -7,7 +7,10 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-public interface PostRepository extends JpaRepository<PostJpaEntity, Long>, PostCustomRepository {
+public interface PostRepository
+        extends JpaRepository<PostJpaEntity, Long>,
+                PostCustomRepository,
+                PostWithBookmarkCustomRepository {
 
     List<PostJpaEntity> findByUserId(Long userId);
 

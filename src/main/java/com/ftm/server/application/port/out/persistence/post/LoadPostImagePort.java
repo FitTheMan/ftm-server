@@ -12,4 +12,6 @@ public interface LoadPostImagePort {
     List<PostImage> loadPostImagesByPostId(FindByPostIdQuery query);
 
     List<PostImage> loadPostImagesByPostIds(FindByIdsQuery query);
+
+    List<PostImage> loadRepresentativeImagesByPostIds(FindByIdsQuery query);
 }

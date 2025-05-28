@@ -5,6 +5,7 @@ import com.ftm.server.adapter.out.persistence.model.*;
 import com.ftm.server.adapter.out.persistence.repository.*;
 import com.ftm.server.application.port.out.persistence.post.*;
 import com.ftm.server.application.query.*;
+import com.ftm.server.application.vo.post.PostWithBookmarkCountVo;
 import com.ftm.server.common.annotation.Adapter;
 import com.ftm.server.common.exception.CustomException;
 import com.ftm.server.common.response.enums.ErrorResponseCode;
@@ -35,7 +36,8 @@ public class PostDomainPersistenceAdapter
                 DeletePostPort,
                 DeletePostImagePort,
                 DeletePostProductPort,
-                DeletePostProductImagePort {
+                DeletePostProductImagePort,
+                LoadPostWithBookmarkCountPort {
 
     private final PostRepository postRepository;
     private final PostImageRepository postImageRepository;
@@ -286,5 +288,18 @@ public class PostDomainPersistenceAdapter
     public void deletePostProductImages(List<PostProductImage> postProductImages) {
         List<Long> ids = postProductImages.stream().map(PostProductImage::getId).toList();
         postProductImageRepository.deleteAllByIdInBatch(ids);
+    }
+
+    @Override
+    public List<PostWithBookmarkCountVo> loadAllPostsWithBookmarkCount(
+            FindPostsByCreatedDateQuery query) {
+        return postRepository.findAllPostsWithBookmarkCount(query);
+    }
+
+    @Override
+    public List<PostImage> loadRepresentativeImagesByPostIds(FindByIdsQuery query) {
+        return postImageRepository.findRepresentativeImagesByPostIdIn(query).stream()
+                .map(postImageMapper::toDomainEntity)
+                .toList();
     }
 }
