@@ -22,12 +22,11 @@ public class UpdateGroomingTestAnswerController {
     @PatchMapping("/api/grooming/tests/answers/{answerId}")
     public ResponseEntity<ApiResponse<Void>> updateAnswer(
             @PathVariable Long answerId, @RequestBody UpdateGroomingTestAnswerRequest request) {
-        updateGroomingTestAnswerUseCase.execute(
+        UpdateGroomingTestAnswerCommand command =
                 UpdateGroomingTestAnswerCommand.of(
-                        answerId,
-                        request.getQuestionId(),
-                        request.getAnswer(),
-                        request.getScore()));
+                        answerId, request.getQuestionId(), request.getAnswer(), request.getScore());
+        updateGroomingTestAnswerUseCase.execute(command);
+
         return ResponseEntity.status(HttpStatus.OK)
                 .body(ApiResponse.success(SuccessResponseCode.OK));
     }

@@ -8,7 +8,7 @@ import com.ftm.server.BaseTest;
 import com.ftm.server.adapter.in.web.grooming.dto.request.UpdateGroomingTestQuestionRequest;
 import com.ftm.server.adapter.out.persistence.mapper.GroomingTestQuestionMapper;
 import com.ftm.server.adapter.out.persistence.repository.GroomingTestQuestionRepository;
-import com.ftm.server.application.command.grooming.SaveGroomingTestQuestionCommand;
+import com.ftm.server.application.command.grooming.question.SaveGroomingTestQuestionCommand;
 import com.ftm.server.common.response.enums.ErrorResponseCode;
 import com.ftm.server.domain.entity.GroomingTestQuestion;
 import com.ftm.server.domain.enums.GroomingCategory;

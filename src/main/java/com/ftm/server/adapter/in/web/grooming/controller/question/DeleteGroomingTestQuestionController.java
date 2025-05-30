@@ -1,6 +1,6 @@
 package com.ftm.server.adapter.in.web.grooming.controller.question;
 
-import com.ftm.server.application.command.grooming.DeleteGroomingTestQuestionCommand;
+import com.ftm.server.application.command.grooming.question.DeleteGroomingTestQuestionCommand;
 import com.ftm.server.application.port.in.grooming.question.DeleteGroomingTestQuestionUseCase;
 import com.ftm.server.common.response.ApiResponse;
 import com.ftm.server.common.response.enums.SuccessResponseCode;
@@ -19,7 +19,10 @@ public class DeleteGroomingTestQuestionController {
 
     @DeleteMapping("/api/grooming/tests/questions/{questionId}")
     public ResponseEntity<ApiResponse<Void>> deleteQuestion(@PathVariable Long questionId) {
+        DeleteGroomingTestQuestionCommand command =
+                DeleteGroomingTestQuestionCommand.of(questionId);
         deleteGroomingTestQuestionUseCase.execute(DeleteGroomingTestQuestionCommand.of(questionId));
+
         return ResponseEntity.status(HttpStatus.OK)
                 .body(ApiResponse.success(SuccessResponseCode.OK));
     }

@@ -1,7 +1,7 @@
 package com.ftm.server.domain.entity;
 
-import com.ftm.server.application.command.grooming.SaveGroomingTestQuestionCommand;
-import com.ftm.server.application.command.grooming.UpdateGroomingTestQuestionCommand;
+import com.ftm.server.application.command.grooming.question.SaveGroomingTestQuestionCommand;
+import com.ftm.server.application.command.grooming.question.UpdateGroomingTestQuestionCommand;
 import com.ftm.server.domain.enums.GroomingCategory;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;

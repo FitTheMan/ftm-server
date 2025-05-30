@@ -1,5 +1,7 @@
 package com.ftm.server.domain.entity;
 
+import com.ftm.server.application.command.grooming.level.SaveGroomingLevelCommand;
+import com.ftm.server.application.command.grooming.level.UpdateGroomingLevelCommand;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -51,5 +53,21 @@ public class GroomingLevel extends BaseTime {
                 .createdAt(createdAt)
                 .updatedAt(updatedAt)
                 .build();
+    }
+
+    public static GroomingLevel create(SaveGroomingLevelCommand command) {
+        return GroomingLevel.builder()
+                .minScore(command.getMinScore())
+                .maxScore(command.getMaxScore())
+                .mildLevelName(command.getMildLevelName())
+                .spicyLevelName(command.getSpicyLevelName())
+                .build();
+    }
+
+    public void update(UpdateGroomingLevelCommand command) {
+        if (command.getMinScore() != null) this.minScore = command.getMinScore();
+        if (command.getMaxScore() != null) this.maxScore = command.getMaxScore();
+        if (command.getMildLevelName() != null) this.mildLevelName = command.getMildLevelName();
+        if (command.getSpicyLevelName() != null) this.spicyLevelName = command.getSpicyLevelName();
     }
 }

@@ -24,9 +24,13 @@ public class SaveGroomingTestAnswerController {
     public ResponseEntity<ApiResponse<Void>> saveAnswer(
             @PathVariable Long questionsId,
             @RequestBody @Valid SaveGroomingTestAnswerRequest request) {
+        SaveGroomingTestAnswerCommand command =
+                SaveGroomingTestAnswerCommand.of(
+                        questionsId, request.getAnswer(), request.getScore());
         saveGroomingTestAnswerUseCase.execute(
                 SaveGroomingTestAnswerCommand.of(
                         questionsId, request.getAnswer(), request.getScore()));
+
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiResponse.success(SuccessResponseCode.CREATED));
     }

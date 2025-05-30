@@ -1,4 +1,4 @@
-package com.ftm.server.application.command.grooming;
+package com.ftm.server.application.command.grooming.question;
 
 import lombok.Getter;
 

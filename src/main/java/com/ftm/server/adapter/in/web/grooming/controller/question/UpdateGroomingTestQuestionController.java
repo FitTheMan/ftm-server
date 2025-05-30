@@ -1,7 +1,7 @@
 package com.ftm.server.adapter.in.web.grooming.controller.question;
 
 import com.ftm.server.adapter.in.web.grooming.dto.request.UpdateGroomingTestQuestionRequest;
-import com.ftm.server.application.command.grooming.UpdateGroomingTestQuestionCommand;
+import com.ftm.server.application.command.grooming.question.UpdateGroomingTestQuestionCommand;
 import com.ftm.server.application.port.in.grooming.question.UpdateGroomingTestQuestionUseCase;
 import com.ftm.server.common.response.ApiResponse;
 import com.ftm.server.common.response.enums.SuccessResponseCode;
@@ -22,9 +22,11 @@ public class UpdateGroomingTestQuestionController {
     @PatchMapping("/api/grooming/tests/questions/{questionId}")
     public ResponseEntity<ApiResponse<Void>> updateQuestion(
             @PathVariable Long questionId, @RequestBody UpdateGroomingTestQuestionRequest request) {
-        updateGroomingTestQuestionUseCase.execute(
+        UpdateGroomingTestQuestionCommand command =
                 UpdateGroomingTestQuestionCommand.of(
-                        questionId, request.getGroomingCategory(), request.getQuestion()));
+                        questionId, request.getGroomingCategory(), request.getQuestion());
+        updateGroomingTestQuestionUseCase.execute(command);
+
         return ResponseEntity.status(HttpStatus.OK)
                 .body(ApiResponse.success(SuccessResponseCode.OK));
     }

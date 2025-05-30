@@ -1,7 +1,7 @@
 package com.ftm.server.adapter.in.web.grooming.controller.question;
 
 import com.ftm.server.adapter.in.web.grooming.dto.request.SaveGroomingTestQuestionRequest;
-import com.ftm.server.application.command.grooming.SaveGroomingTestQuestionCommand;
+import com.ftm.server.application.command.grooming.question.SaveGroomingTestQuestionCommand;
 import com.ftm.server.application.port.in.grooming.question.SaveGroomingTestQuestionUseCase;
 import com.ftm.server.common.response.ApiResponse;
 import com.ftm.server.common.response.enums.SuccessResponseCode;
@@ -22,9 +22,11 @@ public class SaveGroomingTestQuestionController {
     @PostMapping("/api/grooming/tests/questions")
     public ResponseEntity<ApiResponse<Void>> saveQuestion(
             @RequestBody @Valid SaveGroomingTestQuestionRequest request) {
-        saveGroomingTestQuestionUseCase.execute(
+        SaveGroomingTestQuestionCommand command =
                 SaveGroomingTestQuestionCommand.of(
-                        request.getGroomingCategory(), request.getQuestion()));
+                        request.getGroomingCategory(), request.getQuestion());
+        saveGroomingTestQuestionUseCase.execute(command);
+
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiResponse.success(SuccessResponseCode.CREATED));
     }

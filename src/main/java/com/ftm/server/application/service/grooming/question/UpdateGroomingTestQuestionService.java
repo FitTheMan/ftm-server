@@ -1,6 +1,6 @@
 package com.ftm.server.application.service.grooming.question;
 
-import com.ftm.server.application.command.grooming.UpdateGroomingTestQuestionCommand;
+import com.ftm.server.application.command.grooming.question.UpdateGroomingTestQuestionCommand;
 import com.ftm.server.application.port.in.grooming.question.UpdateGroomingTestQuestionUseCase;
 import com.ftm.server.application.port.out.cache.InvalidGroomingTestsWithCachePort;
 import com.ftm.server.application.port.out.persistence.grooming.LoadGroomingTestQuestionPort;

@@ -36,4 +36,11 @@ public class GroomingLevelJpaEntity extends BaseTimeJpaEntity {
                 .spicyLevelName(groomingLevel.getSpicyLevelName())
                 .build();
     }
+
+    public void updateGroomingLevelForDomainEntity(GroomingLevel groomingLevel) {
+        this.minScore = groomingLevel.getMinScore();
+        this.maxScore = groomingLevel.getMaxScore();
+        this.mildLevelName = groomingLevel.getMildLevelName();
+        this.spicyLevelName = groomingLevel.getSpicyLevelName();
+    }
 }
