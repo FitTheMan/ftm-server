@@ -35,7 +35,10 @@ public class GroomingDomainPersistenceAdapter
                 DeleteGroomingTestQuestionPort,
                 DeleteGroomingTestAnswerPort,
                 SaveGroomingTestAnswerPort,
-                UpdateGroomingTestAnswerPort {
+                UpdateGroomingTestAnswerPort,
+                SaveGroomingLevelPort,
+                UpdateGroomingLevelPort,
+                DeleteGroomingLevelPort {
 
     // Repository
     private final GroomingTestQuestionRepository groomingTestQuestionRepository;
@@ -113,6 +116,13 @@ public class GroomingDomainPersistenceAdapter
     public Optional<GroomingLevel> loadGroomingLevelByScore(FIndGroomingLevelByScoreQuery query) {
         return groomingLevelRepository
                 .findByScoreInRange(query.getScore())
+                .map(groomingLevelMapper::toDomainEntity);
+    }
+
+    @Override
+    public Optional<GroomingLevel> loadGroomingLevelById(FindByIdQuery query) {
+        return groomingLevelRepository
+                .findById(query.getId())
                 .map(groomingLevelMapper::toDomainEntity);
     }
 
@@ -238,5 +248,28 @@ public class GroomingDomainPersistenceAdapter
 
         // 질문 정보를 제외한 나머지 필드 수정
         groomingTestAnswerJpaEntity.updateGroomingTestAnswerForDomainEntity(groomingTestAnswer);
+    }
+
+    @Override
+    public void saveGroomingLevel(GroomingLevel groomingLevel) {
+        groomingLevelRepository.save(groomingLevelMapper.toJpaEntity(groomingLevel));
+    }
+
+    @Override
+    public void updateGroomingLevel(GroomingLevel groomingLevel) {
+        GroomingLevelJpaEntity groomingLevelJpaEntity =
+                groomingLevelRepository
+                        .findById(groomingLevel.getId())
+                        .orElseThrow(
+                                () ->
+                                        new CustomException(
+                                                ErrorResponseCode.GROOMING_LEVEL_NOT_FOUND));
+
+        groomingLevelJpaEntity.updateGroomingLevelForDomainEntity(groomingLevel);
+    }
+
+    @Override
+    public void deleteGroomingLevel(Long id) {
+        groomingLevelRepository.deleteById(id);
     }
 }

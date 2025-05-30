@@ -121,6 +121,8 @@ public class SecurityConfig {
                                     .requestMatchers("/api/grooming/tests/questions/**")
                                     .hasRole(UserRole.ADMIN.name())
                                     .requestMatchers("/api/grooming/tests/answers/**")
+                                    .hasRole(UserRole.ADMIN.name())
+                                    .requestMatchers("/api/grooming/levels/**")
                                     .hasRole(UserRole.ADMIN.name());
 
                             // 그 외 모든 요청은 인증 필요

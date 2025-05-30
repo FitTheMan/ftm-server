@@ -19,7 +19,9 @@ public class DeleteGroomingTestAnswerController {
 
     @DeleteMapping("/api/grooming/tests/answers/{answerId}")
     public ResponseEntity<ApiResponse<Void>> deleteAnswer(@PathVariable Long answerId) {
-        deleteGroomingTestAnswerUseCase.execute(DeleteGroomingTestAnswerCommand.of(answerId));
+        DeleteGroomingTestAnswerCommand command = DeleteGroomingTestAnswerCommand.of(answerId);
+        deleteGroomingTestAnswerUseCase.execute(command);
+
         return ResponseEntity.status(HttpStatus.OK)
                 .body(ApiResponse.success(SuccessResponseCode.OK));
     }
