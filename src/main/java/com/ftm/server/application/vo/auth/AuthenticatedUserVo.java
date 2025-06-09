@@ -12,8 +12,8 @@ public class AuthenticatedUserVo {
     private final Long id;
     private final String nickname;
     private final String profileImageUrl;
-    private final String mildLevelName;
-    private final String spicyLevelName;
+    private final String normalLevelName;
+    private final String truthLevelName;
 
     private AuthenticatedUserVo(User user, UserImage userImage, GroomingLevel groomingLevel) {
         this.id = user.getId();
@@ -23,8 +23,8 @@ public class AuthenticatedUserVo {
                         + "/"
                         + userImage
                                 .getObjectKey(); // TODO: 추후 CDN 주소 + getObjectKey() 로 변경해야함 -> 변경완료
-        this.mildLevelName = groomingLevel != null ? groomingLevel.getMildLevelName() : null;
-        this.spicyLevelName = groomingLevel != null ? groomingLevel.getSpicyLevelName() : null;
+        this.normalLevelName = groomingLevel != null ? groomingLevel.getNormalModeName() : null;
+        this.truthLevelName = groomingLevel != null ? groomingLevel.getTruthModeName() : null;
     }
 
     //    public static AuthenticatedUserVo of(User user, UserImage userImage) {
@@ -32,7 +32,8 @@ public class AuthenticatedUserVo {
     //    }
 
     // 추후 수정 필요
-    public static AuthenticatedUserVo of(User user, UserImage userImage) {
-        return new AuthenticatedUserVo(user, userImage, null);
+    public static AuthenticatedUserVo of(
+            User user, UserImage userImage, GroomingLevel groomingLevel) {
+        return new AuthenticatedUserVo(user, userImage, groomingLevel);
     }
 }

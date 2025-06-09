@@ -29,8 +29,12 @@ public class UpdateGroomingLevelController {
                         levelId,
                         request.getMinScore(),
                         request.getMaxScore(),
-                        request.getMildLevelName(),
-                        request.getSpicyLevelName());
+                        request.getNormalModeName(),
+                        request.getNormalModeSummary(),
+                        request.getNormalModeDescription(),
+                        request.getTruthModeName(),
+                        request.getTruthModeSummary(),
+                        request.getTruthModeDescription());
         updateGroomingLevelUseCase.execute(command);
 
         return ResponseEntity.status(HttpStatus.OK)

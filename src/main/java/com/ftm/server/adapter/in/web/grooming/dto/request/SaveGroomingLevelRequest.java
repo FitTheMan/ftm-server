@@ -1,8 +1,6 @@
 package com.ftm.server.adapter.in.web.grooming.dto.request;
 
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -18,6 +16,10 @@ public class SaveGroomingLevelRequest {
     @Max(100)
     private Integer maxScore;
 
-    @NotEmpty private String mildLevelName;
-    @NotEmpty private String spicyLevelName;
+    @NotEmpty private String normalModeName;
+    @NotEmpty private String normalModeSummary;
+    @NotEmpty private String normalModeDescription;
+    @NotEmpty private String truthModeName;
+    @NotEmpty private String truthModeSummary;
+    @NotEmpty private String truthModeDescription;
 }

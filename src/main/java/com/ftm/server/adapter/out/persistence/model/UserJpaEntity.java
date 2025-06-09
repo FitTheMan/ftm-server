@@ -127,11 +127,11 @@ public class UserJpaEntity extends BaseTimeJpaEntity {
         this.groomingScore = user.getGroomingScore();
     }
 
-    public void updateGroomingLevel(GroomingLevelJpaEntity groomingLevelJpaEntity) {
-        this.groomingLevel = groomingLevelJpaEntity;
+    public void updateGroomingLevel(GroomingLevelJpaEntity groomingLevel) {
+        this.groomingLevel = groomingLevel;
     }
 
-    public void updateFromDomainEntity(User user, GroomingLevelJpaEntity groomingLevelJpaEntity) {
+    public void updateFromDomainEntity(User user, GroomingLevelJpaEntity groomingLevel) {
 
         this.email = user.getEmail();
         this.password = user.getPassword();
@@ -140,7 +140,7 @@ public class UserJpaEntity extends BaseTimeJpaEntity {
         this.socialProvider = user.getSocialProvider();
         this.socialId = user.getSocialId();
         this.groomingScore = user.getGroomingScore();
-        this.groomingLevel = groomingLevelJpaEntity;
+        this.groomingLevel = groomingLevel;
         this.role = user.getRole();
         this.favoriteHashtags = user.getFavoriteHashtags();
         this.isDeleted = user.getIsDeleted();

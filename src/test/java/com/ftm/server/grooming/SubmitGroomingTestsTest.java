@@ -102,12 +102,26 @@ public class SubmitGroomingTestsTest extends BaseTest {
                     fieldWithPath("data.level.groomingLevelId")
                             .type(NUMBER)
                             .description("그루밍 레벨 ID"),
-                    fieldWithPath("data.level.mildLevelName")
+                    fieldWithPath("data.level.normalMode").type(OBJECT).description("그루밍 레벨 일반모드"),
+                    fieldWithPath("data.level.normalMode.name")
                             .type(STRING)
-                            .description("그루밍 레벨 순한맛 이름"),
-                    fieldWithPath("data.level.spicyLevelName")
+                            .description("그루밍 레벨 일반모드 이름"),
+                    fieldWithPath("data.level.normalMode.summary")
                             .type(STRING)
-                            .description("그루밍 레벨 매운맛 이름"));
+                            .description("그루밍 레벨 일반모드 요약"),
+                    fieldWithPath("data.level.normalMode.description")
+                            .type(STRING)
+                            .description("그루밍 레벨 일반모드 설명"),
+                    fieldWithPath("data.level.truthMode").type(OBJECT).description("그루밍 레벨 진심모드"),
+                    fieldWithPath("data.level.truthMode.name")
+                            .type(STRING)
+                            .description("그루밍 레벨 진심모드 이름"),
+                    fieldWithPath("data.level.truthMode.summary")
+                            .type(STRING)
+                            .description("그루밍 레벨 진심모드 요약"),
+                    fieldWithPath("data.level.truthMode.description")
+                            .type(STRING)
+                            .description("그루밍 레벨 진심모드 설명"));
 
     private GroomingTestSubmissionRequest getRequest() {
         List<GroomingTestSubmissionRequest.SubmittedQuestion> submissions =

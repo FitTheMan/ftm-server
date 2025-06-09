@@ -32,7 +32,16 @@ public class DeleteGroomingLevelTest extends BaseTest {
 
     @BeforeEach
     void setUp() {
-        SaveGroomingLevelCommand command = SaveGroomingLevelCommand.of(0, 10, "테스트 순한맛", "테스트 매운맛");
+        SaveGroomingLevelCommand command =
+                SaveGroomingLevelCommand.of(
+                        0,
+                        5,
+                        "레벨 일반모드 이름",
+                        "레벨 일반모드 요약",
+                        "레벨 일반모드 설명",
+                        "레벨 진심모드 이름",
+                        "레벨 진심모드 요약",
+                        "레벨 진심모드 설명");
         GroomingLevel level = GroomingLevel.create(command);
         levelId = groomingLevelRepository.save(groomingLevelMapper.toJpaEntity(level)).getId();
     }

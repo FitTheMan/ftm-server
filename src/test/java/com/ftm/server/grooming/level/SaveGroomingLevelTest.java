@@ -29,7 +29,15 @@ public class SaveGroomingLevelTest extends BaseTest {
     void 그루밍_레벨_저장_성공() throws Exception {
         // given
         SaveGroomingLevelRequest request =
-                new SaveGroomingLevelRequest(0, 10, "테스트 순한맛", "테스트 매운맛");
+                new SaveGroomingLevelRequest(
+                        0,
+                        5,
+                        "레벨 일반모드 이름",
+                        "레벨 일반모드 요약",
+                        "레벨 일반모드 설명",
+                        "레벨 진심모드 이름",
+                        "레벨 진심모드 요약",
+                        "레벨 진심모드 설명");
 
         // when
         MockHttpSession session = createAdminUserAndLogin();
@@ -44,7 +52,15 @@ public class SaveGroomingLevelTest extends BaseTest {
     void 그루밍_레벨_저장_실패1() throws Exception {
         // given
         SaveGroomingLevelRequest request =
-                new SaveGroomingLevelRequest(0, 10, "테스트 순한맛", "테스트 매운맛");
+                new SaveGroomingLevelRequest(
+                        0,
+                        10,
+                        "레벨 일반모드 이름",
+                        "레벨 일반모드 요약",
+                        "레벨 일반모드 설명",
+                        "레벨 진심모드 이름",
+                        "레벨 진심모드 요약",
+                        "레벨 진심모드 설명");
 
         // when
         MockHttpSession session = createUserAndLogin();
@@ -61,7 +77,15 @@ public class SaveGroomingLevelTest extends BaseTest {
     void 그루밍_레벨_저장_실패2() throws Exception {
         // given
         SaveGroomingLevelRequest request =
-                new SaveGroomingLevelRequest(-1, 10, "테스트 순한맛", "테스트 매운맛");
+                new SaveGroomingLevelRequest(
+                        -1,
+                        10,
+                        "레벨 일반모드 이름",
+                        "레벨 일반모드 요약",
+                        "레벨 일반모드 설명",
+                        "레벨 진심모드 이름",
+                        "레벨 진심모드 요약",
+                        "레벨 진심모드 설명");
 
         // when
         MockHttpSession session = createAdminUserAndLogin();

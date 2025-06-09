@@ -13,8 +13,12 @@ public class GroomingLevelMapper {
                 jpaEntity.getId(),
                 jpaEntity.getMinScore(),
                 jpaEntity.getMaxScore(),
-                jpaEntity.getMildLevelName(),
-                jpaEntity.getSpicyLevelName(),
+                jpaEntity.getNormalModeName(),
+                jpaEntity.getNormalModeSummary(),
+                jpaEntity.getNormalModeDescription(),
+                jpaEntity.getTruthModeName(),
+                jpaEntity.getTruthModeSummary(),
+                jpaEntity.getTruthModeDescription(),
                 jpaEntity.getCreatedAt(),
                 jpaEntity.getUpdatedAt());
     }
