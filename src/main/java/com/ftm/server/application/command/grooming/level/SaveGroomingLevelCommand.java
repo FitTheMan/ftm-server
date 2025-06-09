@@ -7,19 +7,49 @@ public class SaveGroomingLevelCommand {
 
     private final Integer minScore;
     private final Integer maxScore;
-    private final String mildLevelName;
-    private final String spicyLevelName;
+    private final String normalModeName;
+    private final String normalModeSummary;
+    private final String normalModeDescription;
+    private final String truthModeName;
+    private final String truthModeSummary;
+    private final String truthModeDescription;
 
     private SaveGroomingLevelCommand(
-            Integer minScore, Integer maxScore, String mildLevelName, String spicyLevelName) {
+            Integer minScore,
+            Integer maxScore,
+            String normalModeName,
+            String normalModeSummary,
+            String normalModeDescription,
+            String truthModeName,
+            String truthModeSummary,
+            String truthModeDescription) {
         this.minScore = minScore;
         this.maxScore = maxScore;
-        this.mildLevelName = mildLevelName;
-        this.spicyLevelName = spicyLevelName;
+        this.normalModeName = normalModeName;
+        this.normalModeSummary = normalModeSummary;
+        this.normalModeDescription = normalModeDescription;
+        this.truthModeName = truthModeName;
+        this.truthModeSummary = truthModeSummary;
+        this.truthModeDescription = truthModeDescription;
     }
 
     public static SaveGroomingLevelCommand of(
-            Integer minScore, Integer maxScore, String mildLevelName, String spicyLevelName) {
-        return new SaveGroomingLevelCommand(minScore, maxScore, mildLevelName, spicyLevelName);
+            Integer minScore,
+            Integer maxScore,
+            String normalModeName,
+            String normalModeSummary,
+            String normalModeDescription,
+            String truthModeName,
+            String truthModeSummary,
+            String truthModeDescription) {
+        return new SaveGroomingLevelCommand(
+                minScore,
+                maxScore,
+                normalModeName,
+                normalModeSummary,
+                normalModeDescription,
+                truthModeName,
+                truthModeSummary,
+                truthModeDescription);
     }
 }

@@ -13,8 +13,8 @@ public class SocialUserSignupResponse {
     private final String nickname;
     private final SocialProvider socialProvider;
     private final String profileImageUrl;
-    private final String mildLevelName;
-    private final String spicyLevelName;
+    private final String normalLevelName;
+    private final String truthLevelName;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm", shape = JsonFormat.Shape.STRING)
     private final LocalDateTime loginTime;
@@ -25,8 +25,8 @@ public class SocialUserSignupResponse {
                 vo.getNickname(),
                 vo.getSocialProvider(),
                 vo.getProfileImageUrl(),
-                vo.getMildLevelName(),
-                vo.getSpicyLevelName(),
+                vo.getNormalLevelName(),
+                vo.getTruthLevelName(),
                 LocalDateTime.now());
     }
 }

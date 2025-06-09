@@ -2,6 +2,7 @@ package com.ftm.server.application.service.auth;
 
 import com.ftm.server.application.command.auth.GeneralLoginCommand;
 import com.ftm.server.application.port.in.auth.GeneralLoginUseCase;
+import com.ftm.server.application.port.out.persistence.auth.LoadGroomingLevelForAuthPort;
 import com.ftm.server.application.port.out.persistence.auth.LoadUserForAuthPort;
 import com.ftm.server.application.port.out.persistence.auth.LoadUserImageForAuthPort;
 import com.ftm.server.application.port.out.security.SecurityAuthenticationPort;
@@ -10,6 +11,7 @@ import com.ftm.server.application.query.FindByUserIdQuery;
 import com.ftm.server.application.vo.auth.AuthenticatedUserVo;
 import com.ftm.server.common.exception.CustomException;
 import com.ftm.server.common.response.enums.ErrorResponseCode;
+import com.ftm.server.domain.entity.GroomingLevel;
 import com.ftm.server.domain.entity.User;
 import com.ftm.server.domain.entity.UserImage;
 import com.ftm.server.infrastructure.security.UserPrincipal;
@@ -28,6 +30,7 @@ public class GeneralLoginService implements GeneralLoginUseCase {
     private final SecurityAuthenticationPort securityAuthenticationPort;
     private final LoadUserForAuthPort loadUserForAuthPort;
     private final LoadUserImageForAuthPort loadUserImageForAuthPort;
+    private final LoadGroomingLevelForAuthPort loadGroomingLevelForAuthPort;
 
     @Override
     @Transactional
@@ -49,10 +52,21 @@ public class GeneralLoginService implements GeneralLoginUseCase {
                         .orElseThrow(
                                 () -> new CustomException(ErrorResponseCode.USER_IMAGE_NOT_FOUND));
 
+        GroomingLevel groomingLevel = null;
+        if (user.getGroomingLevelId() != null) {
+            groomingLevel =
+                    loadGroomingLevelForAuthPort
+                            .loadGroomingLevelById(FindByIdQuery.of(user.getGroomingLevelId()))
+                            .orElseThrow(
+                                    () ->
+                                            new CustomException(
+                                                    ErrorResponseCode.GROOMING_LEVEL_NOT_FOUND));
+        }
+
         // 인증 세션 등록 (시큐리티 컨텍스트 등록)
         securityAuthenticationPort.saveAuthenticatedSession(auth, req, res);
 
-        return AuthenticatedUserVo.of(user, userImage);
+        return AuthenticatedUserVo.of(user, userImage, groomingLevel);
     }
 
     private Authentication createAuthenticationOrThrow(GeneralLoginCommand command) {

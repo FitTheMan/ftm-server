@@ -65,16 +65,16 @@ public class SocialUserSignupTest extends BaseTest {
                     fieldWithPath("data.profileImageUrl")
                             .type(JsonFieldType.STRING)
                             .description("프로필 이미지 url"),
-                    fieldWithPath("data.mildLevelName")
+                    fieldWithPath("data.normalLevelName")
                             .type(JsonFieldType.STRING)
-                            .description("그루밍 레벨 순한맛 이름")
+                            .description("그루밍 레벨 일반모드 이름")
                             .optional()
                             .attributes(
                                     new Attributes.Attribute(
                                             "nullable", "그루밍 테스트를 아직 진행하지 않은 경우 null")),
-                    fieldWithPath("data.spicyLevelName")
+                    fieldWithPath("data.truthLevelName")
                             .type(JsonFieldType.STRING)
-                            .description("그루밍 레벨 매운맛 이름")
+                            .description("그루밍 레벨 진심모드 이름")
                             .optional()
                             .attributes(
                                     new Attributes.Attribute(

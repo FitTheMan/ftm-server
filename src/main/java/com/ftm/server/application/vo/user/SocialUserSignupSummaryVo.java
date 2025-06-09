@@ -13,24 +13,21 @@ public class SocialUserSignupSummaryVo {
     private final String nickname;
     private final SocialProvider socialProvider;
     private final String profileImageUrl;
-    private final String mildLevelName;
-    private final String spicyLevelName;
+    private final String normalLevelName;
+    private final String truthLevelName;
 
     public static SocialUserSignupSummaryVo from(
             User user, String userImage, GroomingLevel groomingLevel) {
-        String mildLevelName = null;
-        String spicyLevelName = null;
-        if (groomingLevel != null) {
-            mildLevelName = groomingLevel.getMildLevelName();
-            spicyLevelName = groomingLevel.getMildLevelName();
-        }
+        String normalLevelName = groomingLevel != null ? groomingLevel.getNormalModeName() : null;
+        String truthLevelName = groomingLevel != null ? groomingLevel.getTruthModeName() : null;
+
         return new SocialUserSignupSummaryVo(
                 user,
                 user.getId(),
                 user.getNickname(),
                 user.getSocialProvider(),
                 PropertiesHolder.CDN_PATH + "/" + userImage,
-                mildLevelName,
-                spicyLevelName);
+                normalLevelName,
+                truthLevelName);
     }
 }

@@ -17,6 +17,10 @@ public class UpdateGroomingLevelRequest {
     @Max(100)
     private Integer maxScore;
 
-    private String mildLevelName;
-    private String spicyLevelName;
+    private String normalModeName;
+    private String normalModeSummary;
+    private String normalModeDescription;
+    private String truthModeName;
+    private String truthModeSummary;
+    private String truthModeDescription;
 }

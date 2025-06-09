@@ -4,9 +4,9 @@ import com.ftm.server.adapter.out.persistence.mapper.*;
 import com.ftm.server.adapter.out.persistence.model.*;
 import com.ftm.server.adapter.out.persistence.repository.*;
 import com.ftm.server.application.port.out.persistence.grooming.*;
-import com.ftm.server.application.query.FIndGroomingLevelByScoreQuery;
 import com.ftm.server.application.query.FindByIdQuery;
 import com.ftm.server.application.query.FindByUserIdQuery;
+import com.ftm.server.application.query.FindGroomingLevelByScoreQuery;
 import com.ftm.server.application.query.FindGroomingTestResultByUserIdAndTestedAtQuery;
 import com.ftm.server.common.annotation.Adapter;
 import com.ftm.server.common.exception.CustomException;
@@ -113,7 +113,7 @@ public class GroomingDomainPersistenceAdapter
     }
 
     @Override
-    public Optional<GroomingLevel> loadGroomingLevelByScore(FIndGroomingLevelByScoreQuery query) {
+    public Optional<GroomingLevel> loadGroomingLevelsByScore(FindGroomingLevelByScoreQuery query) {
         return groomingLevelRepository
                 .findByScoreInRange(query.getScore())
                 .map(groomingLevelMapper::toDomainEntity);
@@ -136,6 +136,7 @@ public class GroomingDomainPersistenceAdapter
         // 유저 점수 업데이트
         userJpaEntity.updateGroomingScore(user);
 
+        // 그루밍 레벨
         GroomingLevelJpaEntity groomingLevelJpaEntity =
                 groomingLevelRepository
                         .findById(user.getGroomingLevelId())

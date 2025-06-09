@@ -6,7 +6,7 @@ import com.ftm.server.application.command.grooming.SubmitGroomingTestCommand;
 import com.ftm.server.application.port.in.grooming.SubmitGroomingTestUseCase;
 import com.ftm.server.application.port.out.cache.LoadGroomingTestsWithCachePort;
 import com.ftm.server.application.port.out.persistence.grooming.LoadGroomingLevelPort;
-import com.ftm.server.application.query.FIndGroomingLevelByScoreQuery;
+import com.ftm.server.application.query.FindGroomingLevelByScoreQuery;
 import com.ftm.server.application.vo.grooming.*;
 import com.ftm.server.common.exception.CustomException;
 import com.ftm.server.common.response.enums.ErrorResponseCode;
@@ -42,15 +42,16 @@ public class SubmitGroomingTestService implements SubmitGroomingTestUseCase {
         GroomingTestResultGradesVo grades = calculateGrades(scores);
         GroomingLevel groomingLevel =
                 loadGroomingLevelPort
-                        .loadGroomingLevelByScore(
-                                FIndGroomingLevelByScoreQuery.of(scores.getTotalScore()))
+                        .loadGroomingLevelsByScore(
+                                FindGroomingLevelByScoreQuery.of(scores.getTotalScore()))
                         .orElseThrow(
                                 () ->
                                         new CustomException(
                                                 ErrorResponseCode.GROOMING_LEVEL_NOT_FOUND));
-        GroomingLevelVo level = GroomingLevelVo.from(groomingLevel);
 
-        return GroomingTestResultVo.from(command.getUserId(), scores, grades, level);
+        GroomingLevelVo levelInfo = GroomingLevelVo.from(groomingLevel);
+
+        return GroomingTestResultVo.from(command.getUserId(), scores, grades, levelInfo);
     }
 
     // 점수 계산

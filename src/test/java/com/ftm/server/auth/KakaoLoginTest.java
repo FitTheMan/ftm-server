@@ -61,14 +61,14 @@ public class KakaoLoginTest extends BaseTest {
                     fieldWithPath("data.profileImageUrl")
                             .type(STRING)
                             .description("유저 프로필 이미지 URL"),
-                    fieldWithPath("data.mildLevelName")
+                    fieldWithPath("data.normalLevelName")
                             .type(STRING)
                             .optional()
-                            .description("순한맛 그루밍 레벨 이름"),
-                    fieldWithPath("data.spicyLevelName")
+                            .description("그루밍 레벨 일반모드 이름"),
+                    fieldWithPath("data.truthLevelName")
                             .type(STRING)
                             .optional()
-                            .description("매운맛 그루밍 레벨 이름"),
+                            .description("그루밍 레벨 진심모드 이름"),
                     fieldWithPath("data.loginTime").type(STRING).description("로그인 시간"));
 
     private ResultActions getResultActions(KakaoLoginRequest request) throws Exception {

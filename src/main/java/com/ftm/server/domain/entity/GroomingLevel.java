@@ -15,23 +15,35 @@ public class GroomingLevel extends BaseTime {
     private Long id;
     private Integer minScore;
     private Integer maxScore;
-    private String mildLevelName;
-    private String spicyLevelName;
+    private String normalModeName;
+    private String normalModeSummary;
+    private String normalModeDescription;
+    private String truthModeName;
+    private String truthModeSummary;
+    private String truthModeDescription;
 
     @Builder(access = AccessLevel.PRIVATE)
     private GroomingLevel(
             Long id,
             Integer minScore,
             Integer maxScore,
-            String mildLevelName,
-            String spicyLevelName,
+            String normalModeName,
+            String normalModeSummary,
+            String normalModeDescription,
+            String truthModeName,
+            String truthModeSummary,
+            String truthModeDescription,
             LocalDateTime createdAt,
             LocalDateTime updatedAt) {
         this.id = id;
         this.minScore = minScore;
         this.maxScore = maxScore;
-        this.mildLevelName = mildLevelName;
-        this.spicyLevelName = spicyLevelName;
+        this.normalModeName = normalModeName;
+        this.normalModeSummary = normalModeSummary;
+        this.normalModeDescription = normalModeDescription;
+        this.truthModeName = truthModeName;
+        this.truthModeSummary = truthModeSummary;
+        this.truthModeDescription = truthModeDescription;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -40,16 +52,24 @@ public class GroomingLevel extends BaseTime {
             Long id,
             Integer minScore,
             Integer maxScore,
-            String mildLevelName,
-            String spicyLevelName,
+            String normalModeName,
+            String normalModeSummary,
+            String normalModeDescription,
+            String truthModeName,
+            String truthModeSummary,
+            String truthModeDescription,
             LocalDateTime createdAt,
             LocalDateTime updatedAt) {
         return GroomingLevel.builder()
                 .id(id)
                 .minScore(minScore)
                 .maxScore(maxScore)
-                .mildLevelName(mildLevelName)
-                .spicyLevelName(spicyLevelName)
+                .normalModeName(normalModeName)
+                .normalModeSummary(normalModeSummary)
+                .normalModeDescription(normalModeDescription)
+                .truthModeName(truthModeName)
+                .truthModeSummary(truthModeSummary)
+                .truthModeDescription(truthModeDescription)
                 .createdAt(createdAt)
                 .updatedAt(updatedAt)
                 .build();
@@ -59,15 +79,27 @@ public class GroomingLevel extends BaseTime {
         return GroomingLevel.builder()
                 .minScore(command.getMinScore())
                 .maxScore(command.getMaxScore())
-                .mildLevelName(command.getMildLevelName())
-                .spicyLevelName(command.getSpicyLevelName())
+                .normalModeName(command.getNormalModeName())
+                .normalModeSummary(command.getNormalModeSummary())
+                .normalModeDescription(command.getNormalModeDescription())
+                .truthModeName(command.getTruthModeName())
+                .truthModeSummary(command.getTruthModeSummary())
+                .truthModeDescription(command.getTruthModeDescription())
                 .build();
     }
 
     public void update(UpdateGroomingLevelCommand command) {
         if (command.getMinScore() != null) this.minScore = command.getMinScore();
         if (command.getMaxScore() != null) this.maxScore = command.getMaxScore();
-        if (command.getMildLevelName() != null) this.mildLevelName = command.getMildLevelName();
-        if (command.getSpicyLevelName() != null) this.spicyLevelName = command.getSpicyLevelName();
+        if (command.getNormalModeName() != null) this.normalModeName = command.getNormalModeName();
+        if (command.getNormalModeSummary() != null)
+            this.normalModeSummary = command.getNormalModeSummary();
+        if (command.getNormalModeDescription() != null)
+            this.normalModeDescription = command.getNormalModeDescription();
+        if (command.getTruthModeName() != null) this.truthModeName = command.getTruthModeName();
+        if (command.getTruthModeSummary() != null)
+            this.truthModeSummary = command.getTruthModeSummary();
+        if (command.getTruthModeDescription() != null)
+            this.truthModeDescription = command.getTruthModeDescription();
     }
 }

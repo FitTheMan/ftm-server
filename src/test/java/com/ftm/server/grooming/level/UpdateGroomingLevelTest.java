@@ -38,7 +38,16 @@ public class UpdateGroomingLevelTest extends BaseTest {
 
     @BeforeEach
     void setUp() {
-        SaveGroomingLevelCommand command = SaveGroomingLevelCommand.of(0, 10, "테스트 순한맛", "테스트 매운맛");
+        SaveGroomingLevelCommand command =
+                SaveGroomingLevelCommand.of(
+                        0,
+                        5,
+                        "레벨 일반모드 이름",
+                        "레벨 일반모드 요약",
+                        "레벨 일반모드 설명",
+                        "레벨 진심모드 이름",
+                        "레벨 진심모드 요약",
+                        "레벨 진심모드 설명");
         GroomingLevel level = GroomingLevel.create(command);
         levelId = groomingLevelRepository.save(groomingLevelMapper.toJpaEntity(level)).getId();
     }
@@ -48,7 +57,15 @@ public class UpdateGroomingLevelTest extends BaseTest {
     void 그루밍_레벨_수정_성공() throws Exception {
         // given
         UpdateGroomingLevelRequest request =
-                new UpdateGroomingLevelRequest(1, 9, "테스트 순한맛 수정", "테스트 매운맛 수정");
+                new UpdateGroomingLevelRequest(
+                        1,
+                        9,
+                        "레벨 일반모드 이름",
+                        "레벨 일반모드 요약",
+                        "레벨 일반모드 설명",
+                        "레벨 진심모드 이름",
+                        "레벨 진심모드 요약",
+                        "레벨 진심모드 설명");
 
         // when
         MockHttpSession session = createAdminUserAndLogin();
@@ -62,7 +79,8 @@ public class UpdateGroomingLevelTest extends BaseTest {
     @Transactional
     void 그루밍_레벨_수정_실패1() throws Exception {
         // given
-        UpdateGroomingLevelRequest request = new UpdateGroomingLevelRequest(1, 9, null, null);
+        UpdateGroomingLevelRequest request =
+                new UpdateGroomingLevelRequest(1, 9, null, null, null, null, null, null);
 
         // when
         MockHttpSession session = createUserAndLogin();
@@ -78,7 +96,8 @@ public class UpdateGroomingLevelTest extends BaseTest {
     @Transactional
     void 그루밍_레벨_수정_실패2() throws Exception {
         // given
-        UpdateGroomingLevelRequest request = new UpdateGroomingLevelRequest(null, null, null, null);
+        UpdateGroomingLevelRequest request =
+                new UpdateGroomingLevelRequest(1, 9, null, null, null, null, null, null);
 
         // when
         MockHttpSession session = createAdminUserAndLogin();

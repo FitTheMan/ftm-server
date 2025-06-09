@@ -57,17 +57,17 @@ public class GeneralLoginTest extends BaseTest {
                     fieldWithPath("data.profileImageUrl")
                             .type(STRING)
                             .description("유저 프로필 이미지 URL"),
-                    fieldWithPath("data.mildLevelName")
+                    fieldWithPath("data.normalLevelName")
                             .type(STRING)
                             .optional()
-                            .description("순한맛 그루밍 레벨 이름")
+                            .description("그루밍 레벨 일반모드 이름")
                             .attributes(
                                     new Attributes.Attribute(
                                             "nullable", "그루밍 테스트를 아직 진행하지 않은 경우 null")),
-                    fieldWithPath("data.spicyLevelName")
+                    fieldWithPath("data.truthLevelName")
                             .type(STRING)
                             .optional()
-                            .description("매운맛 그루밍 레벨 이름")
+                            .description("그루밍 레벨 진심모드 이름")
                             .attributes(
                                     new Attributes.Attribute(
                                             "nullable", "그루밍 테스트를 아직 진행하지 않은 경우 null")),
