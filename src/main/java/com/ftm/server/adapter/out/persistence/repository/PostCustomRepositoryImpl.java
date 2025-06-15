@@ -4,8 +4,11 @@ import static com.ftm.server.adapter.out.persistence.model.QPostJpaEntity.postJp
 
 import com.ftm.server.adapter.out.persistence.model.PostJpaEntity;
 import com.ftm.server.application.query.FindPostByDeleteOptionQuery;
+import com.ftm.server.application.query.FindPostsByCreatedDateQuery;
 import com.ftm.server.application.query.FindPostsByPagingQuery;
+import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -50,5 +53,20 @@ public class PostCustomRepositoryImpl implements PostCustomRepository {
         }
 
         return new SliceImpl<>(result, pageable, hasNext);
+    }
+
+    @Override
+    public List<Tuple> findAllByCreatedDateInOneWeekAndUserGrouping(
+            FindPostsByCreatedDateQuery query) {
+
+        LocalDateTime oneWeekAgo =
+                query.getDate().minusWeeks(1).atStartOfDay(); // 현재 기준 1주일 전 게시물만 조회
+
+        return queryFactory
+                .select(postJpaEntity.user, postJpaEntity.id.count())
+                .from(postJpaEntity)
+                .groupBy(postJpaEntity.user)
+                .where(postJpaEntity.createdAt.goe(oneWeekAgo))
+                .fetch();
     }
 }

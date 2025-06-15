@@ -240,7 +240,7 @@ public class UserDomainPersistenceAdapter
     @Override
     public List<String> deleteUserImageByUserList(DeleteUserImageByUserIdCommand command) {
         List<String> imageKeyList =
-                userImageRepository.findAllByUserIdList(command.getUserIdList());
+                userImageRepository.findAllImagesByUserIdList(command.getUserIdList());
         userImageRepository.deleteAllByUserIdList(command.getUserIdList());
         return imageKeyList;
     }
@@ -299,5 +299,12 @@ public class UserDomainPersistenceAdapter
         Optional<BookmarkJpaEntity> bookmarkJpaEntity =
                 bookmarkRepository.findByUserIdAndPostId(query.getUserId(), query.getPostId());
         return bookmarkJpaEntity.map(bookmarkMapper::toDomainEntity);
+    }
+
+    @Override
+    public List<UserImage> loadUserImagesByUserIdIn(FindUserImagesByIdsQuery query) {
+        return userImageRepository.findAllByUserIdList(query.getUserIds()).stream()
+                .map(userImageMapper::toDomainEntity)
+                .toList();
     }
 }

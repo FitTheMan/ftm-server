@@ -6,7 +6,6 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.JsonFieldType.*;
-import static org.springframework.restdocs.payload.JsonFieldType.STRING;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -32,7 +31,7 @@ import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
-public class LoadTrendingPostsTes extends BaseTest {
+public class LoadTrendingManTest extends BaseTest {
 
     @Autowired private SavePostPort savePostPort;
 
@@ -41,30 +40,30 @@ public class LoadTrendingPostsTes extends BaseTest {
                     fieldWithPath("status").type(NUMBER).description("응답 상태"),
                     fieldWithPath("code").type(STRING).description("상태 코드"),
                     fieldWithPath("message").type(STRING).description("메시지"),
-                    fieldWithPath("data").type(ARRAY).optional().description("응답 데이터"),
+                    fieldWithPath("data")
+                            .type(ARRAY)
+                            .optional()
+                            .description("응답 데이터 : 대상 사용자가 없는 경우 빈 배열"),
                     fieldWithPath("data[].ranking").type(NUMBER).description("순위"),
-                    fieldWithPath("data[].postId").type(NUMBER).description("게시글 ID"),
-                    fieldWithPath("data[].title").type(STRING).description("게시글 제목"),
-                    fieldWithPath("data[].viewCount").type(NUMBER).description("조회수"),
-                    fieldWithPath("data[].likeCount").type(NUMBER).description("좋아요 수"),
-                    fieldWithPath("data[].scrapCount").type(NUMBER).description("스크랩 수"),
-                    fieldWithPath("data[].imageUrl").type(STRING).description("이미지 url"));
+                    fieldWithPath("data[].userId").type(NUMBER).description("게시글 ID"),
+                    fieldWithPath("data[].userName").type(STRING).description("게시글 제목"),
+                    fieldWithPath("data[].userImageUrl").type(STRING).description("이미지 url"));
 
     private ResultActions getResultActions() throws Exception {
-        return mockMvc.perform(RestDocumentationRequestBuilders.get("/api/posts/trend"));
+        return mockMvc.perform(RestDocumentationRequestBuilders.get("/api/posts/trend/users"));
     }
 
     private RestDocumentationResultHandler getDocument(Integer identifier) {
         return document(
-                "loadTrendingPosts/" + identifier,
+                "loadTrendingMan/" + identifier,
                 preprocessRequest(prettyPrint()),
                 preprocessResponse(prettyPrint(), getModifiedHeader()),
                 responseFields(responseFields),
                 resource(
                         ResourceSnippetParameters.builder()
                                 .tag("유저픽 게시글")
-                                .summary("트렌딩 게시글 조회 api")
-                                .description("트레딩 게시 조회 api 입니다.")
+                                .summary("트렌딩 핏더맨 조회 api")
+                                .description("트레딩 핏더맨 조회 api 입니다.")
                                 .responseFields(responseFields)
                                 .build()));
     }
@@ -75,15 +74,16 @@ public class LoadTrendingPostsTes extends BaseTest {
     public void test1() throws Exception {
         // given
 
-        SessionAndUser sessionAndUser = createUserAndLoginAndReturnUser(); // 로그인 처리
+        BaseTest.SessionAndUser sessionAndUser = createUserAndLoginAndReturnUser(); // 로그인 처리
 
-        User user = sessionAndUser.user();
+        User user1 = createUserAndLoginAndReturnUser("test1@gmail.com", "gqe123@").user();
+        User user2 = createUserAndLoginAndReturnUser("test2@gmail.com", "gqe123@").user();
 
         // test 용 post 생성
         savePostPort.savePost(
                 Post.create(
                         SavePostCommand.from(
-                                user.getId(),
+                                user1.getId(),
                                 new SavePostRequest(
                                         "test1",
                                         GroomingCategory.FASHION,
@@ -96,7 +96,7 @@ public class LoadTrendingPostsTes extends BaseTest {
         savePostPort.savePost(
                 Post.create(
                         SavePostCommand.from(
-                                user.getId(),
+                                user2.getId(),
                                 new SavePostRequest(
                                         "test2",
                                         GroomingCategory.FASHION,
