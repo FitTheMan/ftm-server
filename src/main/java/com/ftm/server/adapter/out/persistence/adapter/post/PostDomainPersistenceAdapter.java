@@ -6,13 +6,12 @@ import com.ftm.server.adapter.out.persistence.repository.*;
 import com.ftm.server.application.port.out.persistence.post.*;
 import com.ftm.server.application.query.*;
 import com.ftm.server.application.vo.post.PostWithBookmarkCountVo;
+import com.ftm.server.application.vo.post.UserWithPostCountVo;
 import com.ftm.server.common.annotation.Adapter;
 import com.ftm.server.common.exception.CustomException;
 import com.ftm.server.common.response.enums.ErrorResponseCode;
 import com.ftm.server.domain.entity.*;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -294,6 +293,12 @@ public class PostDomainPersistenceAdapter
     public List<PostWithBookmarkCountVo> loadAllPostsWithBookmarkCount(
             FindPostsByCreatedDateQuery query) {
         return postRepository.findAllPostsWithBookmarkCount(query);
+    }
+
+    @Override
+    public List<UserWithPostCountVo> loadAllPostsWithUserAndBookmarkCount(
+            FindPostsByCreatedDateQuery query) {
+        return postRepository.findAllPostsWithUserAndBookmarkCount(query);
     }
 
     @Override

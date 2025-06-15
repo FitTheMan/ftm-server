@@ -5,6 +5,8 @@ import static com.ftm.server.adapter.out.persistence.model.QPostJpaEntity.postJp
 
 import com.ftm.server.application.query.FindPostsByCreatedDateQuery;
 import com.ftm.server.application.vo.post.PostWithBookmarkCountVo;
+import com.ftm.server.application.vo.post.UserWithPostCountVo;
+import com.ftm.server.domain.enums.UserRole;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.time.LocalDateTime;
@@ -22,7 +24,7 @@ public class PostWithBookmarkCustomRepositoryImpl implements PostWithBookmarkCus
     public List<PostWithBookmarkCountVo> findAllPostsWithBookmarkCount(
             FindPostsByCreatedDateQuery query) {
 
-        LocalDateTime twoWeeksAgo =
+        LocalDateTime oneWeekAgo =
                 query.getDate().minusWeeks(1).atStartOfDay(); // 현재 기준 1주일 전 게시물만 조회
 
         return queryFactory
@@ -37,8 +39,46 @@ public class PostWithBookmarkCustomRepositoryImpl implements PostWithBookmarkCus
                 .from(postJpaEntity)
                 .leftJoin(bookmarkJpaEntity)
                 .on(bookmarkJpaEntity.post.eq(postJpaEntity))
-                .where(postJpaEntity.createdAt.goe(twoWeeksAgo))
+                .where(postJpaEntity.createdAt.goe(oneWeekAgo))
+                .where(postJpaEntity.isDeleted.eq(false)) // 삭제 되지 않은 것만 트렌딩 게시물에 포함하기
                 .groupBy(postJpaEntity.id)
+                .fetch();
+    }
+
+    @Override
+    public List<UserWithPostCountVo> findAllPostsWithUserAndBookmarkCount(
+            FindPostsByCreatedDateQuery query) {
+        LocalDateTime oneWeekAgo =
+                query.getDate().minusWeeks(1).atStartOfDay(); // 현재 기준 1주일 전 게시물만 조회
+
+        return queryFactory
+                .select(
+                        Projections.constructor(
+                                UserWithPostCountVo.class,
+                                postJpaEntity.user.id,
+                                postJpaEntity.user.nickname,
+                                postJpaEntity.viewCount.sum(),
+                                postJpaEntity.likeCount.sum(),
+                                bookmarkJpaEntity.id.count()))
+                .from(postJpaEntity)
+                .leftJoin(bookmarkJpaEntity)
+                .on(bookmarkJpaEntity.post.eq(postJpaEntity))
+                .where(
+                        postJpaEntity
+                                .isDeleted
+                                .eq(false)
+                                .and(
+                                        postJpaEntity.createdAt.goe(
+                                                oneWeekAgo))) // 삭제되지 않은 1주일 이내 게시물만 포함.
+                .where(
+                        postJpaEntity
+                                .user
+                                .isDeleted
+                                .eq(false)
+                                .and(
+                                        postJpaEntity.user.role.eq(
+                                                UserRole.USER))) // 삭제되지 않은 일반 유저만 포함
+                .groupBy(postJpaEntity.user.id, postJpaEntity.user.nickname)
                 .fetch();
     }
 }

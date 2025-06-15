@@ -17,5 +17,8 @@ public interface UserImageRepository extends JpaRepository<UserImageJpaEntity, L
     void deleteAllByUserIdList(@Param("userIds") List<Long> userIds);
 
     @Query("SELECT ui.objectKey FROM UserImageJpaEntity ui WHERE ui.user.id in (:userIds)")
-    List<String> findAllByUserIdList(@Param("userIds") List<Long> userIds);
+    List<String> findAllImagesByUserIdList(@Param("userIds") List<Long> userIds);
+
+    @Query("SELECT ui FROM UserImageJpaEntity ui WHERE ui.user.id in (:userIds)")
+    List<UserImageJpaEntity> findAllByUserIdList(@Param("userIds") List<Long> userIds);
 }

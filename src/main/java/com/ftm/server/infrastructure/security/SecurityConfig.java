@@ -57,7 +57,7 @@ public class SecurityConfig {
         "/api/users/options",
         "/api/grooming/tests",
         "/api/auth/session/validity",
-        "/api/posts/*"
+        "/api/posts/**"
     };
 
     private static final String[] POST_ANONYMOUS_MATCHERS = {
