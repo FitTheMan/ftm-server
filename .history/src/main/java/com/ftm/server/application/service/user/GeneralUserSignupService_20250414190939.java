@@ -1,14 +1,10 @@
 package com.ftm.server.application.service.user;
 
 import com.ftm.server.adapter.in.web.user.dto.response.GeneralUserSignupResponse;
-import com.ftm.server.application.command.user.DeleteByEmailCommand;
-import com.ftm.server.application.command.user.DeleteUserByEmailCommand;
 import com.ftm.server.application.command.user.GeneralUserCreationCommand;
 import com.ftm.server.application.command.user.GeneralUserSignupCommand;
 import com.ftm.server.application.port.in.user.GeneralUserSignupUseCase;
-import com.ftm.server.application.port.in.user.UserHardDeleteByEmailUseCase;
 import com.ftm.server.application.port.out.persistence.user.CheckUserPort;
-import com.ftm.server.application.port.out.persistence.user.DeleteEmailVerificationLogPort;
 import com.ftm.server.application.port.out.persistence.user.LoadEmailVerificationLogPort;
 import com.ftm.server.application.port.out.persistence.user.SaveUserImagePort;
 import com.ftm.server.application.port.out.persistence.user.SaveUserPort;
@@ -29,12 +25,8 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class GeneralUserSignupService implements GeneralUserSignupUseCase {
 
-    //usecase
-    private final UserHardDeleteByEmailUseCase userHardDeleteByEmailUseCase;
-
     // service
     private final LoadEmailVerificationLogPort loadEmailVerificationLogPort;
-    private final DeleteEmailVerificationLogPort deleteEmailVerificationLogPort;
     private final CheckUserPort checksUserPort;
     private final SaveUserPort saveUserPort;
     private final SaveUserImagePort saveUserImagePort;
@@ -50,17 +42,12 @@ public class GeneralUserSignupService implements GeneralUserSignupUseCase {
                 loadEmailVerificationLogPort.loadEmailVerificationLogByEmail(
                         FindByEmailQuery.of(email));
 
-        if (checksUserPort.checksNotDeletedUserByEmail(FindByEmailQuery.of(email))) { // 기존에 가입된 회원인지 검사(삭제되지 않은 user 에 한해서)
+        if (checksUserPort.checksUserByEmail(FindByEmailQuery.of(email))) { // 기존에 가입된 회원인지 검사
             throw new CustomException(ErrorResponseCode.USER_ALREADY_EXISTS);
         }
 
         if (emailVerificationLogs.isEmpty()) { // 이메일 인증이 완료되지 않음.
             throw new CustomException(ErrorResponseCode.EMAIL_NOT_VERIFIED);
-        }
-
-        //회원 탈퇴 후 복구 없이 재가입하는 경우, 기존의 계정 정보 즉시 삭제
-        if(checksUserPort.checksUserSoftDeletedByEmail(FindByEmailQuery.of(email))){
-            userHardDeleteByEmailUseCase.execute(DeleteUserByEmailCommand.of(email));
         }
 
         String nickname = RandomNickNameCreator.generateNickname(); // random 닉네임 생성
@@ -75,10 +62,6 @@ public class GeneralUserSignupService implements GeneralUserSignupUseCase {
 
         User user = saveUserPort.saveUser(User.createGeneralUser(convertedCommand));
         saveUserImagePort.saveUserDefaultImage(UserImage.createUserImage(user.getId()));
-        
-        // 회원가입 완료 후 해당 이메일의 인증 로그 삭제
-        deleteEmailVerificationLogPort.deleteEmailVerificationLogsByEmail(DeleteByEmailCommand.of(email));
-        
         return GeneralUserSignupResponse.of(user.getId());
     }
 }
