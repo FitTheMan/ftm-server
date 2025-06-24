@@ -6,4 +6,4 @@ import com.ftm.server.common.annotation.Port;
 @Port
 public interface DeleteEmailVerificationLogPort {
     void deleteEmailVerificationLogsByEmail(DeleteByEmailCommand command);
-} 
+}

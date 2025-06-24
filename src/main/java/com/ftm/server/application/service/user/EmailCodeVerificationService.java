@@ -31,13 +31,14 @@ public class EmailCodeVerificationService implements EmailCodeVerificationUseCas
         if (emailVerificationLogs.isEmpty()) { // 검증 코드가 일치하지 않음
             return EmailCodeVerificationVo.of(false);
         }
-        
+
         emailVerificationLogs.get().updateVerificationStatus(true); // 검증 코드가 일치함
         updateEmailVerificationLogPort.updateEmailVerificationLog(emailVerificationLogs.get());
-        
+
         // 해당 이메일의 계정 상태 확인 (soft delete 여부)
-        Boolean isRecoverable = checkUserPort.checksUserSoftDeletedByEmail(FindByEmailQuery.of(query.getEmail()));
-        
+        Boolean isRecoverable =
+                checkUserPort.checksUserSoftDeletedByEmail(FindByEmailQuery.of(query.getEmail()));
+
         return EmailCodeVerificationVo.of(true, isRecoverable);
     }
 }

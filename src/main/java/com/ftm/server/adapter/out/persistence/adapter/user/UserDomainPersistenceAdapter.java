@@ -162,7 +162,8 @@ public class UserDomainPersistenceAdapter
 
     @Override
     public Optional<User> loadDeletedUserByEmail(FindByEmailQuery query) {
-        Optional<UserJpaEntity> user = userRepository.findByEmailAndIsDeleted(query.getEmail(),true);
+        Optional<UserJpaEntity> user =
+                userRepository.findByEmailAndIsDeleted(query.getEmail(), true);
         return user.map(userMapper::toDomainEntity);
     }
 
@@ -322,11 +323,11 @@ public class UserDomainPersistenceAdapter
 
     @Override
     public Boolean checksNotDeletedUserByEmail(FindByEmailQuery query) {
-        return userRepository.existsByEmailAndIsDeleted(query.getEmail(), false);   
+        return userRepository.existsByEmailAndIsDeleted(query.getEmail(), false);
     }
 
     @Override
     public Boolean checksUserSoftDeletedByEmail(FindByEmailQuery query) {
-        return userRepository.existsByEmailAndIsDeleted(query.getEmail(), true);   
+        return userRepository.existsByEmailAndIsDeleted(query.getEmail(), true);
     }
 }

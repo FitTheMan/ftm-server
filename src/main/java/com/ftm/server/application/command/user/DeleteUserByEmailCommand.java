@@ -7,7 +7,8 @@ import lombok.Getter;
 @Getter
 public class DeleteUserByEmailCommand {
     private final String email;
-    public static DeleteUserByEmailCommand of(String email){
+
+    public static DeleteUserByEmailCommand of(String email) {
         return new DeleteUserByEmailCommand(email);
     }
 }

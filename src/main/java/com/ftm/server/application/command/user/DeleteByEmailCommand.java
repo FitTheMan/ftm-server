@@ -9,4 +9,4 @@ public class DeleteByEmailCommand {
     public static DeleteByEmailCommand of(String email) {
         return new DeleteByEmailCommand(email);
     }
-} 
+}
