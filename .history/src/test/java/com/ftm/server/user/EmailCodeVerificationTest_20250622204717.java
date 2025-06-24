@@ -1,28 +1,17 @@
 package com.ftm.server.user;
 
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
-import static io.restassured.RestAssured.when;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doReturn;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.ftm.server.BaseTest;
 import com.ftm.server.adapter.in.web.user.dto.request.EmailCodeVerificationRequest;
-import com.ftm.server.adapter.in.web.user.dto.request.GeneralUserSignupRequest;
 import com.ftm.server.application.command.user.EmailVerificationLogCreationCommand;
 import com.ftm.server.application.port.out.persistence.user.SaveEmailVerificationLogPort;
-import com.ftm.server.application.port.out.persistence.user.SaveUserPort;
-import com.ftm.server.application.port.out.smtp.MailSenderPort;
-import com.ftm.server.domain.entity.User;
-import com.ftm.server.domain.enums.AgeGroup;
-import com.ftm.server.domain.enums.HashTag;
 import jakarta.transaction.Transactional;
-import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,16 +20,11 @@ import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.ResultActions;
 
 public class EmailCodeVerificationTest extends BaseTest {
 
     @Autowired private SaveEmailVerificationLogPort saveEmailVerificationLogPort;
-    @Autowired private SaveUserPort saveUserPort;
-
-    @MockitoBean
-    private MailSenderPort mailSenderPort;
 
     private final List<FieldDescriptor> requestFieldDescriptors =
             List.of(
@@ -58,7 +42,7 @@ public class EmailCodeVerificationTest extends BaseTest {
                             .description("검증 성공 여부"),
                     fieldWithPath("data.isRecoverable")
                             .type(JsonFieldType.BOOLEAN)
-                            .description("계정 복구 가능 여부 : true 일 경우 계정 복구 요청 가능"));
+                            .description("계정 복구 가능 여부 (soft delete 상태인지)"));
 
     private ResultActions getResultActions(EmailCodeVerificationRequest request) throws Exception {
         return mockMvc.perform( // api 실행
@@ -85,15 +69,6 @@ public class EmailCodeVerificationTest extends BaseTest {
                                 .build()));
     }
 
-    protected User createSoftDeletedUser(String email, String password) {
-        User user = createTestUser(email, password);
-        user.updateIsDeleted(true);
-        user.updateDeletedAt(LocalDateTime.now());
-        saveUserPort.saveUser(user);
-        return user;
-    }
-
-
     @Test
     @Transactional
     void 이메일_인증코드_검증_성공() throws Exception {
@@ -103,8 +78,6 @@ public class EmailCodeVerificationTest extends BaseTest {
         // given
         saveEmailVerificationLogPort.saveEmailVerificationLogs(
                 EmailVerificationLogCreationCommand.of(email, code));
-        //stub 객체 생성
-        doNothing().when(mailSenderPort).sendEmail(email,code);
 
         // when
         ResultActions resultActions =

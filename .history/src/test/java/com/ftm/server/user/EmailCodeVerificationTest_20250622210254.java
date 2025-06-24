@@ -1,9 +1,6 @@
 package com.ftm.server.user;
 
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
-import static io.restassured.RestAssured.when;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doReturn;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
@@ -13,14 +10,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.ftm.server.BaseTest;
 import com.ftm.server.adapter.in.web.user.dto.request.EmailCodeVerificationRequest;
-import com.ftm.server.adapter.in.web.user.dto.request.GeneralUserSignupRequest;
 import com.ftm.server.application.command.user.EmailVerificationLogCreationCommand;
 import com.ftm.server.application.port.out.persistence.user.SaveEmailVerificationLogPort;
 import com.ftm.server.application.port.out.persistence.user.SaveUserPort;
-import com.ftm.server.application.port.out.smtp.MailSenderPort;
 import com.ftm.server.domain.entity.User;
-import com.ftm.server.domain.enums.AgeGroup;
-import com.ftm.server.domain.enums.HashTag;
 import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -31,16 +24,12 @@ import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.ResultActions;
 
 public class EmailCodeVerificationTest extends BaseTest {
 
     @Autowired private SaveEmailVerificationLogPort saveEmailVerificationLogPort;
     @Autowired private SaveUserPort saveUserPort;
-
-    @MockitoBean
-    private MailSenderPort mailSenderPort;
 
     private final List<FieldDescriptor> requestFieldDescriptors =
             List.of(
@@ -58,7 +47,7 @@ public class EmailCodeVerificationTest extends BaseTest {
                             .description("검증 성공 여부"),
                     fieldWithPath("data.isRecoverable")
                             .type(JsonFieldType.BOOLEAN)
-                            .description("계정 복구 가능 여부 : true 일 경우 계정 복구 요청 가능"));
+                            .description("계정 복구 가능 여부"));
 
     private ResultActions getResultActions(EmailCodeVerificationRequest request) throws Exception {
         return mockMvc.perform( // api 실행
@@ -103,8 +92,6 @@ public class EmailCodeVerificationTest extends BaseTest {
         // given
         saveEmailVerificationLogPort.saveEmailVerificationLogs(
                 EmailVerificationLogCreationCommand.of(email, code));
-        //stub 객체 생성
-        doNothing().when(mailSenderPort).sendEmail(email,code);
 
         // when
         ResultActions resultActions =
@@ -115,5 +102,59 @@ public class EmailCodeVerificationTest extends BaseTest {
 
         // documentation
         resultActions.andDo(getDocument(1));
+    }
+
+    @Test
+    @Transactional
+    void 이메일_인증코드_검증_실패() throws Exception {
+
+        String email = "test@gmail.com";
+        String correctCode = "123456";
+        String wrongCode = "654321";
+        
+        // given
+        saveEmailVerificationLogPort.saveEmailVerificationLogs(
+                EmailVerificationLogCreationCommand.of(email, correctCode));
+
+        // when
+        ResultActions resultActions =
+                getResultActions(new EmailCodeVerificationRequest(email, wrongCode));
+
+        // then
+        resultActions
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.isVerified").value(false))
+                .andExpect(jsonPath("$.data.isRecoverable").value(false));
+
+        // documentation
+        resultActions.andDo(getDocument(2));
+    }
+
+    @Test
+    @Transactional
+    void 이메일_인증코드_검증_성공_soft_delete_사용자_복구_가능() throws Exception {
+
+        String email = "softdeleted@gmail.com";
+        String code = "123456";
+        
+        // given - soft delete된 사용자 생성
+        User softDeletedUser = createSoftDeletedUser(email, "password123!");
+        
+        // given - 이메일 인증 로그 생성
+        saveEmailVerificationLogPort.saveEmailVerificationLogs(
+                EmailVerificationLogCreationCommand.of(email, code));
+
+        // when
+        ResultActions resultActions =
+                getResultActions(new EmailCodeVerificationRequest(email, code));
+
+        // then
+        resultActions
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.isVerified").value(true))
+                .andExpect(jsonPath("$.data.isRecoverable").value(true));
+
+        // documentation
+        resultActions.andDo(getDocument(3));
     }
 }

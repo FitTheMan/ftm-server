@@ -16,7 +16,6 @@ import com.ftm.server.domain.enums.HashTag;
 import com.ftm.server.domain.enums.UserRole;
 import com.ftm.server.infrastructure.security.UserPrincipal;
 import groovy.util.logging.Slf4j;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
