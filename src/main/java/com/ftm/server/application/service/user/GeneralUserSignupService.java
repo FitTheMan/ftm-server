@@ -29,7 +29,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class GeneralUserSignupService implements GeneralUserSignupUseCase {
 
-    //usecase
+    // usecase
     private final UserHardDeleteByEmailUseCase userHardDeleteByEmailUseCase;
 
     // service
@@ -50,7 +50,8 @@ public class GeneralUserSignupService implements GeneralUserSignupUseCase {
                 loadEmailVerificationLogPort.loadEmailVerificationLogByEmail(
                         FindByEmailQuery.of(email));
 
-        if (checksUserPort.checksNotDeletedUserByEmail(FindByEmailQuery.of(email))) { // 기존에 가입된 회원인지 검사(삭제되지 않은 user 에 한해서)
+        if (checksUserPort.checksNotDeletedUserByEmail(
+                FindByEmailQuery.of(email))) { // 기존에 가입된 회원인지 검사(삭제되지 않은 user 에 한해서)
             throw new CustomException(ErrorResponseCode.USER_ALREADY_EXISTS);
         }
 
@@ -58,8 +59,8 @@ public class GeneralUserSignupService implements GeneralUserSignupUseCase {
             throw new CustomException(ErrorResponseCode.EMAIL_NOT_VERIFIED);
         }
 
-        //회원 탈퇴 후 복구 없이 재가입하는 경우, 기존의 계정 정보 즉시 삭제
-        if(checksUserPort.checksUserSoftDeletedByEmail(FindByEmailQuery.of(email))){
+        // 회원 탈퇴 후 복구 없이 재가입하는 경우, 기존의 계정 정보 즉시 삭제
+        if (checksUserPort.checksUserSoftDeletedByEmail(FindByEmailQuery.of(email))) {
             userHardDeleteByEmailUseCase.execute(DeleteUserByEmailCommand.of(email));
         }
 
@@ -75,10 +76,11 @@ public class GeneralUserSignupService implements GeneralUserSignupUseCase {
 
         User user = saveUserPort.saveUser(User.createGeneralUser(convertedCommand));
         saveUserImagePort.saveUserDefaultImage(UserImage.createUserImage(user.getId()));
-        
+
         // 회원가입 완료 후 해당 이메일의 인증 로그 삭제
-        deleteEmailVerificationLogPort.deleteEmailVerificationLogsByEmail(DeleteByEmailCommand.of(email));
-        
+        deleteEmailVerificationLogPort.deleteEmailVerificationLogsByEmail(
+                DeleteByEmailCommand.of(email));
+
         return GeneralUserSignupResponse.of(user.getId());
     }
 }

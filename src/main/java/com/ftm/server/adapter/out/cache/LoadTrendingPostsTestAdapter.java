@@ -7,16 +7,15 @@ import com.ftm.server.application.query.FindByIdsQuery;
 import com.ftm.server.application.query.FindPostsByCreatedDateQuery;
 import com.ftm.server.application.vo.post.PostWithBookmarkCountVo;
 import com.ftm.server.application.vo.post.TrendingPostVo;
-import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Primary;
-import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
@@ -56,10 +55,10 @@ public class LoadTrendingPostsTestAdapter implements LoadTrendingPostsWithCacheP
                                 Comparator.comparingDouble(
                                         p ->
                                                 -((double) p.getViewCount() / finalMaxView
-                                                        + (double) p.getLikeCount()
-                                                        / finalMaxLike
-                                                        + (double) p.getScrapCount()
-                                                        / finalMaxScrap)
+                                                                + (double) p.getLikeCount()
+                                                                        / finalMaxLike
+                                                                + (double) p.getScrapCount()
+                                                                        / finalMaxScrap)
                                                         / 3.0))
                         .limit(N)
                         .toList();
