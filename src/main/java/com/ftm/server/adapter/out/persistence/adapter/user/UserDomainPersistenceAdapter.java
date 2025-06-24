@@ -25,6 +25,7 @@ public class UserDomainPersistenceAdapter
         implements LoadEmailVerificationLogPort,
                 SaveEmailVerificationLogPort,
                 UpdateEmailVerificationLogPort,
+                DeleteEmailVerificationLogPort,
                 CheckUserPort,
                 SaveUserPort,
                 SaveUserImagePort,
@@ -92,6 +93,11 @@ public class UserDomainPersistenceAdapter
     }
 
     @Override
+    public void deleteEmailVerificationLogsByEmail(DeleteByEmailCommand command) {
+        emailVerificationLogsRepository.deleteAllByEmail(command.getEmail());
+    }
+
+    @Override
     public Boolean checksUserByEmail(FindByEmailQuery query) {
         return userRepository.existsByEmail(query.getEmail());
     }
@@ -152,6 +158,12 @@ public class UserDomainPersistenceAdapter
                 .stream()
                 .map(userMapper::toDomainEntity)
                 .toList();
+    }
+
+    @Override
+    public Optional<User> loadDeletedUserByEmail(FindByEmailQuery query) {
+        Optional<UserJpaEntity> user = userRepository.findByEmailAndIsDeleted(query.getEmail(),true);
+        return user.map(userMapper::toDomainEntity);
     }
 
     @Override
@@ -306,5 +318,15 @@ public class UserDomainPersistenceAdapter
         return userImageRepository.findAllByUserIdList(query.getUserIds()).stream()
                 .map(userImageMapper::toDomainEntity)
                 .toList();
+    }
+
+    @Override
+    public Boolean checksNotDeletedUserByEmail(FindByEmailQuery query) {
+        return userRepository.existsByEmailAndIsDeleted(query.getEmail(), false);   
+    }
+
+    @Override
+    public Boolean checksUserSoftDeletedByEmail(FindByEmailQuery query) {
+        return userRepository.existsByEmailAndIsDeleted(query.getEmail(), true);   
     }
 }

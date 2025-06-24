@@ -15,6 +15,8 @@ public interface UserRepository extends JpaRepository<UserJpaEntity, Long> {
 
     Optional<UserJpaEntity> findByIdAndIsDeleted(Long userId, Boolean isDeleted);
 
+    Optional<UserJpaEntity> findByEmailAndIsDeleted(String email, Boolean isDeleted);
+
     Boolean existsByEmail(String email);
 
     Optional<UserJpaEntity> findByEmail(String email);
@@ -33,4 +35,6 @@ public interface UserRepository extends JpaRepository<UserJpaEntity, Long> {
     @Query("SELECT u FROM UserJpaEntity u WHERE u.isDeleted = :isDeleted And u.deletedAt <=:end")
     List<UserJpaEntity> findAllByDeletedBefore(
             @Param("isDeleted") Boolean isDeleted, @Param("end") LocalDateTime end);
+
+    Boolean existsByEmailAndIsDeleted(String email, boolean b);
 }

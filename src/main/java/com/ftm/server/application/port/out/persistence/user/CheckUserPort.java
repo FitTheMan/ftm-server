@@ -12,4 +12,8 @@ public interface CheckUserPort {
     Boolean checksUserBySocialValue(FindBySocialValueQuery query);
 
     Boolean checksUserById(FindByUserIdQuery query);
+
+    Boolean checksNotDeletedUserByEmail(FindByEmailQuery query);
+
+    Boolean checksUserSoftDeletedByEmail(FindByEmailQuery query);
 }

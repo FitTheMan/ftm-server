@@ -36,7 +36,7 @@ public class EmailCodeVerificationService implements EmailCodeVerificationUseCas
         updateEmailVerificationLogPort.updateEmailVerificationLog(emailVerificationLogs.get());
         
         // 해당 이메일의 계정 상태 확인 (soft delete 여부)
-        Boolean isRecoverable = checkUserPort.checksUserSoftDeletedByEmail(FindByEmailQuery.of(query.getEmail()));
+        Boolean isRecoverable = !checkUserPort.checksNotDeletedUserByEmail(FindByEmailQuery.of(query.getEmail()));
         
         return EmailCodeVerificationVo.of(true, isRecoverable);
     }

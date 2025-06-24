@@ -99,6 +99,15 @@ public class BaseTest {
         return testUser;
     }
 
+    // 사용자를 soft delete 상태로 만드는 헬퍼 메서드
+    protected User createSoftDeletedUser(String email, String password) {
+        User user = createTestUser(email, password);
+        user.updateIsDeleted(true);
+        user.updateDeletedAt(LocalDateTime.now());
+        saveUserPort.saveUser(user);
+        return user;
+    }
+
     protected MockHttpSession createUserAndLogin() {
         return createUserAndLogin("test@gmail.com", "123456qwe!");
     }

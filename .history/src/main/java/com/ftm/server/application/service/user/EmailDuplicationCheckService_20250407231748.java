@@ -15,6 +15,6 @@ public class EmailDuplicationCheckService implements EmailDuplicationCheckUseCas
 
     @Override
     public EmailDuplicationVo execute(FindByEmailQuery query) {
-        return EmailDuplicationVo.of(checkUserPort.checksNotDeletedUserByEmail(query));
+        return EmailDuplicationVo.of(checkUserPort.checksUserByEmail(query));
     }
 }
