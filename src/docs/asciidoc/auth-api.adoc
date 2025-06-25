@@ -86,4 +86,3 @@ include::{snippetsDir}/sessionValidityCheck/2/http-response.adoc[]
 ==== Response Body Fields
 include::{snippetsDir}/sessionValidityCheck/1/response-fields.adoc[]
 
-

@@ -55,7 +55,8 @@ public class GeneralUserSignupService implements GeneralUserSignupUseCase {
             throw new CustomException(ErrorResponseCode.USER_ALREADY_EXISTS);
         }
 
-        if (emailVerificationLogs.isEmpty()) { // 이메일 인증이 완료되지 않음.
+        if (emailVerificationLogs.isEmpty()
+                || !emailVerificationLogs.get().getIsVerified()) { // 이메일 인증이 완료되지 않음.
             throw new CustomException(ErrorResponseCode.EMAIL_NOT_VERIFIED);
         }
 
