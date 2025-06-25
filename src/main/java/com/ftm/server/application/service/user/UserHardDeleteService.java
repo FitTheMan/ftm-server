@@ -5,11 +5,16 @@ import com.ftm.server.application.command.user.DeleteBookmarkByUserIdCommand;
 import com.ftm.server.application.command.user.DeleteGroomingTestResultByUserIdCommand;
 import com.ftm.server.application.command.user.DeleteUserImageByUserIdCommand;
 import com.ftm.server.application.port.in.user.UserHardDeleteUseCase;
+import com.ftm.server.application.port.out.persistence.post.LoadPostPort;
 import com.ftm.server.application.port.out.persistence.user.*;
 import com.ftm.server.application.port.out.s3.S3ImageDeletePort;
 import com.ftm.server.application.port.out.transcation.AfterCommitExecutorPort;
+import com.ftm.server.application.query.FindByUserIdsQuery;
 import com.ftm.server.application.query.FindUserByDeleteOptionQuery;
+import com.ftm.server.application.query.FindUserByRoleQuery;
+import com.ftm.server.domain.entity.Post;
 import com.ftm.server.domain.entity.User;
+import com.ftm.server.domain.enums.UserRole;
 import jakarta.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
@@ -23,6 +28,7 @@ import org.springframework.stereotype.Service;
 public class UserHardDeleteService implements UserHardDeleteUseCase {
 
     private final LoadUserPort loadUserPort;
+    private final LoadPostPort loadPostPort;
 
     private final DeleteBookmarkPort deleteBookmarkPort;
     private final DeleteGroomingTestResultPort deleteGroomingTestResultPort;
@@ -31,6 +37,8 @@ public class UserHardDeleteService implements UserHardDeleteUseCase {
 
     private final AfterCommitExecutorPort afterCommitExecutorPort;
     private final S3ImageDeletePort s3ImageDeletePort;
+
+    private final UpdatePostUserDomainPort updatePostPort;
 
     @Override
     @Transactional
@@ -60,7 +68,21 @@ public class UserHardDeleteService implements UserHardDeleteUseCase {
                 () ->
                         s3ImageDeletePort.deleteImages(
                                 imageKeyList)); // transaction commit 이후에 s3에 이미지 삭제 요청
-        // 4. user 삭제
+
+        // 4. user가 쓴 게시글의 작성자를 익명 사용자로 변경
+        List<Post> postList =
+                loadPostPort.loadPostListByUsers(FindByUserIdsQuery.of(deletedUserIdList));
+        if (!postList.isEmpty()) {
+            // 익명 사용자 조회
+            User systemUser = loadUserPort.loadUserByRole(FindUserByRoleQuery.of(UserRole.SYSTEM));
+            Long systemUserId = systemUser.getId();
+
+            // post update
+            postList.forEach(p -> p.updateUserId(systemUserId));
+            updatePostPort.updatePostListBySystemUser(postList);
+        }
+
+        // 5. user 삭제
         deleteUserPort.deleteAllUserByIdList(DeleteAllUserByIdListCommand.of(deletedUserIdList));
     }
 }

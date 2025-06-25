@@ -307,4 +307,11 @@ public class PostDomainPersistenceAdapter
                 .map(postImageMapper::toDomainEntity)
                 .toList();
     }
+
+    @Override
+    public List<Post> loadPostListByUsers(FindByUserIdsQuery query) {
+        return postRepository.findAllByUserIdIn(query.getUserIds()).stream()
+                .map(postMapper::toDomainEntity)
+                .toList();
+    }
 }

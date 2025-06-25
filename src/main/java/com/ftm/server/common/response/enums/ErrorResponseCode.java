@@ -62,6 +62,7 @@ public enum ErrorResponseCode {
     PASSWORD_NOT_MATCHED(HttpStatus.CONFLICT, "E409_002", "비밀번호가 일치하지 않습니다."),
     EXCEED_NUMBER_OF_TRIAL(HttpStatus.CONFLICT, "E409_003", "시도 가능 횟수를 초과했습니다. 잠시 후에 다시 시도 해 주세요."),
     EMAIL_NOT_VERIFIED(HttpStatus.CONFLICT, "E409_004", "이메일 인증이 완료되지 않았습니다."),
+    RECOVERING_IS_NOT_AVAILABLE(HttpStatus.CONFLICT, "E409_005", "복구할 수 없는 계정입니다."),
 
     // 500번
     UNKNOWN_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "E500_001", "알 수 없는 서버 에러가 발생했습니다."),

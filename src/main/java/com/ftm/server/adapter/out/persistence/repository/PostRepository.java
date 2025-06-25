@@ -19,4 +19,7 @@ public interface PostRepository
     void deleteAllByIdInBatch(@Param("postIds") List<Long> postIds);
 
     boolean existsById(Long id);
+
+    @Query("SELECT p FROM PostJpaEntity p WHERE p.user.id IN (:userIds)")
+    List<PostJpaEntity> findAllByUserIdIn(@Param("userIds") List<Long> userIds);
 }
