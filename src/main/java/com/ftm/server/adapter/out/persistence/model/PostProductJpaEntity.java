@@ -1,7 +1,7 @@
 package com.ftm.server.adapter.out.persistence.model;
 
 import com.ftm.server.domain.entity.PostProduct;
-import com.ftm.server.domain.enums.HashTag;
+import com.ftm.server.domain.enums.ProductHashtag;
 import io.hypersistence.utils.hibernate.type.array.EnumArrayType;
 import io.hypersistence.utils.hibernate.type.array.internal.AbstractArrayType;
 import jakarta.persistence.*;
@@ -35,13 +35,13 @@ public class PostProductJpaEntity extends BaseTimeJpaEntity {
             parameters =
                     @org.hibernate.annotations.Parameter(
                             name = AbstractArrayType.SQL_ARRAY_TYPE,
-                            value = "hashtag"))
-    @Column(name = "hashtags", columnDefinition = "hashtag[]")
-    private HashTag[] hashtags;
+                            value = "product_hashtag"))
+    @Column(name = "hashtags", columnDefinition = "product_hashtag[]")
+    private ProductHashtag[] hashtags;
 
     @Builder(access = AccessLevel.PRIVATE)
     private PostProductJpaEntity(
-            PostJpaEntity post, String name, String brand, HashTag[] hashtags) {
+            PostJpaEntity post, String name, String brand, ProductHashtag[] hashtags) {
         this.post = post;
         this.name = name;
         this.brand = brand;
@@ -53,13 +53,13 @@ public class PostProductJpaEntity extends BaseTimeJpaEntity {
                 .post(postJpaEntity)
                 .name(postProduct.getName())
                 .brand(postProduct.getBrand())
-                .hashtags(postProduct.getHashTags())
+                .hashtags(postProduct.getHashtags())
                 .build();
     }
 
     public void updatePostProductForDomainEntity(PostProduct postProduct) {
         this.name = postProduct.getName();
         this.brand = postProduct.getBrand();
-        this.hashtags = postProduct.getHashTags();
+        this.hashtags = postProduct.getHashtags();
     }
 }

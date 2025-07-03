@@ -1,8 +1,7 @@
 package com.ftm.server.adapter.out.persistence.model;
 
 import com.ftm.server.domain.entity.Post;
-import com.ftm.server.domain.enums.GroomingCategory;
-import com.ftm.server.domain.enums.HashTag;
+import com.ftm.server.domain.enums.PostHashtag;
 import io.hypersistence.utils.hibernate.type.array.EnumArrayType;
 import io.hypersistence.utils.hibernate.type.array.internal.AbstractArrayType;
 import jakarta.persistence.*;
@@ -11,9 +10,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.Type;
-import org.hibernate.type.SqlTypes;
 
 @Entity
 @Table(name = "post")
@@ -34,19 +31,14 @@ public class PostJpaEntity extends BaseTimeJpaEntity {
     @Column(nullable = false)
     private String content;
 
-    @Enumerated(EnumType.STRING)
-    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
-    @Column(nullable = false, name = "grooming_category", columnDefinition = "grooming_category")
-    private GroomingCategory groomingCategory;
-
     @Type(
             value = EnumArrayType.class,
             parameters =
                     @org.hibernate.annotations.Parameter(
                             name = AbstractArrayType.SQL_ARRAY_TYPE,
-                            value = "hashtag"))
-    @Column(name = "hashtags", columnDefinition = "hashtag[]")
-    private HashTag[] hashtags;
+                            value = "post_hashtag"))
+    @Column(name = "hashtags", columnDefinition = "post_hashtag[]")
+    private PostHashtag[] hashtags;
 
     private Integer viewCount = 0;
 
@@ -61,8 +53,7 @@ public class PostJpaEntity extends BaseTimeJpaEntity {
             UserJpaEntity user,
             String title,
             String content,
-            GroomingCategory groomingCategory,
-            HashTag[] hashtags,
+            PostHashtag[] hashtags,
             Integer viewCount,
             Integer likeCount,
             Boolean isDeleted,
@@ -70,7 +61,6 @@ public class PostJpaEntity extends BaseTimeJpaEntity {
         this.user = user;
         this.title = title;
         this.content = content;
-        this.groomingCategory = groomingCategory;
         this.hashtags = hashtags;
         this.viewCount = viewCount;
         this.likeCount = likeCount;
@@ -83,7 +73,6 @@ public class PostJpaEntity extends BaseTimeJpaEntity {
                 .user(userJpaEntity)
                 .title(post.getTitle())
                 .content(post.getContent())
-                .groomingCategory(post.getGroomingCategory())
                 .hashtags(post.getHashtags())
                 .viewCount(post.getViewCount())
                 .likeCount(post.getLikeCount())
@@ -95,7 +84,6 @@ public class PostJpaEntity extends BaseTimeJpaEntity {
     public void updatePostForDomainEntity(Post post) {
         this.title = post.getTitle();
         this.content = post.getContent();
-        this.groomingCategory = post.getGroomingCategory();
         this.hashtags = post.getHashtags();
         this.viewCount = post.getViewCount();
         this.likeCount = post.getLikeCount();
@@ -107,7 +95,6 @@ public class PostJpaEntity extends BaseTimeJpaEntity {
         this.title = post.getTitle();
         this.user = user;
         this.content = post.getContent();
-        this.groomingCategory = post.getGroomingCategory();
         this.hashtags = post.getHashtags();
         this.viewCount = post.getViewCount();
         this.likeCount = post.getLikeCount();

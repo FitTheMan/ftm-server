@@ -22,8 +22,7 @@ import com.ftm.server.application.query.FindByIdQuery;
 import com.ftm.server.application.vo.post.PostInfoVo;
 import com.ftm.server.domain.entity.Post;
 import com.ftm.server.domain.entity.User;
-import com.ftm.server.domain.enums.GroomingCategory;
-import com.ftm.server.domain.enums.HashTag;
+import com.ftm.server.domain.enums.PostHashtag;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import java.time.LocalDateTime;
@@ -59,8 +58,7 @@ public class PostHardDeleteTest extends BaseTest {
         SavePostRequest postRequest =
                 new SavePostRequest(
                         "독도 토너 추천",
-                        GroomingCategory.BEAUTY,
-                        List.of(HashTag.PERFUME),
+                        List.of(PostHashtag.CLEANSING),
                         "<div>test</div>",
                         List.of(new SavePostProductRequest(-1, "독도 토너", "라운드랩", List.of())));
 

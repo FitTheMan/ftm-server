@@ -1,8 +1,7 @@
 package com.ftm.server.application.vo.post;
 
 import com.ftm.server.domain.entity.Post;
-import com.ftm.server.domain.enums.GroomingCategory;
-import com.ftm.server.domain.enums.HashTag;
+import com.ftm.server.domain.enums.PostHashtag;
 import java.time.LocalDateTime;
 import lombok.Getter;
 
@@ -12,8 +11,7 @@ public class PostInfoVo {
     private final Long id;
     private final String title;
     private final String content;
-    private final GroomingCategory groomingCategory;
-    private final HashTag[] hashtags;
+    private final PostHashtag[] hashtags;
     private final Integer viewCount;
     private final Integer likeCount;
     private final Boolean isDeleted;
@@ -25,7 +23,6 @@ public class PostInfoVo {
         this.id = post.getId();
         this.title = post.getTitle();
         this.content = post.getContent();
-        this.groomingCategory = post.getGroomingCategory();
         this.hashtags = post.getHashtags();
         this.viewCount = post.getViewCount();
         this.likeCount = post.getLikeCount();

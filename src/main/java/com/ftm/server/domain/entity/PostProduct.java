@@ -4,7 +4,7 @@ import com.ftm.server.application.command.post.SavePostProductCommand;
 import com.ftm.server.application.command.post.UpdatePostProductCommand;
 import com.ftm.server.common.exception.CustomException;
 import com.ftm.server.common.response.enums.ErrorResponseCode;
-import com.ftm.server.domain.enums.HashTag;
+import com.ftm.server.domain.enums.ProductHashtag;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import lombok.AccessLevel;
@@ -20,7 +20,7 @@ public class PostProduct extends BaseTime {
     private Long postId;
     private String name;
     private String brand;
-    private HashTag[] hashTags;
+    private ProductHashtag[] hashtags;
 
     @Builder(access = AccessLevel.PRIVATE)
     private PostProduct(
@@ -28,14 +28,14 @@ public class PostProduct extends BaseTime {
             Long postId,
             String name,
             String brand,
-            HashTag[] hashTags,
+            ProductHashtag[] hashtags,
             LocalDateTime createdAt,
             LocalDateTime updatedAt) {
         this.id = id;
         this.postId = postId;
         this.name = name;
         this.brand = brand;
-        this.hashTags = hashTags;
+        this.hashtags = hashtags;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -45,7 +45,7 @@ public class PostProduct extends BaseTime {
             Long postId,
             String name,
             String brand,
-            HashTag[] hashTags,
+            ProductHashtag[] hashtags,
             LocalDateTime createdAt,
             LocalDateTime updatedAt) {
         return PostProduct.builder()
@@ -53,7 +53,7 @@ public class PostProduct extends BaseTime {
                 .postId(postId)
                 .name(name)
                 .brand(brand)
-                .hashTags(hashTags)
+                .hashtags(hashtags)
                 .createdAt(createdAt)
                 .updatedAt(updatedAt)
                 .build();
@@ -64,14 +64,14 @@ public class PostProduct extends BaseTime {
                 .postId(command.getPostId())
                 .name(command.getName())
                 .brand(command.getBrand())
-                .hashTags(command.getHashTags())
+                .hashtags(command.getHashtags())
                 .build();
     }
 
     public void update(UpdatePostProductCommand command) {
         if (command.getName() != null) this.name = command.getName();
         if (command.getBrand() != null) this.brand = command.getBrand();
-        if (command.getHashTags() != null) this.hashTags = command.getHashTags();
+        if (command.getHashtags() != null) this.hashtags = command.getHashtags();
     }
 
     public void validatePost(Long postId) {

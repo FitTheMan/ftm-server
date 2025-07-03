@@ -20,7 +20,7 @@ import com.ftm.server.application.vo.auth.PendingSocialUserVo;
 import com.ftm.server.common.response.enums.ErrorResponseCode;
 import com.ftm.server.domain.entity.User;
 import com.ftm.server.domain.enums.AgeGroup;
-import com.ftm.server.domain.enums.HashTag;
+import com.ftm.server.domain.enums.HashtagCategory;
 import com.ftm.server.domain.enums.SocialProvider;
 import jakarta.servlet.http.Cookie;
 import jakarta.transaction.Transactional;
@@ -126,7 +126,7 @@ public class SocialUserSignupTest extends BaseTest {
         session.setAttribute(PENDING_SOCIAL_USER_SESSION_KEY, pendingSocialUserVo);
 
         SocialUserSignupRequest request =
-                new SocialUserSignupRequest(AgeGroup.FIFTIES, List.of(HashTag.PERFUME));
+                new SocialUserSignupRequest(AgeGroup.FIFTIES, List.of(HashtagCategory.PERFUME));
 
         // when
         ResultActions resultActions = getResultActions(request, session);
@@ -145,7 +145,7 @@ public class SocialUserSignupTest extends BaseTest {
     void 소셜회원가입_실패1() throws Exception {
         // given
         SocialUserSignupRequest request =
-                new SocialUserSignupRequest(AgeGroup.FIFTIES, List.of(HashTag.PERFUME));
+                new SocialUserSignupRequest(AgeGroup.FIFTIES, List.of(HashtagCategory.PERFUME));
         MockHttpSession fakeSession = new MockHttpSession();
         fakeSession.invalidate();
 
@@ -179,7 +179,7 @@ public class SocialUserSignupTest extends BaseTest {
                         "12345",
                         "닉네임",
                         AgeGroup.FIFTIES,
-                        List.of(HashTag.PERFUME));
+                        List.of(HashtagCategory.PERFUME));
         saveUserPort.saveSocialUser(User.createSocailUser(command));
 
         PendingSocialUserVo pendingSocialUserVo =
@@ -188,7 +188,7 @@ public class SocialUserSignupTest extends BaseTest {
         session.setAttribute(PENDING_SOCIAL_USER_SESSION_KEY, pendingSocialUserVo);
 
         SocialUserSignupRequest request =
-                new SocialUserSignupRequest(AgeGroup.FIFTIES, List.of(HashTag.PERFUME));
+                new SocialUserSignupRequest(AgeGroup.FIFTIES, List.of(HashtagCategory.PERFUME));
 
         // when
         ResultActions resultActions = getResultActions(request, session);

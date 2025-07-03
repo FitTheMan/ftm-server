@@ -19,7 +19,7 @@ import com.ftm.server.common.response.enums.ErrorResponseCode;
 import com.ftm.server.domain.entity.EmailVerificationLogs;
 import com.ftm.server.domain.entity.User;
 import com.ftm.server.domain.enums.AgeGroup;
-import com.ftm.server.domain.enums.HashTag;
+import com.ftm.server.domain.enums.HashtagCategory;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -104,7 +104,7 @@ public class GeneralUserSignupTest extends BaseTest {
 
         GeneralUserSignupRequest request =
                 new GeneralUserSignupRequest(
-                        email, "qwer1234!", AgeGroup.FIFTIES, List.of(HashTag.PERFUME));
+                        email, "qwer1234!", AgeGroup.FIFTIES, List.of(HashtagCategory.BODYCARE));
 
         // when
         ResultActions resultActions = getResultActions(request);
@@ -122,7 +122,10 @@ public class GeneralUserSignupTest extends BaseTest {
         // given
         GeneralUserSignupRequest request =
                 new GeneralUserSignupRequest(
-                        "test@gmail.com", "qwer1234!", AgeGroup.FIFTIES, List.of(HashTag.PERFUME));
+                        "test@gmail.com",
+                        "qwer1234!",
+                        AgeGroup.FIFTIES,
+                        List.of(HashtagCategory.BODYCARE));
 
         // when
         ResultActions resultActions = getResultActions(request);
@@ -142,16 +145,19 @@ public class GeneralUserSignupTest extends BaseTest {
     void 일반회원가입_실패2() throws Exception {
         // given
         String email = "test@gmail.com";
-        List<HashTag> hashTags = List.of(HashTag.PERFUME);
+        List<HashtagCategory> hashtags = List.of(HashtagCategory.BODYCARE);
         GeneralUserCreationCommand command =
                 new GeneralUserCreationCommand(
-                        email, "qwer1234!", "닉넴", AgeGroup.FIFTIES, hashTags);
+                        email, "qwer1234!", "닉넴", AgeGroup.FIFTIES, hashtags);
 
         saveUserPort.saveUser(User.createGeneralUser(command));
 
         GeneralUserSignupRequest request =
                 new GeneralUserSignupRequest(
-                        "test@gmail.com", "qwer1234!", AgeGroup.FIFTIES, List.of(HashTag.PERFUME));
+                        "test@gmail.com",
+                        "qwer1234!",
+                        AgeGroup.FIFTIES,
+                        List.of(HashtagCategory.BODYCARE));
 
         // when
         ResultActions resultActions = getResultActions(request);

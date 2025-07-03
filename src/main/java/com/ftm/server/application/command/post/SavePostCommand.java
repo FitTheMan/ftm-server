@@ -1,8 +1,7 @@
 package com.ftm.server.application.command.post;
 
 import com.ftm.server.adapter.in.web.post.dto.request.SavePostRequest;
-import com.ftm.server.domain.enums.GroomingCategory;
-import com.ftm.server.domain.enums.HashTag;
+import com.ftm.server.domain.enums.PostHashtag;
 import java.util.List;
 import lombok.Getter;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,8 +11,7 @@ public class SavePostCommand {
 
     private final Long userId;
     private final String title;
-    private final GroomingCategory groomingCategory;
-    private final HashTag[] hashTags;
+    private final PostHashtag[] hashtags;
     private final String content;
     private final List<MultipartFile> postImages;
     private final List<SavePostProductCommand> products;
@@ -27,8 +25,7 @@ public class SavePostCommand {
             List<MultipartFile> productImages) {
         this.userId = userId;
         this.title = request.getTitle();
-        this.groomingCategory = request.getGroomingCategory();
-        this.hashTags = request.getHashtags().toArray(new HashTag[0]);
+        this.hashtags = request.getHashtags().toArray(new PostHashtag[0]);
         this.content = request.getContent();
         this.postImages = postImages;
         this.products = products;

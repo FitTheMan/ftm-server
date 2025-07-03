@@ -37,8 +37,7 @@ import com.ftm.server.common.response.enums.ErrorResponseCode;
 import com.ftm.server.domain.entity.PostProduct;
 import com.ftm.server.domain.entity.PostProductImage;
 import com.ftm.server.domain.entity.User;
-import com.ftm.server.domain.enums.GroomingCategory;
-import com.ftm.server.domain.enums.HashTag;
+import com.ftm.server.domain.enums.PostHashtag;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -92,11 +91,7 @@ public class UpdatePostTest extends BaseTest {
     private final List<FieldDescriptor> requestPartFieldUpdatePost =
             List.of(
                     fieldWithPath("title").type(STRING).optional().description("게시글 제목"),
-                    fieldWithPath("groomingCategory")
-                            .type(STRING)
-                            .optional()
-                            .description("게시글 그루밍 분야"),
-                    fieldWithPath("hashTags[]").type(ARRAY).optional().description("게시글 해시태그 목록"),
+                    fieldWithPath("hashtags[]").type(ARRAY).optional().description("게시글 해시태그 목록"),
                     fieldWithPath("content").type(STRING).optional().description("게시글 내용"),
                     fieldWithPath("deletePostImageIds[]")
                             .type(ARRAY)
@@ -133,7 +128,7 @@ public class UpdatePostTest extends BaseTest {
                             .type(STRING)
                             .optional()
                             .description("수정된 상품 브랜드"),
-                    fieldWithPath("updateProducts[].hashTags[]")
+                    fieldWithPath("updateProducts[].hashtags[]")
                             .type(ARRAY)
                             .optional()
                             .description("수정된 상품 해시태그 목록"),
@@ -217,8 +212,7 @@ public class UpdatePostTest extends BaseTest {
         SavePostRequest postRequest =
                 new SavePostRequest(
                         "독도 토너 추천",
-                        GroomingCategory.BEAUTY,
-                        List.of(HashTag.PERFUME),
+                        List.of(PostHashtag.SUN_CARE),
                         "<div>test</div>",
                         List.of(
                                 new SavePostProductRequest(-1, "독도 토너", "라운드랩", List.of()),
@@ -262,7 +256,6 @@ public class UpdatePostTest extends BaseTest {
         UpdatePostRequest postRequest =
                 UpdatePostRequest.of(
                         "게시글 제목 수정",
-                        null,
                         List.of(),
                         "게시글 내용 수정",
                         List.of(),
@@ -324,7 +317,6 @@ public class UpdatePostTest extends BaseTest {
         UpdatePostRequest postRequest =
                 UpdatePostRequest.of(
                         "게시글 제목 수정",
-                        null,
                         List.of(),
                         "게시글 내용 수정",
                         List.of(),
@@ -364,7 +356,6 @@ public class UpdatePostTest extends BaseTest {
         UpdatePostRequest postRequest =
                 UpdatePostRequest.of(
                         "게시글 제목 수정",
-                        null,
                         List.of(),
                         "게시글 내용 수정",
                         List.of(),
@@ -394,7 +385,6 @@ public class UpdatePostTest extends BaseTest {
         UpdatePostRequest postRequest =
                 UpdatePostRequest.of(
                         "게시글 제목 수정",
-                        null,
                         List.of(),
                         "게시글 내용 수정",
                         List.of(),
@@ -430,7 +420,6 @@ public class UpdatePostTest extends BaseTest {
         UpdatePostRequest postRequest =
                 UpdatePostRequest.of(
                         "게시글 제목 수정",
-                        null,
                         List.of(),
                         "게시글 내용 수정",
                         List.of(),
@@ -483,7 +472,6 @@ public class UpdatePostTest extends BaseTest {
         UpdatePostRequest postRequest =
                 UpdatePostRequest.of(
                         "게시글 제목 수정",
-                        null,
                         List.of(),
                         "게시글 내용 수정",
                         List.of(),
@@ -533,7 +521,6 @@ public class UpdatePostTest extends BaseTest {
         UpdatePostRequest postRequest =
                 UpdatePostRequest.of(
                         "게시글 제목 수정",
-                        null,
                         List.of(),
                         "게시글 내용 수정",
                         List.of(),
@@ -586,7 +573,6 @@ public class UpdatePostTest extends BaseTest {
         UpdatePostRequest postRequest =
                 UpdatePostRequest.of(
                         "게시글 제목 수정",
-                        null,
                         List.of(),
                         "게시글 내용 수정",
                         List.of(1000L),
@@ -627,7 +613,6 @@ public class UpdatePostTest extends BaseTest {
         UpdatePostRequest postRequest =
                 UpdatePostRequest.of(
                         "게시글 제목 수정",
-                        null,
                         List.of(),
                         "게시글 내용 수정",
                         List.of(),
@@ -669,7 +654,6 @@ public class UpdatePostTest extends BaseTest {
         UpdatePostRequest postRequest =
                 UpdatePostRequest.of(
                         "게시글 제목 수정",
-                        null,
                         List.of(),
                         "게시글 내용 수정",
                         List.of(),
@@ -722,7 +706,6 @@ public class UpdatePostTest extends BaseTest {
         UpdatePostRequest postRequest =
                 UpdatePostRequest.of(
                         "게시글 제목 수정",
-                        null,
                         List.of(),
                         "게시글 내용 수정",
                         List.of(),
@@ -778,7 +761,6 @@ public class UpdatePostTest extends BaseTest {
         UpdatePostRequest postRequest =
                 UpdatePostRequest.of(
                         "게시글 제목 수정",
-                        null,
                         List.of(),
                         "게시글 내용 수정",
                         List.of(),

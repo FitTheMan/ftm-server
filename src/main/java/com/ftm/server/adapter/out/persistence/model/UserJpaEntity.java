@@ -1,10 +1,7 @@
 package com.ftm.server.adapter.out.persistence.model;
 
 import com.ftm.server.domain.entity.User;
-import com.ftm.server.domain.enums.AgeGroup;
-import com.ftm.server.domain.enums.HashTag;
-import com.ftm.server.domain.enums.SocialProvider;
-import com.ftm.server.domain.enums.UserRole;
+import com.ftm.server.domain.enums.*;
 import io.hypersistence.utils.hibernate.type.array.EnumArrayType;
 import io.hypersistence.utils.hibernate.type.array.internal.AbstractArrayType;
 import jakarta.persistence.*;
@@ -64,14 +61,14 @@ public class UserJpaEntity extends BaseTimeJpaEntity {
             parameters = {
                 @org.hibernate.annotations.Parameter(
                         name = AbstractArrayType.SQL_ARRAY_TYPE,
-                        value = "hashtag" // PostgreSQL에서 정의된 ENUM 타입 이름
+                        value = "hashtag_category" // PostgreSQL에서 정의된 ENUM 타입 이름
                         )
             })
     @Column(
             name = "favorite_hashtags",
-            columnDefinition = "hashtag[]" // PostgreSQL의 ENUM 배열 타입으로 지정
+            columnDefinition = "hashtag_category[]" // PostgreSQL의 ENUM 배열 타입으로 지정
             )
-    private HashTag[] favoriteHashtags;
+    private HashtagCategory[] favoriteHashtags;
 
     @Column(nullable = false)
     private Boolean isDeleted = false;
@@ -89,7 +86,7 @@ public class UserJpaEntity extends BaseTimeJpaEntity {
             Integer groomingScore,
             GroomingLevelJpaEntity groomingLevel,
             UserRole role,
-            HashTag[] favoriteHashtags,
+            HashtagCategory[] favoriteHashtags,
             Boolean isDeleted,
             LocalDateTime deletedAt) {
         this.email = email;

@@ -6,7 +6,6 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.JsonFieldType.NUMBER;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -22,7 +21,6 @@ import com.ftm.server.common.response.enums.ErrorResponseCode;
 import com.ftm.server.domain.entity.Bookmark;
 import com.ftm.server.domain.entity.Post;
 import com.ftm.server.domain.entity.User;
-import com.ftm.server.domain.enums.GroomingCategory;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.*;
@@ -128,7 +126,6 @@ public class DeleteBookmarkTest extends BaseTest {
                                         user.getId(),
                                         new SavePostRequest(
                                                 "test",
-                                                GroomingCategory.FASHION,
                                                 new ArrayList<>(),
                                                 "content",
                                                 new ArrayList<>()),
@@ -157,7 +154,6 @@ public class DeleteBookmarkTest extends BaseTest {
                                         user.getId(),
                                         new SavePostRequest(
                                                 "test",
-                                                GroomingCategory.FASHION,
                                                 new ArrayList<>(),
                                                 "content",
                                                 new ArrayList<>()),
