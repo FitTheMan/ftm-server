@@ -14,7 +14,6 @@ public class PostMapper {
                 jpaEntity.getUser().getId(),
                 jpaEntity.getTitle(),
                 jpaEntity.getContent(),
-                jpaEntity.getGroomingCategory(),
                 jpaEntity.getHashtags(),
                 jpaEntity.getViewCount(),
                 jpaEntity.getLikeCount(),

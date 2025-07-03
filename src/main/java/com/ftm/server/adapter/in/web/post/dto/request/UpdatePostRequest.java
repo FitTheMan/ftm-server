@@ -1,7 +1,6 @@
 package com.ftm.server.adapter.in.web.post.dto.request;
 
-import com.ftm.server.domain.enums.GroomingCategory;
-import com.ftm.server.domain.enums.HashTag;
+import com.ftm.server.domain.enums.PostHashtag;
 import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,8 +10,7 @@ import lombok.Getter;
 public class UpdatePostRequest {
 
     private final String title;
-    private final GroomingCategory groomingCategory;
-    private final List<HashTag> hashTags;
+    private final List<PostHashtag> hashtags;
     private final String content;
     private final List<Long> deletePostImageIds; // 삭제할 게시글 이미지 ID 목록
 
@@ -22,8 +20,7 @@ public class UpdatePostRequest {
 
     public static UpdatePostRequest of(
             String title,
-            GroomingCategory groomingCategory,
-            List<HashTag> hashTags,
+            List<PostHashtag> hashtags,
             String content,
             List<Long> deletePostImageIds,
             List<Long> deleteProductIds,
@@ -31,8 +28,7 @@ public class UpdatePostRequest {
             List<UpdatePostProductRequest> updateProducts) {
         return UpdatePostRequest.builder()
                 .title(title)
-                .groomingCategory(groomingCategory)
-                .hashTags(hashTags)
+                .hashtags(hashtags)
                 .content(content)
                 .deletePostImageIds(deletePostImageIds)
                 .deleteProductIds(deleteProductIds)

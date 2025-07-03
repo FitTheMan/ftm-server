@@ -51,8 +51,8 @@ public class UpdateUserInfoService implements UpdateUserInfoUseCase {
         if (updateUserCommand.getAgeGroup() != null) {
             user.updateAge(updateUserCommand.getAgeGroup());
         }
-        if (updateUserCommand.getHashTags() != null) {
-            user.updateHashtag(updateUserCommand.getHashTags());
+        if (updateUserCommand.getHashtags() != null) {
+            user.updateHashtag(updateUserCommand.getHashtags());
         }
 
         // 이미지 업로드 및 기존 이미지 삭제

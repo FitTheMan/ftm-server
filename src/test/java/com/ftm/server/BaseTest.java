@@ -12,7 +12,7 @@ import com.ftm.server.application.query.FindByEmailQuery;
 import com.ftm.server.domain.entity.User;
 import com.ftm.server.domain.entity.UserImage;
 import com.ftm.server.domain.enums.AgeGroup;
-import com.ftm.server.domain.enums.HashTag;
+import com.ftm.server.domain.enums.HashtagCategory;
 import com.ftm.server.domain.enums.UserRole;
 import com.ftm.server.infrastructure.security.UserPrincipal;
 import groovy.util.logging.Slf4j;
@@ -92,7 +92,7 @@ public class BaseTest {
                                 password,
                                 nickname,
                                 AgeGroup.FIFTIES,
-                                List.of(HashTag.PERFUME)));
+                                List.of(HashtagCategory.PERFUME)));
         User testUser = saveUserPort.saveUser(user);
         saveUserImagePort.saveUserDefaultImage(UserImage.createUserImage(testUser.getId()));
         return testUser;

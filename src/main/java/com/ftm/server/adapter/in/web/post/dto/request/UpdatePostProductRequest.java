@@ -1,6 +1,6 @@
 package com.ftm.server.adapter.in.web.post.dto.request;
 
-import com.ftm.server.domain.enums.HashTag;
+import com.ftm.server.domain.enums.ProductHashtag;
 import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,7 +12,7 @@ public class UpdatePostProductRequest {
     private final Long id;
     private final String name;
     private final String brand;
-    private final List<HashTag> hashTags;
+    private final List<ProductHashtag> hashtags;
     private final Long deleteProductImageId;
     private final int imageIndex;
 
@@ -20,14 +20,14 @@ public class UpdatePostProductRequest {
             Long id,
             String name,
             String brand,
-            List<HashTag> hashTags,
+            List<ProductHashtag> hashtags,
             Long deleteProductImageId,
             int imageIndex) {
         return UpdatePostProductRequest.builder()
                 .id(id)
                 .name(name)
                 .brand(brand)
-                .hashTags(hashTags)
+                .hashtags(hashtags)
                 .deleteProductImageId(deleteProductImageId)
                 .imageIndex(imageIndex)
                 .build();

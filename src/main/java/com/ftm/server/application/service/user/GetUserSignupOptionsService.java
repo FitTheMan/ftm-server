@@ -4,7 +4,7 @@ import com.ftm.server.adapter.in.web.user.dto.response.UserSignupOptionsResponse
 import com.ftm.server.application.port.in.user.GetUserSignupOptionsUseCase;
 import com.ftm.server.application.vo.user.UserSignupOptionsVo;
 import com.ftm.server.domain.enums.AgeGroup;
-import com.ftm.server.domain.enums.HashTag;
+import com.ftm.server.domain.enums.HashtagCategory;
 import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,7 @@ public class GetUserSignupOptionsService implements GetUserSignupOptionsUseCase 
                         .toList();
 
         List<UserSignupOptionsResponse.EnumDescriptors> hashtags =
-                Arrays.stream(HashTag.values())
+                Arrays.stream(HashtagCategory.values())
                         .map(UserSignupOptionsResponse.EnumDescriptors::from)
                         .toList();
         return UserSignupOptionsVo.of(ages, hashtags);

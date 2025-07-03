@@ -19,7 +19,6 @@ import com.ftm.server.application.command.post.SavePostCommand;
 import com.ftm.server.application.port.out.persistence.post.SavePostPort;
 import com.ftm.server.domain.entity.Post;
 import com.ftm.server.domain.entity.User;
-import com.ftm.server.domain.enums.GroomingCategory;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -88,11 +87,7 @@ public class LoadTrendingPostsTest extends BaseTest {
                         SavePostCommand.from(
                                 user.getId(),
                                 new SavePostRequest(
-                                        "test1",
-                                        GroomingCategory.FASHION,
-                                        new ArrayList<>(),
-                                        "content1",
-                                        new ArrayList<>()),
+                                        "test1", new ArrayList<>(), "content1", new ArrayList<>()),
                                 new ArrayList<>(),
                                 new ArrayList<>())));
 
@@ -101,11 +96,7 @@ public class LoadTrendingPostsTest extends BaseTest {
                         SavePostCommand.from(
                                 user.getId(),
                                 new SavePostRequest(
-                                        "test2",
-                                        GroomingCategory.FASHION,
-                                        new ArrayList<>(),
-                                        "content2",
-                                        new ArrayList<>()),
+                                        "test2", new ArrayList<>(), "content2", new ArrayList<>()),
                                 new ArrayList<>(),
                                 new ArrayList<>())));
 

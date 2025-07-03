@@ -1,7 +1,6 @@
 package com.ftm.server.adapter.in.web.post.dto.request;
 
-import com.ftm.server.domain.enums.GroomingCategory;
-import com.ftm.server.domain.enums.HashTag;
+import com.ftm.server.domain.enums.PostHashtag;
 import jakarta.validation.constraints.NotEmpty;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -12,8 +11,7 @@ import lombok.Getter;
 public class SavePostRequest {
 
     @NotEmpty private String title;
-    private GroomingCategory groomingCategory;
-    private List<HashTag> hashtags;
+    private List<PostHashtag> hashtags;
     @NotEmpty private String content;
     private List<SavePostProductRequest> products;
 }

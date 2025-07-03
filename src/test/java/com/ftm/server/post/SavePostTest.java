@@ -23,7 +23,6 @@ import com.ftm.server.application.port.out.s3.S3PostProductImageUploadPort;
 import com.ftm.server.application.port.out.transcation.AfterRollbackExecutorPort;
 import com.ftm.server.common.exception.CustomException;
 import com.ftm.server.common.response.enums.ErrorResponseCode;
-import com.ftm.server.domain.enums.GroomingCategory;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +65,6 @@ public class SavePostTest extends BaseTest {
     private final List<FieldDescriptor> requestPartFieldSavePost =
             List.of(
                     fieldWithPath("title").type(STRING).description("게시글 제목"),
-                    fieldWithPath("groomingCategory").type(STRING).description("게시글 그루밍 분야"),
                     fieldWithPath("hashtags[]").type(ARRAY).optional().description("게시글 해시태그 목록"),
                     fieldWithPath("content").type(STRING).description("게시글 내용"),
                     fieldWithPath("products[]")
@@ -167,7 +165,6 @@ public class SavePostTest extends BaseTest {
         SavePostRequest postRequest =
                 new SavePostRequest(
                         "독도 토너 추천",
-                        GroomingCategory.BEAUTY,
                         List.of(),
                         "<dev></dev>",
                         List.of(
@@ -236,7 +233,6 @@ public class SavePostTest extends BaseTest {
         SavePostRequest postRequest =
                 new SavePostRequest(
                         "",
-                        GroomingCategory.BEAUTY,
                         List.of(),
                         "",
                         List.of(
@@ -271,7 +267,6 @@ public class SavePostTest extends BaseTest {
         SavePostRequest postRequest =
                 new SavePostRequest(
                         "독도 토너 추천",
-                        GroomingCategory.BEAUTY,
                         List.of(),
                         "<dev></dev>",
                         List.of(
@@ -319,7 +314,6 @@ public class SavePostTest extends BaseTest {
         SavePostRequest postRequest =
                 new SavePostRequest(
                         "",
-                        GroomingCategory.BEAUTY,
                         List.of(),
                         "",
                         List.of(
@@ -360,8 +354,7 @@ public class SavePostTest extends BaseTest {
         MockHttpSession session = createUserAndLogin();
 
         SavePostRequest postRequest =
-                new SavePostRequest(
-                        "독도 토너 추천", GroomingCategory.BEAUTY, List.of(), "<dev></dev>", List.of());
+                new SavePostRequest("독도 토너 추천", List.of(), "<dev></dev>", List.of());
         MockMultipartFile data =
                 new MockMultipartFile(
                         "data",
@@ -399,8 +392,7 @@ public class SavePostTest extends BaseTest {
         MockHttpSession session = createUserAndLogin();
 
         SavePostRequest postRequest =
-                new SavePostRequest(
-                        "독도 토너 추천", GroomingCategory.BEAUTY, List.of(), "<dev></dev>", List.of());
+                new SavePostRequest("독도 토너 추천", List.of(), "<dev></dev>", List.of());
         MockMultipartFile data =
                 new MockMultipartFile(
                         "data",

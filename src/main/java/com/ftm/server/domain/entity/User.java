@@ -2,10 +2,7 @@ package com.ftm.server.domain.entity;
 
 import com.ftm.server.application.command.user.GeneralUserCreationCommand;
 import com.ftm.server.application.command.user.SocialUserCreationCommand;
-import com.ftm.server.domain.enums.AgeGroup;
-import com.ftm.server.domain.enums.HashTag;
-import com.ftm.server.domain.enums.SocialProvider;
-import com.ftm.server.domain.enums.UserRole;
+import com.ftm.server.domain.enums.*;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -26,7 +23,7 @@ public class User extends BaseTime {
     private Integer groomingScore;
     private Long groomingLevelId;
     private UserRole role;
-    private HashTag[] favoriteHashtags;
+    private HashtagCategory[] favoriteHashtags;
     private Boolean isDeleted;
     private LocalDateTime deletedAt;
 
@@ -42,7 +39,7 @@ public class User extends BaseTime {
             Integer groomingScore,
             Long groomingLevelId,
             UserRole role,
-            HashTag[] favoriteHashtags,
+            HashtagCategory[] favoriteHashtags,
             Boolean isDeleted,
             LocalDateTime deletedAt,
             LocalDateTime createdAt,
@@ -75,7 +72,7 @@ public class User extends BaseTime {
             Integer groomingScore,
             Long groomingLevelId,
             UserRole role,
-            HashTag[] favoriteHashtags,
+            HashtagCategory[] favoriteHashtags,
             Boolean isDeleted,
             LocalDateTime deletedAt,
             LocalDateTime createdAt,
@@ -101,17 +98,17 @@ public class User extends BaseTime {
 
     public static User createGeneralUser(GeneralUserCreationCommand command) {
 
-        HashTag[] hashTags = null;
+        HashtagCategory[] hashtags = null;
 
         if (command.getHashtags() != null && command.getHashtags().isEmpty()) {
-            hashTags = command.getHashtags().toArray(new HashTag[0]);
+            hashtags = command.getHashtags().toArray(new HashtagCategory[0]);
         }
         return User.builder()
                 .email(command.getEmail())
                 .password(command.getPassword())
                 .nickname(command.getNickName())
                 .ageGroup(command.getAgeGroup())
-                .favoriteHashtags(hashTags)
+                .favoriteHashtags(hashtags)
                 .groomingScore(0)
                 .isDeleted(false)
                 .role(UserRole.USER)
@@ -120,10 +117,10 @@ public class User extends BaseTime {
 
     public static User createSocailUser(SocialUserCreationCommand command) {
 
-        HashTag[] hashTags = null;
+        HashtagCategory[] hashtags = null;
 
         if (command.getHashtags() != null && command.getHashtags().isEmpty()) {
-            hashTags = command.getHashtags().toArray(new HashTag[0]);
+            hashtags = command.getHashtags().toArray(new HashtagCategory[0]);
         }
 
         return User.builder()
@@ -131,7 +128,7 @@ public class User extends BaseTime {
                 .socialId(command.getSocialId())
                 .nickname(command.getNickname())
                 .ageGroup(command.getAge())
-                .favoriteHashtags(hashTags)
+                .favoriteHashtags(hashtags)
                 .groomingScore(0)
                 .isDeleted(false)
                 .role(UserRole.USER)
@@ -167,8 +164,8 @@ public class User extends BaseTime {
         this.nickname = nickname;
     }
 
-    public void updateHashtag(HashTag[] hashTags) {
-        this.favoriteHashtags = hashTags;
+    public void updateHashtag(HashtagCategory[] hashtags) {
+        this.favoriteHashtags = hashtags;
     }
 
     public void updateAge(AgeGroup ageGroup) {

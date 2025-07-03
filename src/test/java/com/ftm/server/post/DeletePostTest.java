@@ -29,8 +29,7 @@ import com.ftm.server.application.port.out.transcation.AfterRollbackExecutorPort
 import com.ftm.server.application.vo.post.PostInfoVo;
 import com.ftm.server.common.response.enums.ErrorResponseCode;
 import com.ftm.server.domain.entity.User;
-import com.ftm.server.domain.enums.GroomingCategory;
-import com.ftm.server.domain.enums.HashTag;
+import com.ftm.server.domain.enums.PostHashtag;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -94,8 +93,7 @@ public class DeletePostTest extends BaseTest {
         SavePostRequest postRequest =
                 new SavePostRequest(
                         "독도 토너 추천",
-                        GroomingCategory.BEAUTY,
-                        List.of(HashTag.PERFUME),
+                        List.of(PostHashtag.CLEANSING),
                         "<div>test</div>",
                         List.of(new SavePostProductRequest(-1, "독도 토너", "라운드랩", List.of())));
 

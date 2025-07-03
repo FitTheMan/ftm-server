@@ -1,7 +1,7 @@
 package com.ftm.server.adapter.in.web.user.dto.request;
 
 import com.ftm.server.domain.enums.AgeGroup;
-import com.ftm.server.domain.enums.HashTag;
+import com.ftm.server.domain.enums.HashtagCategory;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import java.util.List;
@@ -22,5 +22,5 @@ public class GeneralUserSignupRequest {
 
     @NotNull private final AgeGroup age;
 
-    private final List<HashTag> hashtags;
+    private final List<HashtagCategory> hashtags;
 }

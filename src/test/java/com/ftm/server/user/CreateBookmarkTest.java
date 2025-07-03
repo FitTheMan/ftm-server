@@ -23,7 +23,6 @@ import com.ftm.server.common.response.enums.ErrorResponseCode;
 import com.ftm.server.domain.entity.Bookmark;
 import com.ftm.server.domain.entity.Post;
 import com.ftm.server.domain.entity.User;
-import com.ftm.server.domain.enums.GroomingCategory;
 import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
@@ -114,7 +113,6 @@ public class CreateBookmarkTest extends BaseTest {
                                         user.getId(),
                                         new SavePostRequest(
                                                 "test",
-                                                GroomingCategory.FASHION,
                                                 new ArrayList<>(),
                                                 "content",
                                                 new ArrayList<>()),

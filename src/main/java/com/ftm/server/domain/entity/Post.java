@@ -4,8 +4,7 @@ import com.ftm.server.application.command.post.SavePostCommand;
 import com.ftm.server.application.command.post.UpdatePostCommand;
 import com.ftm.server.common.exception.CustomException;
 import com.ftm.server.common.response.enums.ErrorResponseCode;
-import com.ftm.server.domain.enums.GroomingCategory;
-import com.ftm.server.domain.enums.HashTag;
+import com.ftm.server.domain.enums.PostHashtag;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import lombok.AccessLevel;
@@ -21,8 +20,7 @@ public class Post extends BaseTime {
     private Long userId;
     private String title;
     private String content;
-    private GroomingCategory groomingCategory;
-    private HashTag[] hashtags;
+    private PostHashtag[] hashtags;
     private Integer viewCount;
     private Integer likeCount;
     private Boolean isDeleted;
@@ -34,8 +32,7 @@ public class Post extends BaseTime {
             Long userId,
             String title,
             String content,
-            GroomingCategory groomingCategory,
-            HashTag[] hashtags,
+            PostHashtag[] hashtags,
             Integer viewCount,
             Integer likeCount,
             Boolean isDeleted,
@@ -46,7 +43,6 @@ public class Post extends BaseTime {
         this.userId = userId;
         this.title = title;
         this.content = content;
-        this.groomingCategory = groomingCategory;
         this.hashtags = hashtags;
         this.viewCount = viewCount;
         this.likeCount = likeCount;
@@ -61,8 +57,7 @@ public class Post extends BaseTime {
             Long userId,
             String title,
             String content,
-            GroomingCategory groomingCategory,
-            HashTag[] hashtags,
+            PostHashtag[] hashtags,
             Integer viewCount,
             Integer likeCount,
             Boolean isDeleted,
@@ -74,7 +69,6 @@ public class Post extends BaseTime {
                 .userId(userId)
                 .title(title)
                 .content(content)
-                .groomingCategory(groomingCategory)
                 .hashtags(hashtags)
                 .viewCount(viewCount)
                 .likeCount(likeCount)
@@ -90,8 +84,7 @@ public class Post extends BaseTime {
                 .userId(command.getUserId())
                 .title(command.getTitle())
                 .content(command.getContent())
-                .groomingCategory(command.getGroomingCategory())
-                .hashtags(command.getHashTags())
+                .hashtags(command.getHashtags())
                 .viewCount(0)
                 .likeCount(0)
                 .isDeleted(false)
@@ -101,9 +94,7 @@ public class Post extends BaseTime {
     public void update(UpdatePostCommand command) {
         if (command.getTitle() != null) this.title = command.getTitle();
         if (command.getContent() != null) this.content = command.getContent();
-        if (command.getGroomingCategory() != null)
-            this.groomingCategory = command.getGroomingCategory();
-        if (command.getHashTags() != null) this.hashtags = command.getHashTags();
+        if (command.getHashtags() != null) this.hashtags = command.getHashtags();
     }
 
     public void updateUserId(Long userId) {

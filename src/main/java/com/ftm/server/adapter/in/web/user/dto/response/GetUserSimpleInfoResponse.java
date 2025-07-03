@@ -5,7 +5,7 @@ import com.ftm.server.common.consts.PropertiesHolder;
 import com.ftm.server.domain.entity.User;
 import com.ftm.server.domain.entity.UserImage;
 import com.ftm.server.domain.enums.AgeGroup;
-import com.ftm.server.domain.enums.HashTag;
+import com.ftm.server.domain.enums.HashtagCategory;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -25,17 +25,17 @@ public class GetUserSimpleInfoResponse {
 
         String imageUrl = PropertiesHolder.CDN_PATH + "/" + userImage.getObjectKey();
 
-        HashTag[] userHashTagWithArray = user.getFavoriteHashtags();
-        List<HashTag> userHashTag =
+        HashtagCategory[] userHashTagWithArray = user.getFavoriteHashtags();
+        List<HashtagCategory> userHashTag =
                 userHashTagWithArray == null || userHashTagWithArray.length == 0
                         ? new ArrayList<>()
                         : Arrays.stream(user.getFavoriteHashtags()).toList();
         List<HashTagInfo> hashTagInfos = new ArrayList<>();
-        for (HashTag hashTag : HashTag.values()) {
-            if (userHashTag.contains(hashTag)) {
-                hashTagInfos.add(HashTagInfo.from(hashTag, true));
+        for (HashtagCategory hashtag : HashtagCategory.values()) {
+            if (userHashTag.contains(hashtag)) {
+                hashTagInfos.add(HashTagInfo.from(hashtag, true));
             } else {
-                hashTagInfos.add(HashTagInfo.from(hashTag, false));
+                hashTagInfos.add(HashTagInfo.from(hashtag, false));
             }
         }
         return new GetUserSimpleInfoResponse(
@@ -53,8 +53,8 @@ public class GetUserSimpleInfoResponse {
     }
 
     private record HashTagInfo(String value, String description, Boolean isSelected) {
-        private static HashTagInfo from(HashTag hashTag, Boolean isSelected) {
-            return new HashTagInfo(hashTag.name(), hashTag.getValue(), isSelected);
+        private static HashTagInfo from(HashtagCategory hashTag, Boolean isSelected) {
+            return new HashTagInfo(hashTag.name(), hashTag.getLabel(), isSelected);
         }
     }
 }

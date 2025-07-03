@@ -2,8 +2,7 @@ package com.ftm.server.adapter.in.web.post.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ftm.server.application.vo.post.PostDetailVo;
-import com.ftm.server.domain.enums.GroomingCategory;
-import com.ftm.server.domain.enums.HashTag;
+import com.ftm.server.domain.enums.PostHashtag;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -15,8 +14,7 @@ public class LoadPostDetailResponse {
     private final Long postId;
     private final String title;
     private final String content;
-    private final GroomingCategory groomingCategory;
-    private final List<String> hashTags;
+    private final List<String> hashtags;
     private final Integer viewCount;
     private final Integer likeCount;
 
@@ -34,8 +32,7 @@ public class LoadPostDetailResponse {
         this.postId = postDetailVo.getPostId();
         this.title = postDetailVo.getTitle();
         this.content = postDetailVo.getContent();
-        this.groomingCategory = postDetailVo.getGroomingCategory();
-        this.hashTags = Arrays.stream(postDetailVo.getHashTags()).map(HashTag::getValue).toList();
+        this.hashtags = Arrays.stream(postDetailVo.getHashtags()).map(PostHashtag::getTag).toList();
         this.viewCount = postDetailVo.getViewCount();
         this.likeCount = postDetailVo.getLikeCount();
         this.createdAt = postDetailVo.getCreatedAt();

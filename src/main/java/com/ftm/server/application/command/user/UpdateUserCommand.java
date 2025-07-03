@@ -2,7 +2,7 @@ package com.ftm.server.application.command.user;
 
 import com.ftm.server.adapter.in.web.user.dto.request.UpdateUserInfoRequest;
 import com.ftm.server.domain.enums.AgeGroup;
-import com.ftm.server.domain.enums.HashTag;
+import com.ftm.server.domain.enums.HashtagCategory;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -11,7 +11,7 @@ public class UpdateUserCommand {
     private final Long userId;
     private final String nickname;
     private final AgeGroup ageGroup;
-    private final HashTag[] hashTags;
+    private final HashtagCategory[] hashtags;
     private final String imageAction;
     private final MultipartFile profileImage;
 

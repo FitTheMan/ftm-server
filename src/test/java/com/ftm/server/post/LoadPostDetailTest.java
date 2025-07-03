@@ -27,8 +27,7 @@ import com.ftm.server.application.port.out.transcation.AfterRollbackExecutorPort
 import com.ftm.server.application.vo.post.PostInfoVo;
 import com.ftm.server.common.response.enums.ErrorResponseCode;
 import com.ftm.server.domain.entity.User;
-import com.ftm.server.domain.enums.GroomingCategory;
-import com.ftm.server.domain.enums.HashTag;
+import com.ftm.server.domain.enums.PostHashtag;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -62,8 +61,7 @@ public class LoadPostDetailTest extends BaseTest {
                     fieldWithPath("data.postId").type(NUMBER).description("게시글 ID"),
                     fieldWithPath("data.title").type(STRING).description("게시글 제목"),
                     fieldWithPath("data.content").type(STRING).description("게시글 내용"),
-                    fieldWithPath("data.groomingCategory").type(STRING).description("게시글 그루밍 카테고리"),
-                    fieldWithPath("data.hashTags[]").type(ARRAY).description("게시글 해시태그 목록"),
+                    fieldWithPath("data.hashtags[]").type(ARRAY).description("게시글 해시태그 목록"),
                     fieldWithPath("data.viewCount").type(NUMBER).description("게시글 조회수"),
                     fieldWithPath("data.likeCount").type(NUMBER).description("게시글 좋아요 수"),
                     fieldWithPath("data.createdAt").type(STRING).description("게시글 생성 날짜"),
@@ -89,7 +87,7 @@ public class LoadPostDetailTest extends BaseTest {
                     fieldWithPath("data.postProducts[].brand")
                             .type(STRING)
                             .description("게시글 상품 브랜드"),
-                    fieldWithPath("data.postProducts[].hashTags[]")
+                    fieldWithPath("data.postProducts[].hashtags[]")
                             .type(ARRAY)
                             .description("게시글 상품 해시태그 목록"),
                     fieldWithPath("data.postProducts[].postProductImage")
@@ -131,8 +129,7 @@ public class LoadPostDetailTest extends BaseTest {
         SavePostRequest postRequest =
                 new SavePostRequest(
                         "독도 토너 추천",
-                        GroomingCategory.BEAUTY,
-                        List.of(HashTag.PERFUME),
+                        List.of(PostHashtag.CLEANSING),
                         "<div>test</div>",
                         List.of(new SavePostProductRequest(-1, "독도 토너", "라운드랩", List.of())));
 
