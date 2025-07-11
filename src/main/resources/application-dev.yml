@@ -6,3 +6,6 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none
+
+server:
+  forward-headers-strategy: native
