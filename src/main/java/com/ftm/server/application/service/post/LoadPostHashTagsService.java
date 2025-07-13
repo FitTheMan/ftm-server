@@ -21,15 +21,17 @@ public class LoadPostHashTagsService implements LoadPostHashTagsUseCase {
                 Arrays.stream(PostHashtag.values())
                         .collect(Collectors.groupingBy(PostHashtag::getCategory));
 
-        return hashtagGroup.entrySet().stream()
+        return Arrays.stream(HashtagCategory.values())
                 .map(
-                        entry -> {
-                            HashtagCategoryDetailVo category =
-                                    HashtagCategoryDetailVo.of(entry.getKey());
-                            List<PostHashTagVo> hashtags =
-                                    entry.getValue().stream().map(PostHashTagVo::of).toList();
+                        category -> {
+                            HashtagCategoryDetailVo categoryDetailVo =
+                                    HashtagCategoryDetailVo.of(category);
+                            List<PostHashTagVo> hashTagVos =
+                                    hashtagGroup.getOrDefault(category, List.of()).stream()
+                                            .map(PostHashTagVo::of)
+                                            .toList();
 
-                            return PostHashTagDetailVo.of(category, hashtags);
+                            return PostHashTagDetailVo.of(categoryDetailVo, hashTagVos);
                         })
                 .toList();
     }
