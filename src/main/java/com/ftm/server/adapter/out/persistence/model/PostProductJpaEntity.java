@@ -39,13 +39,20 @@ public class PostProductJpaEntity extends BaseTimeJpaEntity {
     @Column(name = "hashtags", columnDefinition = "product_hashtag[]")
     private ProductHashtag[] hashtags;
 
+    private Long recommendedCount;
+
     @Builder(access = AccessLevel.PRIVATE)
     private PostProductJpaEntity(
-            PostJpaEntity post, String name, String brand, ProductHashtag[] hashtags) {
+            PostJpaEntity post,
+            String name,
+            String brand,
+            ProductHashtag[] hashtags,
+            Long recommendedCount) {
         this.post = post;
         this.name = name;
         this.brand = brand;
         this.hashtags = hashtags;
+        this.recommendedCount = recommendedCount;
     }
 
     public static PostProductJpaEntity from(PostProduct postProduct, PostJpaEntity postJpaEntity) {
@@ -54,6 +61,7 @@ public class PostProductJpaEntity extends BaseTimeJpaEntity {
                 .name(postProduct.getName())
                 .brand(postProduct.getBrand())
                 .hashtags(postProduct.getHashtags())
+                .recommendedCount(postProduct.getRecommendedCount())
                 .build();
     }
 
@@ -61,5 +69,6 @@ public class PostProductJpaEntity extends BaseTimeJpaEntity {
         this.name = postProduct.getName();
         this.brand = postProduct.getBrand();
         this.hashtags = postProduct.getHashtags();
+        this.recommendedCount = postProduct.getRecommendedCount();
     }
 }
