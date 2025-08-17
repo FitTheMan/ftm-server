@@ -15,6 +15,7 @@ public class PostProductMapper {
                 jpaEntity.getName(),
                 jpaEntity.getBrand(),
                 jpaEntity.getHashtags(),
+                jpaEntity.getRecommendedCount(),
                 jpaEntity.getCreatedAt(),
                 jpaEntity.getUpdatedAt());
     }

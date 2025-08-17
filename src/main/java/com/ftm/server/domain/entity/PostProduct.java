@@ -21,6 +21,7 @@ public class PostProduct extends BaseTime {
     private String name;
     private String brand;
     private ProductHashtag[] hashtags;
+    private Long recommendedCount;
 
     @Builder(access = AccessLevel.PRIVATE)
     private PostProduct(
@@ -29,6 +30,7 @@ public class PostProduct extends BaseTime {
             String name,
             String brand,
             ProductHashtag[] hashtags,
+            Long recommendedCount,
             LocalDateTime createdAt,
             LocalDateTime updatedAt) {
         this.id = id;
@@ -36,6 +38,7 @@ public class PostProduct extends BaseTime {
         this.name = name;
         this.brand = brand;
         this.hashtags = hashtags;
+        this.recommendedCount = recommendedCount;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -46,6 +49,7 @@ public class PostProduct extends BaseTime {
             String name,
             String brand,
             ProductHashtag[] hashtags,
+            Long recommendedCount,
             LocalDateTime createdAt,
             LocalDateTime updatedAt) {
         return PostProduct.builder()
@@ -54,6 +58,7 @@ public class PostProduct extends BaseTime {
                 .name(name)
                 .brand(brand)
                 .hashtags(hashtags)
+                .recommendedCount(recommendedCount)
                 .createdAt(createdAt)
                 .updatedAt(updatedAt)
                 .build();
@@ -65,6 +70,7 @@ public class PostProduct extends BaseTime {
                 .name(command.getName())
                 .brand(command.getBrand())
                 .hashtags(command.getHashtags())
+                .recommendedCount(0L)
                 .build();
     }
 
