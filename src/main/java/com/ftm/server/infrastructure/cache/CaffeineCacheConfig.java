@@ -45,4 +45,15 @@ public class CaffeineCacheConfig {
                         .recordStats());
         return manager;
     }
+
+    @Bean("userPickPopularPostsCacheManager") // 유저픽 게시글 - 최근 인기있는 게시물 용 캐시 매니저
+    public CaffeineCacheManager cacheManagerForUserPickPopularPosts() {
+        CaffeineCacheManager mgr = new CaffeineCacheManager();
+        mgr.setCaffeine(
+                Caffeine.newBuilder()
+                        .maximumSize(10)
+                        // 1시간에 한번 씩 최신 인기 게시물 갱신
+                        .expireAfterWrite(1, TimeUnit.HOURS));
+        return mgr;
+    }
 }

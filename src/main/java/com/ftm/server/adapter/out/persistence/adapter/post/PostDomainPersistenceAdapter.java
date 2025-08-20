@@ -5,7 +5,9 @@ import com.ftm.server.adapter.out.persistence.model.*;
 import com.ftm.server.adapter.out.persistence.repository.*;
 import com.ftm.server.application.port.out.persistence.post.*;
 import com.ftm.server.application.query.*;
+import com.ftm.server.application.vo.post.PostAndBookmarkCountVo;
 import com.ftm.server.application.vo.post.PostWithBookmarkCountVo;
+import com.ftm.server.application.vo.post.UserIdAndNameVo;
 import com.ftm.server.application.vo.post.UserWithPostCountVo;
 import com.ftm.server.common.annotation.Adapter;
 import com.ftm.server.common.exception.CustomException;
@@ -36,7 +38,8 @@ public class PostDomainPersistenceAdapter
                 DeletePostImagePort,
                 DeletePostProductPort,
                 DeletePostProductImagePort,
-                LoadPostWithBookmarkCountPort {
+                LoadPostWithBookmarkCountPort,
+                LoadUserForPostDomainPort {
 
     private final PostRepository postRepository;
     private final PostImageRepository postImageRepository;
@@ -144,6 +147,15 @@ public class PostDomainPersistenceAdapter
     @Override
     public List<Post> loadPostsByDeleteOption(FindPostByDeleteOptionQuery query) {
         return postRepository.findAllByDeletedBefore(query).stream()
+                .map(postMapper::toDomainEntity)
+                .toList();
+    }
+
+    @Override
+    public List<Post> loadUserPickPopularPosts(FindUserPickPopularPostsQuery query) {
+        return postRepository
+                .findTopNPostsByViewCountAndLikeCount(query.getSince(), query.getLimit())
+                .stream()
                 .map(postMapper::toDomainEntity)
                 .toList();
     }
@@ -302,6 +314,12 @@ public class PostDomainPersistenceAdapter
     }
 
     @Override
+    public List<PostAndBookmarkCountVo> getPostAndBookmarkCount(
+            FindBookmarkCountByPostIdsQuery query) {
+        return postRepository.findBookmarkCountsByPostIds(query.getPostIds());
+    }
+
+    @Override
     public List<PostImage> loadRepresentativeImagesByPostIds(FindByIdsQuery query) {
         return postImageRepository.findRepresentativeImagesByPostIdIn(query).stream()
                 .map(postImageMapper::toDomainEntity)
@@ -313,5 +331,10 @@ public class PostDomainPersistenceAdapter
         return postRepository.findAllByUserIdIn(query.getUserIds()).stream()
                 .map(postMapper::toDomainEntity)
                 .toList();
+    }
+
+    @Override
+    public List<UserIdAndNameVo> loadPostAndAuthorName(FindByIdsQuery query) {
+        return userRepository.findUserNameByUserIds(query.getIds());
     }
 }

@@ -1,6 +1,7 @@
 package com.ftm.server.adapter.out.persistence.repository;
 
 import com.ftm.server.adapter.out.persistence.model.UserJpaEntity;
+import com.ftm.server.application.vo.post.UserIdAndNameVo;
 import com.ftm.server.domain.enums.SocialProvider;
 import com.ftm.server.domain.enums.UserRole;
 import java.time.LocalDateTime;
@@ -37,4 +38,8 @@ public interface UserRepository extends JpaRepository<UserJpaEntity, Long> {
             @Param("isDeleted") Boolean isDeleted, @Param("end") LocalDateTime end);
 
     Boolean existsByEmailAndIsDeleted(String email, boolean b);
+
+    @Query(
+            "SELECT new com.ftm.server.application.vo.post.UserIdAndNameVo(u.id, u.nickname) from UserJpaEntity u where u.id in :userIds")
+    List<UserIdAndNameVo> findUserNameByUserIds(@Param("userIds") List<Long> userIds);
 }
