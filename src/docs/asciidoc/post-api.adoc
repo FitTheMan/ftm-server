@@ -263,3 +263,17 @@ include::{snippetsDir}/loadPostProductHashTags/1/http-response.adoc[]
 include::{snippetsDir}/loadPostProductHashTags/1/response-fields.adoc[]
 
 ---
+
+
+=== **9. 그루밍 라운지 - "요즘 인기있는 글" 조회**
+
+==== Request
+include::{snippetsDir}/loadUserPickPopular/1/http-request.adoc[]
+
+==== 성공 Response
+include::{snippetsDir}/loadUserPickPopular/1/http-response.adoc[]
+
+==== Response Body Fields
+include::{snippetsDir}/loadUserPickPopular/1/response-fields.adoc[]
+
+---
