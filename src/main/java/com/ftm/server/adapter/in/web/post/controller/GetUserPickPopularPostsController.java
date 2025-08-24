@@ -1,7 +1,7 @@
 package com.ftm.server.adapter.in.web.post.controller;
 
 import com.ftm.server.adapter.in.web.post.dto.response.GetUserPickPopularPostsResponse;
-import com.ftm.server.application.port.in.user.GetUserPickPopularPostsUseCase;
+import com.ftm.server.application.port.in.post.GetUserPickPopularPostsUseCase;
 import com.ftm.server.common.response.ApiResponse;
 import com.ftm.server.common.response.enums.SuccessResponseCode;
 import java.util.List;

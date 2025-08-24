@@ -1,4 +1,4 @@
-package com.ftm.server.application.port.in.user;
+package com.ftm.server.application.port.in.post;
 
 import com.ftm.server.application.vo.post.UserPickPopularPostsVo;
 import com.ftm.server.common.annotation.UseCase;

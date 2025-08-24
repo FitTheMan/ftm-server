@@ -2,6 +2,7 @@ package com.ftm.server.adapter.out.persistence.repository;
 
 import com.ftm.server.adapter.out.persistence.model.PostJpaEntity;
 import com.ftm.server.application.vo.post.PostAndBookmarkCountVo;
+import com.ftm.server.application.vo.post.PostWithIdAndAuthorVo;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -40,6 +41,10 @@ public interface PostRepository
             nativeQuery = true)
     List<PostJpaEntity> findTopNPostsByViewCountAndLikeCount(
             @Param("since") LocalDateTime since, @Param("limit") int limit);
+
+    @Query(
+            "select new com.ftm.server.application.vo.post.PostWithIdAndAuthorVo(p.id) from PostJpaEntity p order by p.likeCount DESC")
+    List<PostWithIdAndAuthorVo> findTopNPostsByLikeCount(@Param("limit") int limit);
 
     @Query(
             """

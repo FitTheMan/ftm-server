@@ -1,6 +1,6 @@
 package com.ftm.server.application.service.post;
 
-import com.ftm.server.application.port.in.user.GetUserPickPopularPostsUseCase;
+import com.ftm.server.application.port.in.post.GetUserPickPopularPostsUseCase;
 import com.ftm.server.application.port.out.cache.LoadUserPickPopularWithCachePort;
 import com.ftm.server.application.port.out.persistence.post.LoadPostImagePort;
 import com.ftm.server.application.port.out.persistence.post.LoadPostWithBookmarkCountPort;

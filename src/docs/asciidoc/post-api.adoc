@@ -277,3 +277,17 @@ include::{snippetsDir}/loadUserPickPopular/1/http-response.adoc[]
 include::{snippetsDir}/loadUserPickPopular/1/response-fields.adoc[]
 
 ---
+
+
+=== **10. 그루밍 라운지 - "그루밍 바이블" 조회**
+
+==== Request
+include::{snippetsDir}/loadUserPickBible/1/http-request.adoc[]
+
+==== 성공 Response
+include::{snippetsDir}/loadUserPickBible/1/http-response.adoc[]
+
+==== Response Body Fields
+include::{snippetsDir}/loadUserPickBible/1/response-fields.adoc[]
+
+---

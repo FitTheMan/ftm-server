@@ -5,10 +5,7 @@ import com.ftm.server.adapter.out.persistence.model.*;
 import com.ftm.server.adapter.out.persistence.repository.*;
 import com.ftm.server.application.port.out.persistence.post.*;
 import com.ftm.server.application.query.*;
-import com.ftm.server.application.vo.post.PostAndBookmarkCountVo;
-import com.ftm.server.application.vo.post.PostWithBookmarkCountVo;
-import com.ftm.server.application.vo.post.UserIdAndNameVo;
-import com.ftm.server.application.vo.post.UserWithPostCountVo;
+import com.ftm.server.application.vo.post.*;
 import com.ftm.server.common.annotation.Adapter;
 import com.ftm.server.common.exception.CustomException;
 import com.ftm.server.common.response.enums.ErrorResponseCode;
@@ -158,6 +155,17 @@ public class PostDomainPersistenceAdapter
                 .stream()
                 .map(postMapper::toDomainEntity)
                 .toList();
+    }
+
+    @Override
+    public List<PostWithIdAndAuthorVo> loadUserPickBiblePosts(FindUserPickBiblePostsQuery query) {
+        return postRepository.findTopNPostsByLikeCount(query.getLimit());
+    }
+
+    @Override
+    public List<PostWithUserAndBookmarkCountVo> loadPostWithUserAndBookmarkCount(
+            FindByIdsQuery query) {
+        return postRepository.findAllPostsWithUserAndBookmarkCount(query);
     }
 
     @Override
