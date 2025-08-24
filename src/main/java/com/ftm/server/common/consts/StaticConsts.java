@@ -21,4 +21,7 @@ public class StaticConsts {
 
     public static final String USER_PICK_POPULAR_POSTS_CACHE_NAME = "ftm:posts:userpick:popular";
     public static final String USER_PICK_POPULAR_POSTS_CACHE_KEY_ALL = "'all'";
+
+    public static final String USER_PICK_BIBLE_POSTS_CACHE_NAME = "ftm:posts:userpick:bible";
+    public static final String USER_PICK_BIBLE_POSTS_CACHE_KEY_ALL = "'all'";
 }

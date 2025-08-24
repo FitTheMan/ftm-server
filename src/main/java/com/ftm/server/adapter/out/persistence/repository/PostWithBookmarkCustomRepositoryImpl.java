@@ -3,8 +3,10 @@ package com.ftm.server.adapter.out.persistence.repository;
 import static com.ftm.server.adapter.out.persistence.model.QBookmarkJpaEntity.bookmarkJpaEntity;
 import static com.ftm.server.adapter.out.persistence.model.QPostJpaEntity.postJpaEntity;
 
+import com.ftm.server.application.query.FindByIdsQuery;
 import com.ftm.server.application.query.FindPostsByCreatedDateQuery;
 import com.ftm.server.application.vo.post.PostWithBookmarkCountVo;
+import com.ftm.server.application.vo.post.PostWithUserAndBookmarkCountVo;
 import com.ftm.server.application.vo.post.UserWithPostCountVo;
 import com.ftm.server.domain.enums.UserRole;
 import com.querydsl.core.types.Projections;
@@ -79,6 +81,38 @@ public class PostWithBookmarkCustomRepositoryImpl implements PostWithBookmarkCus
                                         postJpaEntity.user.role.eq(
                                                 UserRole.USER))) // 삭제되지 않은 일반 유저만 포함
                 .groupBy(postJpaEntity.user.id, postJpaEntity.user.nickname)
+                .fetch();
+    }
+
+    @Override
+    public List<PostWithUserAndBookmarkCountVo> findAllPostsWithUserAndBookmarkCount(
+            FindByIdsQuery query) {
+        return queryFactory
+                .select(
+                        Projections.constructor(
+                                PostWithUserAndBookmarkCountVo.class,
+                                postJpaEntity.id,
+                                postJpaEntity.user.id,
+                                postJpaEntity.user.nickname,
+                                postJpaEntity.title,
+                                postJpaEntity.content,
+                                postJpaEntity.hashtags,
+                                postJpaEntity.viewCount, // sum() 쓰지 마세요
+                                postJpaEntity.likeCount, // sum() 쓰지 마세요
+                                bookmarkJpaEntity.id.countDistinct() // 북마크 개수
+                                ))
+                .from(postJpaEntity)
+                .leftJoin(bookmarkJpaEntity)
+                .on(bookmarkJpaEntity.post.eq(postJpaEntity))
+                .groupBy(
+                        postJpaEntity.id,
+                        postJpaEntity.user.id,
+                        postJpaEntity.user.nickname,
+                        postJpaEntity.title,
+                        postJpaEntity.content,
+                        postJpaEntity.hashtags,
+                        postJpaEntity.viewCount,
+                        postJpaEntity.likeCount)
                 .fetch();
     }
 }

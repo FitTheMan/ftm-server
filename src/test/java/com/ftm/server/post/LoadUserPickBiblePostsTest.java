@@ -6,6 +6,7 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.JsonFieldType.*;
+import static org.springframework.restdocs.payload.JsonFieldType.ARRAY;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -31,7 +32,7 @@ import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
-public class LoadUserPickPopularPostsTest extends BaseTest {
+public class LoadUserPickBiblePostsTest extends BaseTest {
 
     @Autowired private SavePostPort savePostPort;
 
@@ -58,20 +59,20 @@ public class LoadUserPickPopularPostsTest extends BaseTest {
                             .description("게시글 해시태그 : 한글 태그 표시. 없는 경우 빈 배열([])로 표시"));
 
     private ResultActions getResultActions() throws Exception {
-        return mockMvc.perform(RestDocumentationRequestBuilders.get("/api/posts/userpick/popular"));
+        return mockMvc.perform(RestDocumentationRequestBuilders.get("/api/posts/userpick/bible"));
     }
 
     private RestDocumentationResultHandler getDocument(Integer identifier) {
         return document(
-                "loadUserPickPopular/" + identifier,
+                "loadUserPickBible/" + identifier,
                 preprocessRequest(prettyPrint()),
                 preprocessResponse(prettyPrint(), getModifiedHeader()),
                 responseFields(responseFields),
                 resource(
                         ResourceSnippetParameters.builder()
                                 .tag("유저픽 게시글")
-                                .summary("\"요즘 인기있는 글\" 목록 조회 api")
-                                .description("그루밍 라운지 내 \"요즘 인기있는 글\" 목록 조회 api 입니다.")
+                                .summary("\"그루밍 바이블\" 목록 조회 api")
+                                .description("그루밍 라운지 내 \"그루밍 바이블\" 목록 조회 api 입니다.")
                                 .responseFields(responseFields)
                                 .build()));
     }
@@ -81,6 +82,7 @@ public class LoadUserPickPopularPostsTest extends BaseTest {
     @DisplayName("테스트 성공")
     public void test1() throws Exception {
         // given
+
         SessionAndUser sessionAndUser = createUserAndLoginAndReturnUser(); // 로그인 처리
 
         User user = sessionAndUser.user();
