@@ -163,6 +163,12 @@ public class PostDomainPersistenceAdapter
     }
 
     @Override
+    public List<PostWithIdAndAuthorVo> loadTopPostsByBookmarkCount(
+            FindTopPostsByBookmarkCountQuery query) {
+        return postRepository.findTopNPostsByBookmarkCount(query.getLimit());
+    }
+
+    @Override
     public List<PostWithUserAndBookmarkCountVo> loadPostWithUserAndBookmarkCount(
             FindByIdsQuery query) {
         return postRepository.findAllPostsWithUserAndBookmarkCount(query);

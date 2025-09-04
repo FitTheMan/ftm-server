@@ -19,4 +19,6 @@ public interface LoadPostPort {
     List<Post> loadUserPickPopularPosts(FindUserPickPopularPostsQuery query);
 
     List<PostWithIdAndAuthorVo> loadUserPickBiblePosts(FindUserPickBiblePostsQuery query);
+
+    List<PostWithIdAndAuthorVo> loadTopPostsByBookmarkCount(FindTopPostsByBookmarkCountQuery query);
 }
