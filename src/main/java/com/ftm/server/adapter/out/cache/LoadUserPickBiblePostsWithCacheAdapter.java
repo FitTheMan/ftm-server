@@ -27,7 +27,9 @@ public class LoadUserPickBiblePostsWithCacheAdapter implements LoadUserPickBible
     }
 
     @Override
-    @CachePut(cacheNames = USER_PICK_BIBLE_POSTS_CACHE_NAME, key = USER_PICK_BIBLE_POSTS_CACHE_NAME)
+    @CachePut(
+            cacheNames = USER_PICK_BIBLE_POSTS_CACHE_NAME,
+            key = USER_PICK_BIBLE_POSTS_CACHE_KEY_ALL)
     public List<PostWithIdAndAuthorVo> getUserPickBiblePostCachePut() {
         return execute();
     }

@@ -291,3 +291,17 @@ include::{snippetsDir}/loadUserPickBible/1/http-response.adoc[]
 include::{snippetsDir}/loadUserPickBible/1/response-fields.adoc[]
 
 ---
+
+
+=== **11. 그루밍 라운지 - "다시 찾아보고 싶은 그루밍" 조회**
+
+==== Request
+include::{snippetsDir}/loadUserPickTopBookmark/1/http-request.adoc[]
+
+==== 성공 Response
+include::{snippetsDir}/loadUserPickTopBookmark/1/http-response.adoc[]
+
+==== Response Body Fields
+include::{snippetsDir}/loadUserPickTopBookmark/1/response-fields.adoc[]
+
+---

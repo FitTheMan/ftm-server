@@ -56,4 +56,11 @@ public class CaffeineCacheConfig {
                         .expireAfterWrite(1, TimeUnit.HOURS));
         return mgr;
     }
+
+    @Bean("userPickTopBookmarkPostsCacheManager") // 유저픽 게시글 - 북마크 상위 게시물 용 캐시 매니저
+    public CaffeineCacheManager cacheManagerForUserPickTopBookmarkPosts() {
+        CaffeineCacheManager mgr = new CaffeineCacheManager();
+        mgr.setCaffeine(Caffeine.newBuilder().maximumSize(10).expireAfterWrite(1, TimeUnit.HOURS));
+        return mgr;
+    }
 }
