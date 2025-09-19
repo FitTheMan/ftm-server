@@ -19,6 +19,7 @@ public class LoadUserPickTopBookmarkPostsResponse {
     private final Long scrapCount;
     private final String imageUrl;
     private final List<String> hashtags;
+    private final Boolean userBookmarkYn;
 
     public static LoadUserPickTopBookmarkPostsResponse from(LoadUserPickTopBookmarkPostsVo vo) {
         return new LoadUserPickTopBookmarkPostsResponse(
@@ -31,6 +32,7 @@ public class LoadUserPickTopBookmarkPostsResponse {
                 vo.getLikeCount(),
                 vo.getScrapCount(),
                 vo.getImageUrl(),
-                vo.getHashtags());
+                vo.getHashtags(),
+                vo.getUserBookmarkYn());
     }
 }

@@ -17,6 +17,7 @@ public class GetUserPickPopularPostsResponse {
     private final Long scrapCount;
     private final String imageUrl;
     private final List<String> hashtags;
+    private final Boolean userBookmarkYn;
 
     public static GetUserPickPopularPostsResponse from(UserPickPopularPostsVo vo) {
         return new GetUserPickPopularPostsResponse(
@@ -29,6 +30,7 @@ public class GetUserPickPopularPostsResponse {
                 vo.getLikeCount(),
                 vo.getScrapCount(),
                 vo.getImageUrl(),
-                vo.getHashtags());
+                vo.getHashtags(),
+                vo.getUserBookmarkYn());
     }
 }

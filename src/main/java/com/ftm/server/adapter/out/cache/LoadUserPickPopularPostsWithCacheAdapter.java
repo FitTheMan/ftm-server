@@ -7,7 +7,6 @@ import com.ftm.server.application.port.out.cache.LoadUserPickPopularWithCachePor
 import com.ftm.server.application.port.out.persistence.post.LoadPostPort;
 import com.ftm.server.application.query.FindUserPickPopularPostsQuery;
 import com.ftm.server.common.annotation.Adapter;
-import com.ftm.server.domain.entity.Post;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -29,7 +28,7 @@ public class LoadUserPickPopularPostsWithCacheAdapter implements LoadUserPickPop
     @CachePut(
             cacheNames = USER_PICK_POPULAR_POSTS_CACHE_NAME,
             key = USER_PICK_POPULAR_POSTS_CACHE_KEY_ALL)
-    public List<Post> getUserPickPopularPostCachePut() {
+    public List<Long> getUserPickPopularPostCachePut() {
         return execute();
     }
 
@@ -37,14 +36,14 @@ public class LoadUserPickPopularPostsWithCacheAdapter implements LoadUserPickPop
     @Cacheable(
             cacheNames = USER_PICK_POPULAR_POSTS_CACHE_NAME,
             key = USER_PICK_POPULAR_POSTS_CACHE_KEY_ALL)
-    public List<Post> getUserPickPopularPost() {
+    public List<Long> getUserPickPopularPost() {
         return execute();
     }
 
-    public List<Post> execute() {
+    public List<Long> execute() {
         // 최근 1개월 상위 4개 post id를 조회
         LocalDateTime since = LocalDate.now().minusMonths(1).atStartOfDay();
-        List<Post> postList =
+        List<Long> postList =
                 loadPostPort.loadUserPickPopularPosts(FindUserPickPopularPostsQuery.of(since, 4));
 
         if (postList.isEmpty()) return List.of();

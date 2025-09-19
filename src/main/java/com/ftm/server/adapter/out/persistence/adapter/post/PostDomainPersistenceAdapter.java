@@ -149,22 +149,18 @@ public class PostDomainPersistenceAdapter
     }
 
     @Override
-    public List<Post> loadUserPickPopularPosts(FindUserPickPopularPostsQuery query) {
-        return postRepository
-                .findTopNPostsByViewCountAndLikeCount(query.getSince(), query.getLimit())
-                .stream()
-                .map(postMapper::toDomainEntity)
-                .toList();
+    public List<Long> loadUserPickPopularPosts(FindUserPickPopularPostsQuery query) {
+        return postRepository.findTopNPostsByViewCountAndLikeCount(
+                query.getSince(), query.getLimit());
     }
 
     @Override
-    public List<PostWithIdAndAuthorVo> loadUserPickBiblePosts(FindUserPickBiblePostsQuery query) {
+    public List<Long> loadUserPickBiblePosts(FindUserPickBiblePostsQuery query) {
         return postRepository.findTopNPostsByLikeCount(query.getLimit());
     }
 
     @Override
-    public List<PostWithIdAndAuthorVo> loadTopPostsByBookmarkCount(
-            FindTopPostsByBookmarkCountQuery query) {
+    public List<Long> loadTopPostsByBookmarkCount(FindTopPostsByBookmarkCountQuery query) {
         return postRepository.findTopNPostsByBookmarkCount(query.getLimit());
     }
 
@@ -178,6 +174,11 @@ public class PostDomainPersistenceAdapter
                                         e.getBookmarkYn(),
                                         postMapper.toDomainEntity((PostJpaEntity) e.getData())))
                 .toList();
+    }
+
+    @Override
+    public List<PostIdAndBookmarkYnVo> loadPostIdAndBookmarkYn(FindByPostIdsAndUserQuery query) {
+        return postRepository.findPostIdWithBookmarkYn(query);
     }
 
     @Override

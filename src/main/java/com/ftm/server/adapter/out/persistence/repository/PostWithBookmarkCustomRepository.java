@@ -3,7 +3,6 @@ package com.ftm.server.adapter.out.persistence.repository;
 import com.ftm.server.application.query.FindByIdsQuery;
 import com.ftm.server.application.query.FindPostsByCreatedDateQuery;
 import com.ftm.server.application.vo.post.PostWithBookmarkCountVo;
-import com.ftm.server.application.vo.post.PostWithIdAndAuthorVo;
 import com.ftm.server.application.vo.post.PostWithUserAndBookmarkCountVo;
 import com.ftm.server.application.vo.post.UserWithPostCountVo;
 import java.util.List;
@@ -17,5 +16,5 @@ public interface PostWithBookmarkCustomRepository {
 
     List<PostWithUserAndBookmarkCountVo> findAllPostsWithUserAndBookmarkCount(FindByIdsQuery query);
 
-    List<PostWithIdAndAuthorVo> findTopNPostsByBookmarkCount(int limit);
+    List<Long> findTopNPostsByBookmarkCount(int limit);
 }
