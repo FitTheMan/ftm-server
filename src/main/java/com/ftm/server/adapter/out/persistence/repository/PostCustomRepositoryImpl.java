@@ -1,12 +1,18 @@
 package com.ftm.server.adapter.out.persistence.repository;
 
+import static com.ftm.server.adapter.out.persistence.model.QBookmarkJpaEntity.bookmarkJpaEntity;
 import static com.ftm.server.adapter.out.persistence.model.QPostJpaEntity.postJpaEntity;
 
 import com.ftm.server.adapter.out.persistence.model.PostJpaEntity;
 import com.ftm.server.application.query.FindPostByDeleteOptionQuery;
 import com.ftm.server.application.query.FindPostsByCreatedDateQuery;
 import com.ftm.server.application.query.FindPostsByPagingQuery;
+import com.ftm.server.application.query.FindUserPickLatestPostsByCursorQuery;
+import com.ftm.server.application.vo.post.BookmarkYnWrapperVo;
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -67,6 +73,60 @@ public class PostCustomRepositoryImpl implements PostCustomRepository {
                 .from(postJpaEntity)
                 .groupBy(postJpaEntity.user)
                 .where(postJpaEntity.createdAt.goe(oneWeekAgo))
+                .fetch();
+    }
+
+    @Override
+    public List<BookmarkYnWrapperVo> findPostsByLatestCursor(
+            FindUserPickLatestPostsByCursorQuery query) {
+
+        BooleanBuilder condition = new BooleanBuilder();
+
+        // 커서가 있으면 조건 추가
+        if (query.getNextCursorCreatedAt() != null) {
+            condition.and(
+                    postJpaEntity.createdAt.lt(
+                            query.getNextCursorCreatedAt()) // createdAt이 더 작은 게시글
+                    );
+        }
+
+        if (query.getUserId() == null) {
+            return queryFactory
+                    .select(
+                            Projections.constructor(
+                                    BookmarkYnWrapperVo.class,
+                                    Expressions.constant(false),
+                                    postJpaEntity))
+                    .from(postJpaEntity)
+                    .where(condition)
+                    .orderBy(
+                            postJpaEntity.createdAt.desc(),
+                            postJpaEntity.id.desc()) // 최신순 + tie-breaker
+                    .limit(query.getLimit() + 1) // hasNext 체크를 위해 +1
+                    .fetch();
+        }
+
+        return queryFactory
+                .select(
+                        Projections.constructor(
+                                BookmarkYnWrapperVo.class,
+                                bookmarkJpaEntity.id.isNotNull(),
+                                postJpaEntity))
+                .from(postJpaEntity)
+                .leftJoin(bookmarkJpaEntity)
+                .on(
+                        bookmarkJpaEntity
+                                .post
+                                .eq(postJpaEntity)
+                                .and(
+                                        bookmarkJpaEntity.user.id.eq(
+                                                query.getUserId())) // 특정 user 북마크 여부 확인
+                        )
+                .where(condition)
+                .orderBy(
+                        postJpaEntity.createdAt.desc(),
+                        postJpaEntity.id.desc()) // 최신순 + tie-breaker
+                .limit(query.getLimit() + 1) // hasNext 체크를 위해 +1
                 .fetch();
     }
 }

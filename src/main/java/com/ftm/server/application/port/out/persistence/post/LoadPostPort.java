@@ -1,6 +1,7 @@
 package com.ftm.server.application.port.out.persistence.post;
 
 import com.ftm.server.application.query.*;
+import com.ftm.server.application.vo.post.BookmarkYnWrapperVo;
 import com.ftm.server.application.vo.post.PostWithIdAndAuthorVo;
 import com.ftm.server.common.annotation.Port;
 import com.ftm.server.domain.entity.Post;
@@ -21,4 +22,7 @@ public interface LoadPostPort {
     List<PostWithIdAndAuthorVo> loadUserPickBiblePosts(FindUserPickBiblePostsQuery query);
 
     List<PostWithIdAndAuthorVo> loadTopPostsByBookmarkCount(FindTopPostsByBookmarkCountQuery query);
+
+    List<BookmarkYnWrapperVo> loadUserPickAllPostsByLatest(
+            FindUserPickLatestPostsByCursorQuery query);
 }

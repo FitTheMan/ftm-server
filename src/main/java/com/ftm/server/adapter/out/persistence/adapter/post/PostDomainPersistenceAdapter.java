@@ -169,6 +169,18 @@ public class PostDomainPersistenceAdapter
     }
 
     @Override
+    public List<BookmarkYnWrapperVo> loadUserPickAllPostsByLatest(
+            FindUserPickLatestPostsByCursorQuery query) {
+        return postRepository.findPostsByLatestCursor(query).stream()
+                .map(
+                        e ->
+                                new BookmarkYnWrapperVo(
+                                        e.getBookmarkYn(),
+                                        postMapper.toDomainEntity((PostJpaEntity) e.getData())))
+                .toList();
+    }
+
+    @Override
     public List<PostWithUserAndBookmarkCountVo> loadPostWithUserAndBookmarkCount(
             FindByIdsQuery query) {
         return postRepository.findAllPostsWithUserAndBookmarkCount(query);
