@@ -17,12 +17,14 @@ public class LoadUserPickTopBookmarkPostsVo {
     private final Long scrapCount;
     private final String imageUrl;
     private final List<String> hashtags;
+    private final Boolean userBookmarkYn;
 
     public static LoadUserPickTopBookmarkPostsVo of(
             Integer ranking,
             PostWithUserAndBookmarkCountVo post,
             String imageUrl,
-            List<String> hashtags) {
+            List<String> hashtags,
+            Boolean userBookmarkYn) {
         return new LoadUserPickTopBookmarkPostsVo(
                 ranking,
                 post.getId(),
@@ -33,6 +35,7 @@ public class LoadUserPickTopBookmarkPostsVo {
                 post.getLikeCount(),
                 post.getScrapCount(),
                 imageUrl,
-                hashtags);
+                hashtags,
+                userBookmarkYn);
     }
 }

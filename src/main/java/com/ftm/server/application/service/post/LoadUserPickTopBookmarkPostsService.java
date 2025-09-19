@@ -1,17 +1,21 @@
 package com.ftm.server.application.service.post;
 
+import static java.util.stream.Collectors.toMap;
+
 import com.ftm.server.application.port.in.post.LoadUserPickTopBookmarkPostsUseCase;
 import com.ftm.server.application.port.out.cache.LoadUserPickTopBookmarkPostsWithCachePort;
 import com.ftm.server.application.port.out.persistence.post.LoadPostImagePort;
+import com.ftm.server.application.port.out.persistence.post.LoadPostPort;
 import com.ftm.server.application.port.out.persistence.post.LoadPostWithBookmarkCountPort;
 import com.ftm.server.application.query.FindByIdsQuery;
-import com.ftm.server.application.vo.post.LoadUserPickTopBookmarkPostsVo;
-import com.ftm.server.application.vo.post.PostWithIdAndAuthorVo;
-import com.ftm.server.application.vo.post.PostWithUserAndBookmarkCountVo;
+import com.ftm.server.application.query.FindByPostIdsAndUserQuery;
+import com.ftm.server.application.query.FindByUserIdQuery;
+import com.ftm.server.application.vo.post.*;
 import com.ftm.server.common.consts.PropertiesHolder;
 import com.ftm.server.domain.entity.PostImage;
 import com.ftm.server.domain.enums.PostHashtag;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import lombok.RequiredArgsConstructor;
@@ -24,35 +28,51 @@ public class LoadUserPickTopBookmarkPostsService implements LoadUserPickTopBookm
     private final LoadUserPickTopBookmarkPostsWithCachePort cachePort;
     private final LoadPostWithBookmarkCountPort loadPostWithBookmarkCountPort;
     private final LoadPostImagePort loadPostImagePort;
+    private final LoadPostPort loadPostPort;
 
     @Override
-    public List<LoadUserPickTopBookmarkPostsVo> execute() {
+    public List<LoadUserPickTopBookmarkPostsVo> execute(FindByUserIdQuery query) {
         // 1) 캐시에서 상위 id 목록 조회 (4개)
-        List<PostWithIdAndAuthorVo> postList = cachePort.getTopBookmarkPosts();
-        if (postList.isEmpty()) return List.of();
+        List<Long> postIds = cachePort.getTopBookmarkPosts();
 
-        // 2) id 목록
-        List<Long> postIds = postList.stream().map(PostWithIdAndAuthorVo::getPostId).toList();
+        if (postIds.isEmpty()) return List.of();
 
-        // 3) 상세 조회 (유저/북마크 수 포함)
+        return convertToVo(postIds, query.getUserId());
+    }
+
+    private List<LoadUserPickTopBookmarkPostsVo> convertToVo(List<Long> postIds, Long userId) {
+
+        // post 상세 조회
         Map<Long, PostWithUserAndBookmarkCountVo> detailPostMap =
                 loadPostWithBookmarkCountPort
                         .loadPostWithUserAndBookmarkCount(FindByIdsQuery.from(postIds))
                         .stream()
-                        .collect(Collectors.toMap(PostWithUserAndBookmarkCountVo::getId, vo -> vo));
+                        .collect(toMap(PostWithUserAndBookmarkCountVo::getId, vo -> vo));
 
-        // 4) 대표 이미지
-        List<PostImage> postImages =
-                loadPostImagePort.loadRepresentativeImagesByPostIds(FindByIdsQuery.from(postIds));
+        Map<Long, Boolean> userBookmarkMap;
+        if (userId != null) {
+            userBookmarkMap =
+                    loadPostPort
+                            .loadPostIdAndBookmarkYn(FindByPostIdsAndUserQuery.of(postIds, userId))
+                            .stream()
+                            .collect(
+                                    toMap(
+                                            PostIdAndBookmarkYnVo::getPostId,
+                                            PostIdAndBookmarkYnVo::getBookmarkYn));
+            ;
+        } else {
+            userBookmarkMap =
+                    postIds.stream().collect(Collectors.toMap(Function.identity(), id -> false));
+        }
+
+        // post 대표 이미지 조회
         Map<Long, String> imageUrlMap =
-                postImages.stream()
-                        .collect(
-                                java.util.stream.Collectors.toMap(
-                                        PostImage::getPostId,
-                                        PostImage::getObjectKey,
-                                        (a, b) -> a));
+                loadPostImagePort
+                        .loadRepresentativeImagesByPostIds(FindByIdsQuery.from(postIds))
+                        .stream()
+                        .collect(toMap(PostImage::getPostId, PostImage::getObjectKey, (a, b) -> a));
 
-        // 5) 합치기 (postList 순서 = 랭킹)
+        // 합치기 (postList 순서 = 랭킹)
         return IntStream.range(0, postIds.size())
                 .mapToObj(
                         i -> {
@@ -61,19 +81,21 @@ public class LoadUserPickTopBookmarkPostsService implements LoadUserPickTopBookm
                             int ranking = i + 1;
                             String imageUrl =
                                     imageUrlMap.getOrDefault(
-                                            p.getId(), PropertiesHolder.POST_DEFAULT_IMAGE);
-                            List<String> hashtags =
-                                    p.getHashtags() == null || p.getHashtags().length == 0
-                                            ? List.of()
-                                            : Arrays.stream(p.getHashtags())
-                                                    .map(PostHashtag::getTag)
-                                                    .toList();
+                                            p.getId(),
+                                            PropertiesHolder.POST_DEFAULT_IMAGE); // 없으면 null
                             return LoadUserPickTopBookmarkPostsVo.of(
                                     ranking,
                                     p,
                                     PropertiesHolder.CDN_PATH + "/" + imageUrl,
-                                    hashtags);
+                                    toHashtagList(p.getHashtags()),
+                                    userBookmarkMap.get(postId));
                         })
                 .toList();
+    }
+
+    private List<String> toHashtagList(PostHashtag[] hashtags) {
+        return (hashtags == null || hashtags.length == 0)
+                ? List.of()
+                : Arrays.stream(hashtags).map(PostHashtag::getTag).toList();
     }
 }

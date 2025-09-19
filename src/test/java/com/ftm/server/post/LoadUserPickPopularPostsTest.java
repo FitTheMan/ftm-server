@@ -55,7 +55,10 @@ public class LoadUserPickPopularPostsTest extends BaseTest {
                     fieldWithPath("data[].imageUrl").type(STRING).description("이미지 url"),
                     fieldWithPath("data[].hashtags")
                             .type(ARRAY)
-                            .description("게시글 해시태그 : 한글 태그 표시. 없는 경우 빈 배열([])로 표시"));
+                            .description("게시글 해시태그 : 한글 태그 표시. 없는 경우 빈 배열([])로 표시"),
+                    fieldWithPath("data[].userBookmarkYn")
+                            .type(BOOLEAN)
+                            .description("사용자 북마크 등록 여부"));
 
     private ResultActions getResultActions() throws Exception {
         return mockMvc.perform(RestDocumentationRequestBuilders.get("/api/posts/userpick/popular"));

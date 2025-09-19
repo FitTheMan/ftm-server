@@ -18,6 +18,7 @@ public class LoadUserPickBiblePostsResponse {
     private final Long scrapCount;
     private final String imageUrl;
     private final List<String> hashtags;
+    private final Boolean userBookmarkYn;
 
     public static LoadUserPickBiblePostsResponse from(UserPickBiblePostsVo vo) {
         return new LoadUserPickBiblePostsResponse(
@@ -30,6 +31,7 @@ public class LoadUserPickBiblePostsResponse {
                 vo.getLikeCount(),
                 vo.getScrapCount(),
                 vo.getImageUrl(),
-                vo.getHashtags());
+                vo.getHashtags(),
+                vo.getUserBookmarkYn());
     }
 }

@@ -1,6 +1,5 @@
 package com.ftm.server.application.vo.post;
 
-import com.ftm.server.domain.entity.Post;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,24 +20,25 @@ public class UserPickPopularPostsVo {
     private final Long scrapCount;
     private final String imageUrl;
     private final List<String> hashtags;
+    private final Boolean userBookmarkYn;
 
     public static UserPickPopularPostsVo of(
             Integer ranking,
-            Post post,
-            String authorName,
-            Long scrapCount,
+            PostWithUserAndBookmarkCountVo post,
             String imageUrl,
-            List<String> hashtags) {
+            List<String> hashtags,
+            Boolean userBookmarkYn) {
         return new UserPickPopularPostsVo(
                 ranking,
                 post.getId(),
                 post.getTitle(),
                 post.getUserId(),
-                authorName,
+                post.getUserName(),
                 post.getViewCount(),
                 post.getLikeCount(),
-                scrapCount,
+                post.getScrapCount(),
                 imageUrl,
-                hashtags);
+                hashtags,
+                userBookmarkYn);
     }
 }

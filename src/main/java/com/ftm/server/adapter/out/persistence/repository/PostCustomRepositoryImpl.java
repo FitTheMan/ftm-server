@@ -4,11 +4,9 @@ import static com.ftm.server.adapter.out.persistence.model.QBookmarkJpaEntity.bo
 import static com.ftm.server.adapter.out.persistence.model.QPostJpaEntity.postJpaEntity;
 
 import com.ftm.server.adapter.out.persistence.model.PostJpaEntity;
-import com.ftm.server.application.query.FindPostByDeleteOptionQuery;
-import com.ftm.server.application.query.FindPostsByCreatedDateQuery;
-import com.ftm.server.application.query.FindPostsByPagingQuery;
-import com.ftm.server.application.query.FindUserPickLatestPostsByCursorQuery;
+import com.ftm.server.application.query.*;
 import com.ftm.server.application.vo.post.BookmarkYnWrapperVo;
+import com.ftm.server.application.vo.post.PostIdAndBookmarkYnVo;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
@@ -127,6 +125,29 @@ public class PostCustomRepositoryImpl implements PostCustomRepository {
                         postJpaEntity.createdAt.desc(),
                         postJpaEntity.id.desc()) // 최신순 + tie-breaker
                 .limit(query.getLimit() + 1) // hasNext 체크를 위해 +1
+                .fetch();
+    }
+
+    @Override
+    public List<PostIdAndBookmarkYnVo> findPostIdWithBookmarkYn(FindByPostIdsAndUserQuery query) {
+
+        return queryFactory
+                .select(
+                        Projections.constructor(
+                                PostIdAndBookmarkYnVo.class,
+                                postJpaEntity.id,
+                                bookmarkJpaEntity.id.isNotNull()))
+                .from(postJpaEntity)
+                .leftJoin(bookmarkJpaEntity)
+                .on(
+                        bookmarkJpaEntity
+                                .post
+                                .eq(postJpaEntity)
+                                .and(
+                                        bookmarkJpaEntity.user.id.eq(
+                                                query.getUserId())) // 특정 user 북마크 여부 확인
+                        )
+                .where(postJpaEntity.id.in(query.getPostIds()))
                 .fetch();
     }
 }

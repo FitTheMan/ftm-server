@@ -6,7 +6,6 @@ import static com.ftm.server.adapter.out.persistence.model.QPostJpaEntity.postJp
 import com.ftm.server.application.query.FindByIdsQuery;
 import com.ftm.server.application.query.FindPostsByCreatedDateQuery;
 import com.ftm.server.application.vo.post.PostWithBookmarkCountVo;
-import com.ftm.server.application.vo.post.PostWithIdAndAuthorVo;
 import com.ftm.server.application.vo.post.PostWithUserAndBookmarkCountVo;
 import com.ftm.server.application.vo.post.UserWithPostCountVo;
 import com.ftm.server.domain.enums.UserRole;
@@ -118,9 +117,9 @@ public class PostWithBookmarkCustomRepositoryImpl implements PostWithBookmarkCus
     }
 
     @Override
-    public List<PostWithIdAndAuthorVo> findTopNPostsByBookmarkCount(int limit) {
+    public List<Long> findTopNPostsByBookmarkCount(int limit) {
         return queryFactory
-                .select(Projections.constructor(PostWithIdAndAuthorVo.class, postJpaEntity.id))
+                .select(postJpaEntity.id)
                 .from(postJpaEntity)
                 .leftJoin(bookmarkJpaEntity)
                 .on(bookmarkJpaEntity.post.eq(postJpaEntity))
