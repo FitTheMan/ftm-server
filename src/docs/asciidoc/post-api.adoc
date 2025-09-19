@@ -305,3 +305,22 @@ include::{snippetsDir}/loadUserPickTopBookmark/1/http-response.adoc[]
 include::{snippetsDir}/loadUserPickTopBookmark/1/response-fields.adoc[]
 
 ---
+
+=== **12. 그루밍 이야기 - "최신순" 조회**
+
+무한 스크롤 - cursor 방식으로 구현했습니다.
+
+==== Request
+include::{snippetsDir}/loadUserPickAllLatest/1/http-request.adoc[]
+
+==== Request Query Parameters
+include::{snippetsDir}/loadUserPickAllLatest/1/query-parameters.adoc[]
+
+==== 성공 Response
+include::{snippetsDir}/loadUserPickAllLatest/1/http-response.adoc[]
+
+==== Response Body Fields
+include::{snippetsDir}/loadUserPickAllLatest/1/response-fields.adoc[]
+
+
+---
