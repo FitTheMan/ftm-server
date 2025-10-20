@@ -131,23 +131,27 @@ public class PostCustomRepositoryImpl implements PostCustomRepository {
     @Override
     public List<PostIdAndBookmarkYnVo> findPostIdWithBookmarkYn(FindByPostIdsAndUserQuery query) {
 
-        return queryFactory
-                .select(
-                        Projections.constructor(
-                                PostIdAndBookmarkYnVo.class,
-                                postJpaEntity.id,
-                                bookmarkJpaEntity.id.isNotNull()))
-                .from(postJpaEntity)
-                .leftJoin(bookmarkJpaEntity)
-                .on(
-                        bookmarkJpaEntity
-                                .post
-                                .eq(postJpaEntity)
-                                .and(
-                                        bookmarkJpaEntity.user.id.eq(
-                                                query.getUserId())) // 특정 user 북마크 여부 확인
-                        )
-                .where(postJpaEntity.id.in(query.getPostIds()))
-                .fetch();
+        List<PostIdAndBookmarkYnVo> temp =
+                queryFactory
+                        .select(
+                                Projections.constructor(
+                                        PostIdAndBookmarkYnVo.class,
+                                        postJpaEntity.id,
+                                        bookmarkJpaEntity.id.isNotNull()))
+                        .from(postJpaEntity)
+                        .leftJoin(bookmarkJpaEntity)
+                        .on(
+                                bookmarkJpaEntity
+                                        .post
+                                        .id
+                                        .eq(postJpaEntity.id)
+                                        .and(
+                                                bookmarkJpaEntity.user.id.eq(
+                                                        query.getUserId())) // 특정 user 북마크 여부 확인
+                                )
+                        .where(postJpaEntity.id.in(query.getPostIds()))
+                        .fetch();
+
+        return temp;
     }
 }

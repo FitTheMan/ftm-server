@@ -28,4 +28,8 @@ public class StaticConsts {
     public static final String USER_PICK_TOP_BOOKMARK_POSTS_CACHE_NAME =
             "ftm:posts:userpick:top-bookmarks";
     public static final String USER_PICK_TOP_BOOKMARK_POSTS_CACHE_KEY_ALL = "'all'";
+
+    public static final String USER_PICK_STORY_POPULAR_POSTS_CACHE_NAME =
+            "ftm:posts:userpick:top-bookmarks";
+    public static final String USER_PICK_STORY_POPULAR_POSTS_CACHE_KEY_ALL = "'all'";
 }

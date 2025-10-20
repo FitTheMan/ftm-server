@@ -4,6 +4,7 @@ import com.ftm.server.application.query.FindByIdsQuery;
 import com.ftm.server.application.query.FindPostsByCreatedDateQuery;
 import com.ftm.server.application.vo.post.PostWithBookmarkCountVo;
 import com.ftm.server.application.vo.post.PostWithUserAndBookmarkCountVo;
+import com.ftm.server.application.vo.post.UserPickPopularPostCursorVo;
 import com.ftm.server.application.vo.post.UserWithPostCountVo;
 import java.util.List;
 
@@ -17,4 +18,6 @@ public interface PostWithBookmarkCustomRepository {
     List<PostWithUserAndBookmarkCountVo> findAllPostsWithUserAndBookmarkCount(FindByIdsQuery query);
 
     List<Long> findTopNPostsByBookmarkCount(int limit);
+
+    List<UserPickPopularPostCursorVo> findAllPostsByPopular();
 }

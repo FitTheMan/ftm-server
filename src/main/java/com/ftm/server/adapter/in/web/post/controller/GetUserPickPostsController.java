@@ -1,8 +1,11 @@
 package com.ftm.server.adapter.in.web.post.controller;
 
 import com.ftm.server.adapter.in.web.post.dto.response.GetUserPickPostsLatestResponse;
+import com.ftm.server.adapter.in.web.post.dto.response.GetUserPickPostsPopularCursorResponse;
 import com.ftm.server.application.port.in.post.GetUserPickPostsUseCase;
 import com.ftm.server.application.query.FindUserPickLatestPostsByCursorQuery;
+import com.ftm.server.application.query.FindUserPickPopularPostsByCursorQuery;
+import com.ftm.server.application.vo.post.GetUserPickAllPostsPopularWithCursorVo;
 import com.ftm.server.common.response.ApiResponse;
 import com.ftm.server.common.response.enums.SuccessResponseCode;
 import com.ftm.server.infrastructure.security.UserPrincipal;
@@ -38,5 +41,23 @@ public class GetUserPickPostsController {
                                         user == null ? null : user.getId())));
 
         return ResponseEntity.ok(ApiResponse.success(SuccessResponseCode.OK, result));
+    }
+
+    @GetMapping("/api/posts/userpick/all/popular")
+    public ResponseEntity<ApiResponse> getUserPickPopularPosts(
+            @AuthenticationPrincipal UserPrincipal user,
+            @RequestParam(name = "limit") Integer size,
+            @RequestParam(name = "lastScore", required = false) Double lastScore,
+            @RequestParam(name = "lastPostId", required = false) Long lastId) {
+
+        GetUserPickAllPostsPopularWithCursorVo items =
+                getUserPickPostsUseCase.executePopular(
+                        FindUserPickPopularPostsByCursorQuery.of(
+                                size, lastScore, lastId, user == null ? null : user.getId()));
+
+        GetUserPickPostsPopularCursorResponse response =
+                GetUserPickPostsPopularCursorResponse.from(items);
+
+        return ResponseEntity.ok(ApiResponse.success(SuccessResponseCode.OK, response));
     }
 }

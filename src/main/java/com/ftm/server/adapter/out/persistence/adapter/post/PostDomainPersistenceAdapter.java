@@ -182,6 +182,11 @@ public class PostDomainPersistenceAdapter
     }
 
     @Override
+    public List<UserPickPopularPostCursorVo> loadUserPickAllPostsByPopular() {
+        return postRepository.findAllPostsByPopular();
+    }
+
+    @Override
     public List<PostWithUserAndBookmarkCountVo> loadPostWithUserAndBookmarkCount(
             FindByIdsQuery query) {
         return postRepository.findAllPostsWithUserAndBookmarkCount(query);

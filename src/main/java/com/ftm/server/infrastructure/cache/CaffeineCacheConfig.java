@@ -63,4 +63,12 @@ public class CaffeineCacheConfig {
         mgr.setCaffeine(Caffeine.newBuilder().maximumSize(10).expireAfterWrite(1, TimeUnit.HOURS));
         return mgr;
     }
+
+    @Bean("userPickAllPopularPostsCacheManager") // 유저픽 게시글 - 그루밍 이야기 - 인기순 api
+    public CaffeineCacheManager cacheManagerForUserPickAllPopularPosts() {
+        CaffeineCacheManager mgr = new CaffeineCacheManager();
+        mgr.setCaffeine(
+                Caffeine.newBuilder().maximumSize(10).expireAfterWrite(2, TimeUnit.MINUTES));
+        return mgr;
+    }
 }

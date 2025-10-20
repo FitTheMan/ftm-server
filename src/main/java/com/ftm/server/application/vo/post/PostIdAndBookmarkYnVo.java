@@ -8,4 +8,8 @@ import lombok.Getter;
 public class PostIdAndBookmarkYnVo {
     private final Long postId;
     private final Boolean bookmarkYn;
+
+    public static PostIdAndBookmarkYnVo of(Long postId, Boolean bookmarkYn) {
+        return new PostIdAndBookmarkYnVo(postId, bookmarkYn);
+    }
 }
