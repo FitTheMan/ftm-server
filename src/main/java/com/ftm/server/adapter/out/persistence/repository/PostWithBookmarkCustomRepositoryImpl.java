@@ -5,13 +5,14 @@ import static com.ftm.server.adapter.out.persistence.model.QPostJpaEntity.postJp
 
 import com.ftm.server.application.query.FindByIdsQuery;
 import com.ftm.server.application.query.FindPostsByCreatedDateQuery;
-import com.ftm.server.application.vo.post.PostWithBookmarkCountVo;
-import com.ftm.server.application.vo.post.PostWithUserAndBookmarkCountVo;
-import com.ftm.server.application.vo.post.UserWithPostCountVo;
+import com.ftm.server.application.vo.post.*;
 import com.ftm.server.domain.enums.UserRole;
+import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -97,13 +98,14 @@ public class PostWithBookmarkCustomRepositoryImpl implements PostWithBookmarkCus
                                 postJpaEntity.title,
                                 postJpaEntity.content,
                                 postJpaEntity.hashtags,
-                                postJpaEntity.viewCount, // sum() 쓰지 마세요
-                                postJpaEntity.likeCount, // sum() 쓰지 마세요
+                                postJpaEntity.viewCount,
+                                postJpaEntity.likeCount,
                                 bookmarkJpaEntity.id.countDistinct() // 북마크 개수
                                 ))
                 .from(postJpaEntity)
+                .where(postJpaEntity.id.in(query.getIds()))
                 .leftJoin(bookmarkJpaEntity)
-                .on(bookmarkJpaEntity.post.eq(postJpaEntity))
+                .on(bookmarkJpaEntity.post.id.eq(postJpaEntity.id))
                 .groupBy(
                         postJpaEntity.id,
                         postJpaEntity.user.id,
@@ -128,5 +130,42 @@ public class PostWithBookmarkCustomRepositoryImpl implements PostWithBookmarkCus
                 .orderBy(bookmarkJpaEntity.id.countDistinct().desc(), postJpaEntity.id.desc())
                 .limit(limit)
                 .fetch();
+    }
+
+    @Override
+    public List<UserPickPopularPostCursorVo> findAllPostsByPopular() {
+
+        Tuple maxValues =
+                queryFactory
+                        .select(postJpaEntity.likeCount.max(), postJpaEntity.viewCount.max())
+                        .from(postJpaEntity)
+                        .fetchOne();
+
+        int maxLike = maxValues.get(postJpaEntity.likeCount.max());
+        int maxView = maxValues.get(postJpaEntity.viewCount.max());
+
+        List<UserPickPopularPostCursorVo> result =
+                queryFactory.select(postJpaEntity).from(postJpaEntity).fetch().stream()
+                        .map(
+                                vo -> {
+                                    double normLike =
+                                            maxLike > 0 ? vo.getLikeCount() / (double) maxLike : 0;
+                                    double normView =
+                                            maxView > 0 ? vo.getViewCount() / (double) maxView : 0;
+                                    double weighted = normLike * 0.6 + normView * 0.4;
+
+                                    long hours =
+                                            Duration.between(vo.getCreatedAt(), LocalDateTime.now())
+                                                    .toHours();
+                                    double timeDecay = Math.exp(-0.1 * hours);
+
+                                    return new UserPickPopularPostCursorVo(
+                                            vo.getId(), weighted * timeDecay);
+                                })
+                        .sorted(
+                                Comparator.comparing(UserPickPopularPostCursorVo::getScore)
+                                        .reversed())
+                        .toList();
+        return result;
     }
 }

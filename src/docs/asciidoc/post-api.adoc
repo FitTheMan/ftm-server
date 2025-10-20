@@ -324,3 +324,23 @@ include::{snippetsDir}/loadUserPickAllLatest/1/response-fields.adoc[]
 
 
 ---
+
+
+=== **13. 그루밍 이야기 - "인기순" 조회**
+
+무한 스크롤 - cursor 방식으로 구현했습니다.
+
+==== Request
+include::{snippetsDir}/loadUserPickAllPopular/1/http-request.adoc[]
+
+==== Request Query Parameters
+include::{snippetsDir}/loadUserPickAllPopular/1/query-parameters.adoc[]
+
+==== 성공 Response
+include::{snippetsDir}/loadUserPickAllPopular/1/http-response.adoc[]
+
+==== Response Body Fields
+include::{snippetsDir}/loadUserPickAllPopular/1/response-fields.adoc[]
+
+
+---
