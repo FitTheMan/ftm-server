@@ -36,7 +36,10 @@ public class PostDomainPersistenceAdapter
                 DeletePostProductPort,
                 DeletePostProductImagePort,
                 LoadPostWithBookmarkCountPort,
-                LoadUserForPostDomainPort {
+                LoadUserForPostDomainPort,
+                LoadProductLikePort,
+                SaveProductLikePort,
+                DeleteProductLikePort {
 
     private final PostRepository postRepository;
     private final PostImageRepository postImageRepository;
@@ -44,6 +47,7 @@ public class PostDomainPersistenceAdapter
     private final PostProductImageRepository postProductImageRepository;
     private final UserRepository userRepository;
     private final UserImageRepository userImageRepository;
+    private final ProductLikeRepository productLikeRepository;
 
     private final PostMapper postMapper;
     private final PostImageMapper postImageMapper;
@@ -368,5 +372,37 @@ public class PostDomainPersistenceAdapter
     @Override
     public List<UserIdAndNameVo> loadPostAndAuthorName(FindByIdsQuery query) {
         return userRepository.findUserNameByUserIds(query.getIds());
+    }
+
+    @Override
+    public Optional<Long> findOneByUserAndProduct(Long userId, Long postProductId) {
+        return productLikeRepository.findByUserAndAndPostProduct(userId, postProductId);
+    }
+
+    @Override
+    public void saveProductLike(ProductLike productLike) {
+        Long productId = productLike.getPostProduct();
+        Long userId = productLike.getUser();
+
+        UserJpaEntity userJpaEntity =
+                userRepository
+                        .findByIdAndIsDeleted(userId, false)
+                        .orElseThrow(() -> new CustomException(ErrorResponseCode.USER_NOT_FOUND));
+        PostProductJpaEntity postProductJpaEntity =
+                postProductRepository
+                        .findById(productId)
+                        .orElseThrow(
+                                () ->
+                                        new CustomException(
+                                                ErrorResponseCode.POST_PRODUCT_NOT_FOUND));
+
+        ProductLikeJpaEntity productLikeJpaEntity =
+                ProductLikeJpaEntity.from(postProductJpaEntity, userJpaEntity);
+        productLikeRepository.save(productLikeJpaEntity);
+    }
+
+    @Override
+    public void deleteProductLike(Long productLikeId) {
+        productLikeRepository.deleteById(productLikeId);
     }
 }
