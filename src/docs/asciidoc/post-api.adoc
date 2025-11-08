@@ -344,3 +344,28 @@ include::{snippetsDir}/loadUserPickAllPopular/1/response-fields.adoc[]
 
 
 ---
+
+=== **14. 해시태그 추천 - 상품 좋아요 api**
+
+상품에 대한 좋아요 생성/삭제를 위한 api입니다.
+좋아요가 눌려져 있지 않은 상태에서 호출되면 좋아요가 생성되며, 좋아요가 눌려져 있는 상태에서 api가 호출되면, 기존 좋아요가 삭제됩니다.
+
+
+==== Request
+include::{snippetsDir}/createProductLike/1/http-request.adoc[]
+
+==== Request Path Parameters
+include::{snippetsDir}/createProductLike/1/path-parameters.adoc[]
+
+==== 성공 Response
+include::{snippetsDir}/createProductLike/1/http-response.adoc[]
+
+==== Response Body Fields
+include::{snippetsDir}/createProductLike/1/response-fields.adoc[]
+
+==== 실패 Response
+include::{snippetsDir}/createProductLike/2/http-response.adoc[]
+
+
+
+---
