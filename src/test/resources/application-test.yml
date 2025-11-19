@@ -5,8 +5,8 @@ spring:
 
   datasource:
     url: jdbc:postgresql://localhost:5432/ftm_test_db
-    username: postgres
-    password: 123456
+    username: test
+    password: test
     driver-class-name: org.postgresql.Driver
 
   jpa:
