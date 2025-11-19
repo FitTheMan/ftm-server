@@ -10,6 +10,7 @@ import com.ftm.server.common.annotation.Adapter;
 import com.ftm.server.common.exception.CustomException;
 import com.ftm.server.common.response.enums.ErrorResponseCode;
 import com.ftm.server.domain.entity.*;
+import com.ftm.server.domain.enums.ProductHashtag;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -242,6 +243,31 @@ public class PostDomainPersistenceAdapter
     }
 
     @Override
+    public List<PostProduct> loadPostProductsByHashTags(FindByProductHashTagsQuery query) {
+        return postProductRepository
+                .findByHashtags(
+                        query.getProductHashtagList().stream()
+                                .map(ProductHashtag::name)
+                                .toList()
+                                .toArray(new String[0]))
+                .stream()
+                .map(p -> postProductMapper.toDomainEntity(p))
+                .toList();
+    }
+
+    @Override
+    public List<PostProduct> loadAllPostProduct() {
+        return postProductRepository.findAllByLatest().stream()
+                .map(p -> postProductMapper.toDomainEntity(p))
+                .toList();
+    }
+
+    @Override
+    public List<ProductIdAndScoreVo> loadAllProductsByPopularity() {
+        return postProductRepository.findAllByPopularity();
+    }
+
+    @Override
     public List<PostProductImage> loadPostProductImagesByPostProductIds(FindByIdsQuery query) {
         List<PostProductImageJpaEntity> postProductImageJpaEntities =
                 postProductImageRepository.findAllByPostProductIdIn(query.getIds());
@@ -404,5 +430,11 @@ public class PostDomainPersistenceAdapter
     @Override
     public void deleteProductLike(Long productLikeId) {
         productLikeRepository.deleteById(productLikeId);
+    }
+
+    @Override
+    public List<LoadProductAndUserLikeVo> findProductLikeByUser(
+            Long userId, List<Long> productIds) {
+        return productLikeRepository.findProductLikeByUser(userId, productIds);
     }
 }

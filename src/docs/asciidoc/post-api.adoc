@@ -369,3 +369,23 @@ include::{snippetsDir}/createProductLike/2/http-response.adoc[]
 
 
 ---
+
+
+=== **15. 해시태그 추천 - "해시태그 기반 상품 조회**
+
+게시글 조회 api 이지만, Request Body가 필요하여 "POST" 메서드로 구현하였습니다.
+
+==== Request
+include::{snippetsDir}/loadPostProducts/1/http-request.adoc[]
+
+==== Request Body Parameters
+include::{snippetsDir}/loadPostProducts/1/request-fields.adoc[]
+
+==== 성공 Response
+include::{snippetsDir}/loadPostProducts/1/http-response.adoc[]
+
+==== Response Body Fields
+include::{snippetsDir}/loadPostProducts/1/response-fields.adoc[]
+
+
+---
