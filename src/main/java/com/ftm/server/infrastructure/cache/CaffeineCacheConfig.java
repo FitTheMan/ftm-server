@@ -71,4 +71,12 @@ public class CaffeineCacheConfig {
                 Caffeine.newBuilder().maximumSize(10).expireAfterWrite(2, TimeUnit.MINUTES));
         return mgr;
     }
+
+    @Bean("productsIdByPopularity") // 해시태그 상품 조회 - products id 인기순 정렬 용 캐시
+    public CaffeineCacheManager cacheManagerForProductsIdByPopularity() {
+        CaffeineCacheManager mgr = new CaffeineCacheManager();
+        mgr.setCaffeine(
+                Caffeine.newBuilder().maximumSize(10).expireAfterWrite(5, TimeUnit.MINUTES));
+        return mgr;
+    }
 }

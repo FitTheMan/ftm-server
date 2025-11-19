@@ -69,7 +69,8 @@ public class SecurityConfig {
         "/api/users/social",
         "/api/grooming/tests/submission",
         "/api/grooming/tests",
-        "api/users/me/recover"
+        "/api/users/me/recover",
+        "/api/posts/products"
     };
 
     private static final String[] ANONYMOUS_MATCHERS = {"/docs/**"};
