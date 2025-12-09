@@ -33,6 +33,7 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.FieldDescriptor;
@@ -64,6 +65,7 @@ public class LoadPostDetailTest extends BaseTest {
                     fieldWithPath("data.hashtags[]").type(ARRAY).description("게시글 해시태그 목록"),
                     fieldWithPath("data.viewCount").type(NUMBER).description("게시글 조회수"),
                     fieldWithPath("data.likeCount").type(NUMBER).description("게시글 좋아요 수"),
+                    fieldWithPath("data.userLikeYn").type(BOOLEAN).description("사용자 게시글 좋아요 여부"),
                     fieldWithPath("data.createdAt").type(STRING).description("게시글 생성 날짜"),
                     fieldWithPath("data.updatedAt").type(STRING).description("게시글 수정 날짜"),
                     fieldWithPath("data.postImages[]").type(ARRAY).description("게시글 이미지 목록 정보"),
@@ -102,8 +104,10 @@ public class LoadPostDetailTest extends BaseTest {
 
     private Long savedPostId;
 
-    private ResultActions getResultActions(Long postId) throws Exception {
-        return mockMvc.perform(RestDocumentationRequestBuilders.get("/api/posts/{postId}", postId));
+    private ResultActions getResultActions(Long postId, MockHttpSession session) throws Exception {
+        return mockMvc.perform(
+                RestDocumentationRequestBuilders.get("/api/posts/{postId}", postId)
+                        .session(session));
     }
 
     private RestDocumentationResultHandler getDocument(Integer identifier) {
@@ -123,6 +127,7 @@ public class LoadPostDetailTest extends BaseTest {
     }
 
     @BeforeEach
+    @Transactional
     void setUp() throws Exception {
         User user = createTestUser("test@gmail.com", "test1234!");
 
@@ -150,8 +155,10 @@ public class LoadPostDetailTest extends BaseTest {
     @Test
     @Transactional
     void 유저픽_게시글_상세_조회_성공() throws Exception {
+
         // when
-        ResultActions resultActions = getResultActions(savedPostId);
+        MockHttpSession session = login("test@gmail.com");
+        ResultActions resultActions = getResultActions(savedPostId, session);
 
         // then
         resultActions.andExpect(status().isOk()).andDo(print());
@@ -162,9 +169,19 @@ public class LoadPostDetailTest extends BaseTest {
 
     @Test
     @Transactional
+    void 유저픽_게시글_상세_조회_성공2() throws Exception {
+        // when
+        ResultActions resultActions = getResultActions(savedPostId, new MockHttpSession());
+
+        // then
+        resultActions.andExpect(status().isOk()).andDo(print());
+    }
+
+    @Test
+    @Transactional
     void 유저픽_게시글_상세_조회_실패() throws Exception {
         // when
-        ResultActions resultActions = getResultActions(1000L);
+        ResultActions resultActions = getResultActions(1000L, new MockHttpSession());
 
         // then
         resultActions

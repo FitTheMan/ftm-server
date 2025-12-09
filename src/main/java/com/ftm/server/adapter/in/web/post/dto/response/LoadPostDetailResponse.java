@@ -17,6 +17,7 @@ public class LoadPostDetailResponse {
     private final List<String> hashtags;
     private final Integer viewCount;
     private final Integer likeCount;
+    private final Boolean userLikeYn;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm", shape = JsonFormat.Shape.STRING)
     private final LocalDateTime createdAt;
@@ -42,6 +43,7 @@ public class LoadPostDetailResponse {
         this.writer = PostWriterResponse.from(postDetailVo.getUser(), postDetailVo.getUserImage());
         this.postProducts =
                 postDetailVo.getProducts().stream().map(PostProductResponse::from).toList();
+        this.userLikeYn = postDetailVo.getUserLikeYn();
     }
 
     public static LoadPostDetailResponse from(PostDetailVo postDetailVo) {

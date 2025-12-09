@@ -28,10 +28,11 @@ public class LoadPostDetailService implements LoadPostDetailUseCase {
     private final LoadUserForPostPort loadUserForPostPort;
     private final LoadUserImageForPostPort loadUserImageForPostPort;
     private final UpdatePostPort updatePostPort;
+    private final LoadPostLikePort loadPostLikePort;
 
     @Override
     @Transactional
-    public PostDetailVo execute(FindByIdQuery query) {
+    public PostDetailVo execute(Long userId, FindByIdQuery query) {
         // 게시글 조회
         Post post =
                 loadPostPort
@@ -76,7 +77,11 @@ public class LoadPostDetailService implements LoadPostDetailUseCase {
                                 Collectors.toMap(
                                         PostProductImage::getPostProductId, Function.identity()));
 
+        Boolean userLikeYn =
+                userId != null
+                        && loadPostLikePort.findPostLikeByUser(userId, query.getId()).getLikeYn();
+
         return PostDetailVo.from(
-                post, user, userImage, postImages, postProducts, postProductImageMap);
+                post, user, userImage, postImages, postProducts, postProductImageMap, userLikeYn);
     }
 }
