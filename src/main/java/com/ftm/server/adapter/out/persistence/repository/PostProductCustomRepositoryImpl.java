@@ -30,10 +30,18 @@ public class PostProductCustomRepositoryImpl implements PostProductCustomReposit
                         .join(postProductJpaEntity.post, postJpaEntity)
                         .fetchOne();
 
+        if (maxValues == null) {
+            // 데이터 자체가 없으면 빈 리스트 반환
+            return List.of();
+        }
+
         Integer maxView = maxValues.get(postJpaEntity.viewCount.max());
         maxView = maxView == null || maxView == 0 ? 1 : maxView;
-        Integer maxLike = maxValues.get(postProductJpaEntity.recommendedCount.max()).intValue();
-        maxLike = maxLike == null || maxLike == 0 ? 1 : maxLike;
+        Integer maxLike =
+                maxValues.get(postProductJpaEntity.recommendedCount.max()) == null
+                        ? 0
+                        : maxValues.get(postProductJpaEntity.recommendedCount.max()).intValue();
+        maxLike = maxLike == 0 ? 1 : maxLike;
 
         NumberExpression<Double> normalizedScore =
                 postJpaEntity

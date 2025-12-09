@@ -18,6 +18,7 @@ import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.transaction.annotation.Transactional;
 
 public class LoadPostHashTagsTest extends BaseTest {
 
@@ -68,6 +69,7 @@ public class LoadPostHashTagsTest extends BaseTest {
     }
 
     @Test
+    @Transactional
     void 게시글_해시태그_목록_조회_성공() throws Exception {
         // when
         ResultActions resultActions = getResultActions();

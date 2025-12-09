@@ -7,5 +7,5 @@ import com.ftm.server.common.annotation.UseCase;
 @UseCase
 public interface LoadPostDetailUseCase {
 
-    PostDetailVo execute(FindByIdQuery query);
+    PostDetailVo execute(Long userId, FindByIdQuery query);
 }

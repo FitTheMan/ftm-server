@@ -124,4 +124,12 @@ public class Post extends BaseTime {
             throw new CustomException(ErrorResponseCode.POST_NOT_FOUND);
         }
     }
+
+    public void plusLikeCount() {
+        this.likeCount += 1;
+    }
+
+    public void minusLikeCount() {
+        this.likeCount = this.likeCount >= 1 ? this.likeCount - 1 : 0;
+    }
 }

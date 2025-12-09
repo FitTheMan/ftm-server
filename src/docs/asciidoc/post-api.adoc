@@ -389,3 +389,29 @@ include::{snippetsDir}/loadPostProducts/1/response-fields.adoc[]
 
 
 ---
+
+
+=== **16. 그루밍 라운지 - 게시글 좋아요 api**
+
+게시글에 대한 좋아요 생성/삭제를 위한 api입니다.
+좋아요가 눌려져 있지 않은 상태에서 호출되면 좋아요가 생성되며, 좋아요가 눌려져 있는 상태에서 api가 호출되면, 기존 좋아요가 삭제됩니다.
+
+
+==== Request
+include::{snippetsDir}/createPostLike/1/http-request.adoc[]
+
+==== Request Path Parameters
+include::{snippetsDir}/createPostLike/1/path-parameters.adoc[]
+
+==== 성공 Response
+include::{snippetsDir}/createPostLike/1/http-response.adoc[]
+
+==== Response Body Fields
+include::{snippetsDir}/createPostLike/1/response-fields.adoc[]
+
+==== 실패 Response
+include::{snippetsDir}/createPostLike/2/http-response.adoc[]
+
+
+
+---

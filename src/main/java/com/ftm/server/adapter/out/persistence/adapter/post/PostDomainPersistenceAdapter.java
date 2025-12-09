@@ -40,7 +40,10 @@ public class PostDomainPersistenceAdapter
                 LoadUserForPostDomainPort,
                 LoadProductLikePort,
                 SaveProductLikePort,
-                DeleteProductLikePort {
+                DeleteProductLikePort,
+                LoadPostLikePort,
+                SavePostLikePort,
+                DeletePostLikePort {
 
     private final PostRepository postRepository;
     private final PostImageRepository postImageRepository;
@@ -49,6 +52,7 @@ public class PostDomainPersistenceAdapter
     private final UserRepository userRepository;
     private final UserImageRepository userImageRepository;
     private final ProductLikeRepository productLikeRepository;
+    private final PostLikeRepository postLikeRepository;
 
     private final PostMapper postMapper;
     private final PostImageMapper postImageMapper;
@@ -436,5 +440,43 @@ public class PostDomainPersistenceAdapter
     public List<LoadProductAndUserLikeVo> findProductLikeByUser(
             Long userId, List<Long> productIds) {
         return productLikeRepository.findProductLikeByUser(userId, productIds);
+    }
+
+    @Override
+    public void deletePostLike(Long postLikeId) {
+        productLikeRepository.deleteById(postLikeId);
+    }
+
+    @Override
+    public List<LoadPostAndUserLikeVo> findPostLikeByUser(Long userId, List<Long> postIds) {
+        return postLikeRepository.findPostLikeByUser(userId, postIds);
+    }
+
+    @Override
+    public LoadPostAndUserLikeVo findPostLikeByUser(Long userId, Long postId) {
+        return postLikeRepository.findPostLikeByUser(userId, postId);
+    }
+
+    @Override
+    public Optional<Long> findOneByUserAndPost(Long userId, Long postId) {
+        return postLikeRepository.findByUserAndAndPost(userId, postId);
+    }
+
+    @Override
+    public void savePostLike(PostLike postLike) {
+        Long postId = postLike.getPost();
+        Long userId = postLike.getUser();
+
+        UserJpaEntity userJpaEntity =
+                userRepository
+                        .findByIdAndIsDeleted(userId, false)
+                        .orElseThrow(() -> new CustomException(ErrorResponseCode.USER_NOT_FOUND));
+        PostJpaEntity postJpaEntity =
+                postRepository
+                        .findById(postId)
+                        .orElseThrow(() -> new CustomException(ErrorResponseCode.POST_NOT_FOUND));
+
+        PostLikeJpaEntity postLikeJpaEntity = PostLikeJpaEntity.from(postJpaEntity, userJpaEntity);
+        postLikeRepository.save(postLikeJpaEntity);
     }
 }
