@@ -1,6 +1,6 @@
 package com.ftm.server.application.service.post;
 
-import com.ftm.server.application.port.in.post.CreatePostLikeUserCase;
+import com.ftm.server.application.port.in.post.CreatePostLikeUseCase;
 import com.ftm.server.application.port.out.persistence.post.*;
 import com.ftm.server.application.query.FindByIdQuery;
 import com.ftm.server.common.exception.CustomException;
@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class CreatePostLikeService implements CreatePostLikeUserCase {
+public class CreatePostLikeService implements CreatePostLikeUseCase {
 
     private final UpdatePostPort updatePostPort;
     private final LoadPostPort loadPostPort;
