@@ -15,3 +15,9 @@ aws:
       user: "users"
       post: "posts"
       product: "products"
+  sts:
+    role-arn: ${AWS_ROLE_ARN}
+    role-session-name: ftm-dev-s3
+  credentials:
+    access-key: ${AWS_ACCESS_KEY_ID}
+    secret-key: ${AWS_SECRET_ACCESS_KEY}
