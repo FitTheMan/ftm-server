@@ -73,7 +73,7 @@ public class SecurityConfig {
         "/api/posts/products"
     };
 
-    private static final String[] ANONYMOUS_MATCHERS = {"/docs/**"};
+    private static final String[] ANONYMOUS_MATCHERS = {"/docs/**", "/api/internal/s3/**"};
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
