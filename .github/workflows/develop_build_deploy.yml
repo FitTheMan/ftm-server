@@ -17,8 +17,6 @@ jobs:
       # 체크아웃
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          ref: ${{ inputs.ref }}
 
       # JDK 17 세팅
       - name: Set up JDK 17
