@@ -44,7 +44,7 @@ public class LoadProductsByHashTagService implements LoadProductsByHashTagUseCas
                     productIdAndScoreList.stream().filter(a -> a.getScore() < score).toList();
         }
 
-        if (productIdAndScoreList.size() == 0) {
+        if (productIdAndScoreList.isEmpty()) {
             return LoadProductsByHashTagVoWrapper.of(List.of(), false, 0.0);
         }
 
@@ -56,6 +56,10 @@ public class LoadProductsByHashTagService implements LoadProductsByHashTagUseCas
             postProducts =
                     loadPostProductPort.loadPostProductsByHashTags(
                             new FindByProductHashTagsQuery(hashtagList));
+        }
+
+        if (postProducts.isEmpty()) {
+            return LoadProductsByHashTagVoWrapper.of(List.of(), false, 0.0);
         }
 
         Map<Long, PostProduct> postProductMap =
@@ -70,6 +74,8 @@ public class LoadProductsByHashTagService implements LoadProductsByHashTagUseCas
         int beforeSize = productIdAndScoreList.size();
         Set<Long> tempProductIds =
                 postProducts.stream().map(PostProduct::getId).collect(Collectors.toSet());
+
+        // 캐시에 존재하는 상품 중(인기순으로 정렬되어 있음), 해시태그와 관련 있는 상품만 조회 + limit 만큼 자르기
         List<ProductIdAndScoreVo> productIdAndScoreVoList =
                 productIdAndScoreList.stream()
                         .filter(vo -> tempProductIds.contains(vo.getProductId())) // DB에 존재하는 상품만
@@ -96,7 +102,8 @@ public class LoadProductsByHashTagService implements LoadProductsByHashTagUseCas
                 loadProductAndUserLikeVos.stream()
                         .collect(
                                 Collectors.toMap(
-                                        LoadProductAndUserLikeVo::getProductId, // key: productId
+                                        LoadProductAndUserLikeVo::getProductId, // key:
+                                        // productId
                                         Function.identity() // value: 해당 PostProduct 객체 자체
                                         ));
 
