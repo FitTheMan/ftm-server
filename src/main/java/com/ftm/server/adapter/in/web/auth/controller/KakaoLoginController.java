@@ -17,6 +17,7 @@ import com.ftm.server.domain.enums.SocialProvider;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +35,7 @@ public class KakaoLoginController {
 
     @PostMapping("/api/auth/login/kakao")
     public ResponseEntity<ApiResponse<SocialLoginResponse>> kakaoLogin(
-            @RequestBody KakaoLoginRequest request,
+            @RequestBody @Valid KakaoLoginRequest request,
             HttpServletRequest req,
             HttpServletResponse res) {
         SocialLoginOutcomeVo result = kakaoLoginUseCase.execute(KakaoLoginCommand.from(request));
