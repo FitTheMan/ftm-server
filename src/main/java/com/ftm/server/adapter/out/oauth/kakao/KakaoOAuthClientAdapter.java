@@ -30,7 +30,8 @@ public class KakaoOAuthClientAdapter
     @Override
     public KakaoAuthUser authenticate(KakaoLoginCommand command) {
         // Access Token 요청
-        KakaoTokenResponse token = getKakaoToken(command.getAuthorizationCode());
+        String redirectUri = kakaoProperties.getRedirectUriByEnv(command.getRedirectEnv());
+        KakaoTokenResponse token = getKakaoToken(command.getAuthorizationCode(), redirectUri);
 
         // 카카오 유저 정보 요청
         KakaoUserInfoResponse userInfo = getKakaoUserInfo(token.getAccessToken());
@@ -38,22 +39,22 @@ public class KakaoOAuthClientAdapter
         return KakaoAuthUser.from(userInfo.getId());
     }
 
-    private KakaoTokenResponse getKakaoToken(String authorizationCode) {
-        return requestToken(authorizationCode).block();
+    private KakaoTokenResponse getKakaoToken(String authorizationCode, String redirectUri) {
+        return requestToken(authorizationCode, redirectUri).block();
     }
 
     private KakaoUserInfoResponse getKakaoUserInfo(String accessToken) {
         return requestUserInfo(accessToken).block();
     }
 
-    private Mono<KakaoTokenResponse> requestToken(String authorizationCode) {
+    private Mono<KakaoTokenResponse> requestToken(String authorizationCode, String redirectUri) {
         return webClient
                 .post()
                 .uri(kakaoProperties.getTokenUri())
                 .body(
                         BodyInserters.fromFormData("grant_type", AUTHORIZATION_GRANT_TYPE)
                                 .with("client_id", kakaoProperties.getClientId())
-                                .with("redirect_uri", kakaoProperties.getRedirectUri())
+                                .with("redirect_uri", redirectUri)
                                 .with("code", authorizationCode)
                                 .with("client_secret", kakaoProperties.getClientSecret()))
                 .retrieve()

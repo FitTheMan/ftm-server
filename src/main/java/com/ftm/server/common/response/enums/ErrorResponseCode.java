@@ -30,6 +30,7 @@ public enum ErrorResponseCode {
     BAD_REQUEST_PAGING_INDEX_RANGE(HttpStatus.BAD_REQUEST, "E400_011", "페이지 번호는 최소 0 이상이여야 합니다."),
     BAD_REQUEST_PAGING_SIZE_RANGE(
             HttpStatus.BAD_REQUEST, "E400_012", "페이지당 개수는 최소 1 이상, 10 이하여야 합니다."),
+    INVALID_REDIRECT_ENV(HttpStatus.BAD_REQUEST, "E400_013", "유효하지 않은 리다이렉트 환경입니다."),
 
     // 401번
     NOT_AUTHENTICATED(HttpStatus.UNAUTHORIZED, "E401_001", "인증되지 않은 사용자입니다."),

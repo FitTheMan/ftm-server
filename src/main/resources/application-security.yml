@@ -6,6 +6,9 @@ spring:
 kakao:
   clinet-id: ${KAKAO_CLIENT_ID}
   client-secret: ${KAKAO_CLIENT_SECRET}
-  redirect-uri: "${BASE_URL}/api/auth/kakao/callback"
   token-uri: "https://kauth.kakao.com/oauth/token"
   user-info-uri: "https://kapi.kakao.com/v2/user/me"
+  redirect-uris:
+    test: "http://localhost:8080/api/auth/kakao/callback"
+    local: "http://localhost:3000/api/auth/kakao/callback"
+    dev: "https://ftm-client.vercel.app/api/auth/kakao/callback"

@@ -47,7 +47,11 @@ public class KakaoLoginTest extends BaseTest {
     @Autowired private SaveUserImagePort saveUserImagePort;
 
     private final List<FieldDescriptor> requestFieldKakaoLogin =
-            List.of(fieldWithPath("authorizationCode").type(STRING).description("카카오 인증 코드"));
+            List.of(
+                    fieldWithPath("authorizationCode").type(STRING).description("카카오 인증 코드"),
+                    fieldWithPath("redirectKey")
+                            .type(STRING)
+                            .description("리다이렉트 키 (test, local, dev)"));
 
     private final List<FieldDescriptor> responseFieldKakaoLogin =
             List.of(
@@ -105,7 +109,7 @@ public class KakaoLoginTest extends BaseTest {
         UserImage userImage = UserImage.createUserImage(testUser.getId());
         saveUserImagePort.saveUserDefaultImage(userImage);
 
-        KakaoLoginRequest request = new KakaoLoginRequest("test_code");
+        KakaoLoginRequest request = new KakaoLoginRequest("test_code", "test");
         KakaoAuthUser testKakaoUser = KakaoAuthUser.from("test_kakao_id");
         given(kakaoOAuthClientPort.authenticate(any(KakaoLoginCommand.class)))
                 .willReturn(testKakaoUser);
@@ -132,7 +136,7 @@ public class KakaoLoginTest extends BaseTest {
     @Transactional
     void 카카오_로그인_성공2() throws Exception {
         // given
-        KakaoLoginRequest request = new KakaoLoginRequest("test_code");
+        KakaoLoginRequest request = new KakaoLoginRequest("test_code", "test");
         KakaoAuthUser testKakaoUser = KakaoAuthUser.from("test_kakao_id");
         given(kakaoOAuthClientPort.authenticate(any(KakaoLoginCommand.class)))
                 .willReturn(testKakaoUser);
@@ -160,7 +164,57 @@ public class KakaoLoginTest extends BaseTest {
     @Transactional
     void 카카오_로그인_실패1() throws Exception {
         // given
-        KakaoLoginRequest request = new KakaoLoginRequest("test_code");
+        KakaoLoginRequest request = new KakaoLoginRequest("", "test");
+
+        // when
+        ResultActions resultActions = getResultActions(request);
+
+        // then
+        resultActions
+                .andExpect(
+                        status().is(
+                                        ErrorResponseCode.INVALID_REQUEST_ARGUMENT
+                                                .getHttpStatus()
+                                                .value()))
+                .andExpect(
+                        jsonPath("code")
+                                .value(ErrorResponseCode.INVALID_REQUEST_ARGUMENT.getCode()))
+                .andDo(print());
+
+        // documentation
+        resultActions.andDo(getDocument(3, ""));
+    }
+
+    @Test
+    @Transactional
+    void 카카오_로그인_실패2() throws Exception {
+        // given
+        KakaoLoginRequest request = new KakaoLoginRequest("test_code", "abc");
+
+        // when
+        ResultActions resultActions = getResultActions(request);
+
+        // then
+        resultActions
+                .andExpect(
+                        status().is(
+                                        ErrorResponseCode.INVALID_REQUEST_ARGUMENT
+                                                .getHttpStatus()
+                                                .value()))
+                .andExpect(
+                        jsonPath("code")
+                                .value(ErrorResponseCode.INVALID_REQUEST_ARGUMENT.getCode()))
+                .andDo(print());
+
+        // documentation
+        resultActions.andDo(getDocument(4, ""));
+    }
+
+    @Test
+    @Transactional
+    void 카카오_로그인_실패3() throws Exception {
+        // given
+        KakaoLoginRequest request = new KakaoLoginRequest("test_code", "test");
         doThrow(new CustomException(ErrorResponseCode.KAKAO_AUTH_TOKEN_EXCHANGE_FAILED))
                 .when(kakaoOAuthClientPort)
                 .authenticate(any(KakaoLoginCommand.class));
@@ -183,14 +237,14 @@ public class KakaoLoginTest extends BaseTest {
                 .andDo(print());
 
         // documentation
-        resultActions.andDo(getDocument(3, ""));
+        resultActions.andDo(getDocument(5, ""));
     }
 
     @Test
     @Transactional
-    void 카카오_로그인_실패2() throws Exception {
+    void 카카오_로그인_실패4() throws Exception {
         // given
-        KakaoLoginRequest request = new KakaoLoginRequest("test_code");
+        KakaoLoginRequest request = new KakaoLoginRequest("test_code", "test");
         doThrow(new CustomException(ErrorResponseCode.KAKAO_USER_PROFILE_FETCH_FAILED))
                 .when(kakaoOAuthClientPort)
                 .authenticate(any(KakaoLoginCommand.class));
@@ -211,6 +265,6 @@ public class KakaoLoginTest extends BaseTest {
                 .andDo(print());
 
         // documentation
-        resultActions.andDo(getDocument(4, ""));
+        resultActions.andDo(getDocument(6, ""));
     }
 }

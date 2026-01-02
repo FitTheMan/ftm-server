@@ -45,10 +45,14 @@ include::{snippetsDir}/kakaoLogin/2/response-headers.adoc[]
 include::{snippetsDir}/kakaoLogin/1/response-fields.adoc[]
 
 ==== 실패 Response
-실패 1.
+실패 1. 유효하지 않은 인가 코드일 경우 예외가 발생한다.
 include::{snippetsDir}/kakaoLogin/3/http-response.adoc[]
-실패 2.
+실패 2. 유효하지 않은 리다이렉트 키일 경우 에외가 발생한다. (허용 키 : test, local, dev)
 include::{snippetsDir}/kakaoLogin/4/http-response.adoc[]
+실패 3. 카카오 서버로부터 토큰 조회에 실패할 경우 예외가 발생한다.
+include::{snippetsDir}/kakaoLogin/5/http-response.adoc[]
+실패 4. 카카오 서버로부터 유저 정보 조회에 실패할 경우 예외가 발생한다.
+include::{snippetsDir}/kakaoLogin/6/http-response.adoc[]
 
 ---
 
