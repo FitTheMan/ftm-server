@@ -97,6 +97,9 @@ public class LoadProductsByHashTagService implements LoadProductsByHashTagUseCas
         } else {
             loadProductAndUserLikeVos =
                     loadProductLikePort.findProductLikeByUser(userId, productIds);
+            System.out.println("!!!!!!!!!!!!!!\n\n\\n");
+            System.out.println(loadProductAndUserLikeVos.size());
+            System.out.println(loadProductAndUserLikeVos.get(0));
         }
         Map<Long, LoadProductAndUserLikeVo> productLikeMap =
                 loadProductAndUserLikeVos.stream()

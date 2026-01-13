@@ -18,6 +18,7 @@ public class PostProductDetailVo {
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
     private final PostProductImage postProductImage;
+    private final Long recommendedCount;
 
     private PostProductDetailVo(PostProduct postProduct, PostProductImage postProductImage) {
         this.postProductId = postProduct.getId();
@@ -27,6 +28,7 @@ public class PostProductDetailVo {
         this.createdAt = postProduct.getCreatedAt();
         this.updatedAt = postProduct.getUpdatedAt();
         this.postProductImage = postProductImage;
+        this.recommendedCount = postProduct.getRecommendedCount();
     }
 
     public static List<PostProductDetailVo> listFrom(

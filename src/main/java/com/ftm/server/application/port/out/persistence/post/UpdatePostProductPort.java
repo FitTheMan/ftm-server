@@ -8,4 +8,6 @@ import java.util.List;
 public interface UpdatePostProductPort {
 
     void updatePostProducts(List<PostProduct> postProducts);
+
+    void updatePostProduct(PostProduct postProducts);
 }

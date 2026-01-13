@@ -324,6 +324,19 @@ public class PostDomainPersistenceAdapter
     }
 
     @Override
+    public void updatePostProduct(PostProduct postProduct) {
+        PostProductJpaEntity postProductJpaEntity =
+                postProductRepository
+                        .findById(postProduct.getId())
+                        .orElseThrow(
+                                () ->
+                                        new CustomException(
+                                                ErrorResponseCode.POST_PRODUCT_NOT_FOUND));
+
+        postProductJpaEntity.updatePostProductForDomainEntity(postProduct);
+    }
+
+    @Override
     public void updatePostProductImages(List<PostProductImage> postProductImages) {
         List<Long> ids = postProductImages.stream().map(PostProductImage::getId).toList();
         Map<Long, PostProductImageJpaEntity> postProductImageJpaEntityMap =
@@ -444,7 +457,7 @@ public class PostDomainPersistenceAdapter
 
     @Override
     public void deletePostLike(Long postLikeId) {
-        productLikeRepository.deleteById(postLikeId);
+        postLikeRepository.deleteById(postLikeId);
     }
 
     @Override
