@@ -85,4 +85,12 @@ public class PostProduct extends BaseTime {
             throw new CustomException(ErrorResponseCode.UNAUTHORIZED_POST_PRODUCT_ACCESS);
         }
     }
+
+    public void plusRecommendedCountByOne() {
+        this.recommendedCount += 1;
+    }
+
+    public void minusRecommendedCountByOne() {
+        this.recommendedCount -= 1;
+    }
 }

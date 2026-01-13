@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ftm.server.application.vo.post.PostDetailVo;
 import com.ftm.server.domain.enums.PostHashtag;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import lombok.Getter;
@@ -33,7 +34,12 @@ public class LoadPostDetailResponse {
         this.postId = postDetailVo.getPostId();
         this.title = postDetailVo.getTitle();
         this.content = postDetailVo.getContent();
-        this.hashtags = Arrays.stream(postDetailVo.getHashtags()).map(PostHashtag::getTag).toList();
+        this.hashtags =
+                postDetailVo.getHashtags() == null || postDetailVo.getHashtags().length == 0
+                        ? new ArrayList<>()
+                        : Arrays.stream(postDetailVo.getHashtags())
+                                .map(PostHashtag::getTag)
+                                .toList();
         this.viewCount = postDetailVo.getViewCount();
         this.likeCount = postDetailVo.getLikeCount();
         this.createdAt = postDetailVo.getCreatedAt();

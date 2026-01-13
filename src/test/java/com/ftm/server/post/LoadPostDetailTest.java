@@ -89,6 +89,9 @@ public class LoadPostDetailTest extends BaseTest {
                     fieldWithPath("data.postProducts[].brand")
                             .type(STRING)
                             .description("게시글 상품 브랜드"),
+                    fieldWithPath("data.postProducts[].recommendedCount")
+                            .type(NUMBER)
+                            .description("게시글 상품 추천수"),
                     fieldWithPath("data.postProducts[].hashtags[]")
                             .type(ARRAY)
                             .description("게시글 상품 해시태그 목록"),

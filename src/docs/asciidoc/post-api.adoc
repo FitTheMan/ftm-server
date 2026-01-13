@@ -378,6 +378,9 @@ include::{snippetsDir}/createProductLike/2/http-response.adoc[]
 ==== Request
 include::{snippetsDir}/loadPostProducts/1/http-request.adoc[]
 
+==== Request Query Parameters
+include::{snippetsDir}/loadPostProducts/1/query-parameters.adoc[]
+
 ==== Request Body Parameters
 include::{snippetsDir}/loadPostProducts/1/request-fields.adoc[]
 
