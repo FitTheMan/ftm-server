@@ -66,6 +66,9 @@ public class LoadPostDetailTest extends BaseTest {
                     fieldWithPath("data.viewCount").type(NUMBER).description("게시글 조회수"),
                     fieldWithPath("data.likeCount").type(NUMBER).description("게시글 좋아요 수"),
                     fieldWithPath("data.userLikeYn").type(BOOLEAN).description("사용자 게시글 좋아요 여부"),
+                    fieldWithPath("data.userBookmarkYn")
+                            .type(BOOLEAN)
+                            .description("사용자 게시글 북마크 여부"),
                     fieldWithPath("data.createdAt").type(STRING).description("게시글 생성 날짜"),
                     fieldWithPath("data.updatedAt").type(STRING).description("게시글 수정 날짜"),
                     fieldWithPath("data.postImages[]").type(ARRAY).description("게시글 이미지 목록 정보"),

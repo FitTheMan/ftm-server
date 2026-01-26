@@ -51,6 +51,10 @@ public class UserImage extends BaseTime {
                 .build();
     }
 
+    public static UserImage defaultForSystem(Long userId) {
+        return createUserImage(userId);
+    }
+
     public void updateDefaultUserImage() {
         this.objectKey = PropertiesHolder.USER_DEFAULT_IMAGE;
     }

@@ -23,6 +23,7 @@ public class PostDetailVo {
     private final List<PostImage> postImages;
     private final List<PostProductDetailVo> products;
     private final Boolean userLikeYn;
+    private final Boolean userBookmarkYn;
 
     private PostDetailVo(
             Post post,
@@ -30,7 +31,8 @@ public class PostDetailVo {
             UserImage userImage,
             List<PostImage> postImages,
             List<PostProductDetailVo> products,
-            Boolean userLikeYn) {
+            Boolean userLikeYn,
+            Boolean userBookmarkYn) {
         this.postId = post.getId();
         this.title = post.getTitle();
         this.content = post.getContent();
@@ -44,6 +46,7 @@ public class PostDetailVo {
         this.postImages = postImages;
         this.products = products;
         this.userLikeYn = userLikeYn;
+        this.userBookmarkYn = userBookmarkYn;
     }
 
     public static PostDetailVo from(
@@ -53,13 +56,15 @@ public class PostDetailVo {
             List<PostImage> postImages,
             List<PostProduct> postProducts,
             Map<Long, PostProductImage> postProductImageMap,
-            Boolean userLikeYn) {
+            Boolean userLikeYn,
+            Boolean userBookmarkYn) {
         return new PostDetailVo(
                 post,
                 user,
                 userImage,
                 postImages,
                 PostProductDetailVo.listFrom(postProducts, postProductImageMap),
-                userLikeYn);
+                userLikeYn,
+                userBookmarkYn);
     }
 }
