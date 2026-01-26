@@ -19,6 +19,7 @@ public class LoadPostDetailResponse {
     private final Integer viewCount;
     private final Integer likeCount;
     private final Boolean userLikeYn;
+    private final Boolean userBookmarkYn;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm", shape = JsonFormat.Shape.STRING)
     private final LocalDateTime createdAt;
@@ -50,6 +51,7 @@ public class LoadPostDetailResponse {
         this.postProducts =
                 postDetailVo.getProducts().stream().map(PostProductResponse::from).toList();
         this.userLikeYn = postDetailVo.getUserLikeYn();
+        this.userBookmarkYn = postDetailVo.getUserBookmarkYn();
     }
 
     public static LoadPostDetailResponse from(PostDetailVo postDetailVo) {

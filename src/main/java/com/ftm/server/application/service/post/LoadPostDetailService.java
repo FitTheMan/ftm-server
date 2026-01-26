@@ -7,8 +7,10 @@ import com.ftm.server.application.vo.post.PostDetailVo;
 import com.ftm.server.common.exception.CustomException;
 import com.ftm.server.common.response.enums.ErrorResponseCode;
 import com.ftm.server.domain.entity.*;
+import com.ftm.server.domain.enums.UserRole;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +31,7 @@ public class LoadPostDetailService implements LoadPostDetailUseCase {
     private final LoadUserImageForPostPort loadUserImageForPostPort;
     private final UpdatePostPort updatePostPort;
     private final LoadPostLikePort loadPostLikePort;
+    private final LoadBookmarkForPostPort loadBookmarkForPostPort;
 
     @Override
     @Transactional
@@ -50,12 +53,17 @@ public class LoadPostDetailService implements LoadPostDetailUseCase {
                         .loadUserById(FindByIdQuery.of(post.getUserId()))
                         .orElseThrow(() -> CustomException.USER_NOT_FOUND);
 
-        // 유저 이미지 조회
+        // 유저 이미지 조회 (SYSTEM 유저 -> default image)
+        Optional<UserImage> userImageOpt =
+                loadUserImageForPostPort.loadUserImageByUserId(FindByUserIdQuery.of(user.getId()));
         UserImage userImage =
-                loadUserImageForPostPort
-                        .loadUserImageByUserId(FindByUserIdQuery.of(user.getId()))
-                        .orElseThrow(
-                                () -> new CustomException(ErrorResponseCode.USER_IMAGE_NOT_FOUND));
+                userImageOpt.orElseGet(
+                        () -> {
+                            if (user.getRole() == UserRole.SYSTEM) {
+                                return UserImage.defaultForSystem(user.getId());
+                            }
+                            throw new CustomException(ErrorResponseCode.USER_IMAGE_NOT_FOUND);
+                        });
 
         // 게시글 이미지 목록 조회
         List<PostImage> postImages =
@@ -70,18 +78,31 @@ public class LoadPostDetailService implements LoadPostDetailUseCase {
                 loadPostProductImagePort.loadPostProductImagesByPostProductIds(
                         FindByIdsQuery.from(
                                 postProducts.stream().map(PostProduct::getId).toList()));
-
         Map<Long, PostProductImage> postProductImageMap =
                 postProductImages.stream()
                         .collect(
                                 Collectors.toMap(
                                         PostProductImage::getPostProductId, Function.identity()));
 
+        // 유저 게시글 좋아요 여부
         Boolean userLikeYn =
                 userId != null
                         && loadPostLikePort.findPostLikeByUser(userId, query.getId()).getLikeYn();
 
+        // 북마크 여부
+        Boolean bookmarkYn =
+                userId != null
+                        && loadBookmarkForPostPort.existsBookmarkByUserIdAndPostId(
+                                FindBookmarkByUserIdAndPostIdQuery.of(user.getId(), post.getId()));
+
         return PostDetailVo.from(
-                post, user, userImage, postImages, postProducts, postProductImageMap, userLikeYn);
+                post,
+                user,
+                userImage,
+                postImages,
+                postProducts,
+                postProductImageMap,
+                userLikeYn,
+                bookmarkYn);
     }
 }

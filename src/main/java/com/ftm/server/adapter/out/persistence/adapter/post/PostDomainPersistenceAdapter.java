@@ -43,7 +43,8 @@ public class PostDomainPersistenceAdapter
                 DeleteProductLikePort,
                 LoadPostLikePort,
                 SavePostLikePort,
-                DeletePostLikePort {
+                DeletePostLikePort,
+                LoadBookmarkForPostPort {
 
     private final PostRepository postRepository;
     private final PostImageRepository postImageRepository;
@@ -53,6 +54,7 @@ public class PostDomainPersistenceAdapter
     private final UserImageRepository userImageRepository;
     private final ProductLikeRepository productLikeRepository;
     private final PostLikeRepository postLikeRepository;
+    private final BookmarkRepository bookmarkRepository;
 
     private final PostMapper postMapper;
     private final PostImageMapper postImageMapper;
@@ -183,6 +185,11 @@ public class PostDomainPersistenceAdapter
                                         e.getBookmarkYn(),
                                         postMapper.toDomainEntity((PostJpaEntity) e.getData())))
                 .toList();
+    }
+
+    @Override
+    public Boolean existsBookmarkByUserIdAndPostId(FindBookmarkByUserIdAndPostIdQuery query) {
+        return bookmarkRepository.existsByUserIdAndPostId(query.getUserId(), query.getPostId());
     }
 
     @Override
