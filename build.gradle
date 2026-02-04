@@ -96,8 +96,7 @@ tasks.named('test') {
 openapi3 {
     servers = [
             { url = "http://localhost:8080/" },
-            { url = "https://dev-api.fittheman.site/" },
-            { url = "https://dev-api-gcp.fittheman.site/" }
+            { url = "https://dev-api.fittheman.store/" }
     ]
     title = '핏더맨 API DOCUMENT'
     description = '핏더맨 api 명세서입니다.'
