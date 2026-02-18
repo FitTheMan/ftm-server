@@ -235,6 +235,7 @@ public class PostDomainPersistenceAdapter
                         .orElseThrow(() -> new CustomException(ErrorResponseCode.POST_NOT_FOUND));
 
         return postProductRepository.findAllByPost(postJpaEntity).stream()
+                .sorted((a, b) -> Math.toIntExact(a.getId() - b.getId()))
                 .map(postProductMapper::toDomainEntity)
                 .toList();
     }
