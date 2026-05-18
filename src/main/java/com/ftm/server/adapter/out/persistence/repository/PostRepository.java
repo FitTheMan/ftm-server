@@ -31,6 +31,7 @@ public interface PostRepository
         SELECT id
         FROM post p
         WHERE p.created_at >= :since
+          AND p.is_deleted = false
         ORDER BY
         (p.like_count / NULLIF(MAX(p.like_count) OVER (), 0.0)
         + p.view_count / NULLIF(MAX(p.view_count) OVER (), 0.0)) DESC ,
@@ -41,7 +42,8 @@ public interface PostRepository
     List<Long> findTopNPostsByViewCountAndLikeCount(
             @Param("since") LocalDateTime since, @Param("limit") int limit);
 
-    @Query("select p.id from PostJpaEntity p order by p.likeCount DESC")
+    @Query(
+            "select p.id from PostJpaEntity p where p.isDeleted = false order by p.likeCount DESC limit :limit")
     List<Long> findTopNPostsByLikeCount(@Param("limit") int limit);
 
     @Query(
