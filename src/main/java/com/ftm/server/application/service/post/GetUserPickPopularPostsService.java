@@ -74,17 +74,17 @@ public class GetUserPickPopularPostsService implements GetUserPickPopularPostsUs
                         .stream()
                         .collect(toMap(PostImage::getPostId, PostImage::getObjectKey, (a, b) -> a));
 
-        // 합치기 (postList 순서 = 랭킹)
-        return IntStream.range(0, postIds.size())
+        // 합치기 (postList 순서 = 랭킹, soft-delete된 게시글은 detailPostMap에 없으므로 제외)
+        List<Long> validPostIds = postIds.stream().filter(detailPostMap::containsKey).toList();
+        return IntStream.range(0, validPostIds.size())
                 .mapToObj(
                         i -> {
-                            Long postId = postIds.get(i);
+                            Long postId = validPostIds.get(i);
                             PostWithUserAndBookmarkCountVo p = detailPostMap.get(postId);
                             int ranking = i + 1;
                             String imageUrl =
                                     imageUrlMap.getOrDefault(
-                                            p.getId(),
-                                            PropertiesHolder.POST_DEFAULT_IMAGE); // 없으면 null
+                                            p.getId(), PropertiesHolder.POST_DEFAULT_IMAGE);
                             return UserPickPopularPostsVo.of(
                                     ranking,
                                     p,

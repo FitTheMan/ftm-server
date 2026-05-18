@@ -104,6 +104,7 @@ public class PostWithBookmarkCustomRepositoryImpl implements PostWithBookmarkCus
                                 ))
                 .from(postJpaEntity)
                 .where(postJpaEntity.id.in(query.getIds()))
+                .where(postJpaEntity.isDeleted.eq(false))
                 .leftJoin(bookmarkJpaEntity)
                 .on(bookmarkJpaEntity.post.id.eq(postJpaEntity.id))
                 .groupBy(
@@ -139,13 +140,19 @@ public class PostWithBookmarkCustomRepositoryImpl implements PostWithBookmarkCus
                 queryFactory
                         .select(postJpaEntity.likeCount.max(), postJpaEntity.viewCount.max())
                         .from(postJpaEntity)
+                        .where(postJpaEntity.isDeleted.eq(false))
                         .fetchOne();
 
         int maxLike = maxValues.get(postJpaEntity.likeCount.max());
         int maxView = maxValues.get(postJpaEntity.viewCount.max());
 
         List<UserPickPopularPostCursorVo> result =
-                queryFactory.select(postJpaEntity).from(postJpaEntity).fetch().stream()
+                queryFactory
+                        .select(postJpaEntity)
+                        .from(postJpaEntity)
+                        .where(postJpaEntity.isDeleted.eq(false))
+                        .fetch()
+                        .stream()
                         .map(
                                 vo -> {
                                     double normLike =

@@ -71,7 +71,8 @@ public class LoadTrendingManWithCacheAdapter implements LoadTrendingManWithCache
         userIds.forEach(p -> imageMap.put(p, null));
         loadUserImagePort
                 .loadUserImagesByUserIdIn(FindUserImagesByIdsQuery.of(userIds))
-                .forEach(userImage -> imageMap.put(userImage.getId(), userImage.getObjectKey()));
+                .forEach(
+                        userImage -> imageMap.put(userImage.getUserId(), userImage.getObjectKey()));
 
         // 4. 결과 조합 (순위 부여)
         return IntStream.range(0, topN.size())

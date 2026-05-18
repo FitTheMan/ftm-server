@@ -161,6 +161,7 @@ public class GetUserPickAllPostsService implements GetUserPickPostsUseCase {
                                         (a, b) -> a));
 
         return posts.stream()
+                .filter(b -> postDetailMap.containsKey(b.getPostId()))
                 .map(
                         b -> {
                             PostWithUserAndBookmarkCountVo post = postDetailMap.get(b.getPostId());
@@ -200,6 +201,7 @@ public class GetUserPickAllPostsService implements GetUserPickPostsUseCase {
                         .collect(toMap(PostImage::getPostId, PostImage::getObjectKey, (a, b) -> a));
 
         return posts.stream()
+                .filter(b -> detailPostMap.containsKey(((Post) b.getData()).getId()))
                 .map(
                         b -> {
                             PostWithUserAndBookmarkCountVo p =
