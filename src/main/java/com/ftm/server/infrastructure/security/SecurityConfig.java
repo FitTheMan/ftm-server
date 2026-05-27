@@ -46,7 +46,7 @@ public class SecurityConfig {
     public static final List<String> CORS_ALLOWED_ORIGINS =
             List.of(
                     "http://localhost:8080", // 로컬 환경 서버 도메인
-                    "https://dev-api.fittheman.site", // 개발 환경 서버 도메인
+                    "https://dev-api.fittheman.store", // 개발 환경 서버 도메인
                     "http://localhost:3000", // 로컬 환경 클라이언트 도메인
                     "https://localhost:3000", // 로컬 환경 https 클라이언트 도메인
                     "https://ftm-client.vercel.app", // 개발 환경 클라이언트 도메인
