@@ -64,7 +64,7 @@ public class SecurityConfig {
         "/api/users/email/authentication",
         "/api/users/email/authentication/code",
         "/api/auth/login/**",
-        "api/auth/logout",
+        "/api/auth/logout",
         "/api/users",
         "/api/users/social",
         "/api/grooming/tests/submission",
