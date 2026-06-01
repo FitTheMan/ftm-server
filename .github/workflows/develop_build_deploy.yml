@@ -99,16 +99,16 @@ jobs:
           push: true
           tags: ${{ steps.metadata.outputs.tags }}  # 추출된 도커 메타데이터 tags -> "${DOCKERHUB_USERNAME}/${DOCKERHUB_IMAGE_NAME}:{TAG}
 
-      # GCE 배포
-      - name: Deploy to GCE Server
+      # 배포
+      - name: Deploy to Server
         uses: appleboy/ssh-action@v1.0.3
         env:
           IMAGE_FULL_PATH: ${{ steps.metadata.outputs.tags }}
           DOCKERHUB_IMAGE_NAME: ${{ env.DOCKERHUB_IMAGE_NAME }}
         with:
-          host: ${{ secrets.GCE_HOST }}
-          username: ${{ secrets.GCE_USER }}
-          key: ${{ secrets.GCE_SSH_PRIVATE_KEY }}
+          host: ${{ secrets.DEV_SERVER_HOST }}
+          username: ${{ secrets.DEV_SERVER_USER }}
+          key: ${{ secrets.DEV_SERVER_SSH_PRIVATE_KEY }}
           envs: IMAGE_FULL_PATH, DOCKERHUB_IMAGE_NAME # docker-compose.yml 에서 사용할 환경 변수
           debug: true
           script: |
