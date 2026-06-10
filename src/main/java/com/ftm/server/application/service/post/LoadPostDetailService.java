@@ -93,7 +93,7 @@ public class LoadPostDetailService implements LoadPostDetailUseCase {
         Boolean bookmarkYn =
                 userId != null
                         && loadBookmarkForPostPort.existsBookmarkByUserIdAndPostId(
-                                FindBookmarkByUserIdAndPostIdQuery.of(user.getId(), post.getId()));
+                                FindBookmarkByUserIdAndPostIdQuery.of(userId, post.getId()));
 
         return PostDetailVo.from(
                 post,
