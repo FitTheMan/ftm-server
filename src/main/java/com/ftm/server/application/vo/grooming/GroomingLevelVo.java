@@ -9,6 +9,18 @@ public class GroomingLevelVo {
     private final Long groomingLevelId;
     private final NormalModeLevel normalMode;
     private final TruthModeLevel truthMode;
+    private final String imagePath;
+
+    private GroomingLevelVo(GroomingLevel groomingLevel) {
+        this.groomingLevelId = groomingLevel.getId();
+        this.normalMode = NormalModeLevel.of(groomingLevel);
+        this.truthMode = TruthModeLevel.of(groomingLevel);
+        this.imagePath = groomingLevel.getImagePath();
+    }
+
+    public static GroomingLevelVo from(GroomingLevel groomingLevel) {
+        return new GroomingLevelVo(groomingLevel);
+    }
 
     @Getter
     public static class NormalModeLevel {
@@ -44,15 +56,5 @@ public class GroomingLevelVo {
         public static TruthModeLevel of(GroomingLevel groomingLevel) {
             return new TruthModeLevel(groomingLevel);
         }
-    }
-
-    private GroomingLevelVo(GroomingLevel groomingLevel) {
-        this.groomingLevelId = groomingLevel.getId();
-        this.normalMode = NormalModeLevel.of(groomingLevel);
-        this.truthMode = TruthModeLevel.of(groomingLevel);
-    }
-
-    public static GroomingLevelVo from(GroomingLevel groomingLevel) {
-        return new GroomingLevelVo(groomingLevel);
     }
 }

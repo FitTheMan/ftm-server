@@ -37,7 +37,8 @@ public class SaveGroomingLevelTest extends BaseTest {
                         "레벨 일반모드 설명",
                         "레벨 진심모드 이름",
                         "레벨 진심모드 요약",
-                        "레벨 진심모드 설명");
+                        "레벨 진심모드 설명",
+                        "https://test-image-path");
 
         // when
         MockHttpSession session = createAdminUserAndLogin();
@@ -60,7 +61,8 @@ public class SaveGroomingLevelTest extends BaseTest {
                         "레벨 일반모드 설명",
                         "레벨 진심모드 이름",
                         "레벨 진심모드 요약",
-                        "레벨 진심모드 설명");
+                        "레벨 진심모드 설명",
+                        "https://test-image-path");
 
         // when
         MockHttpSession session = createUserAndLogin();
@@ -85,7 +87,8 @@ public class SaveGroomingLevelTest extends BaseTest {
                         "레벨 일반모드 설명",
                         "레벨 진심모드 이름",
                         "레벨 진심모드 요약",
-                        "레벨 진심모드 설명");
+                        "레벨 진심모드 설명",
+                        "https://test-image-path");
 
         // when
         MockHttpSession session = createAdminUserAndLogin();

@@ -22,4 +22,5 @@ public class SaveGroomingLevelRequest {
     @NotEmpty private String truthModeName;
     @NotEmpty private String truthModeSummary;
     @NotEmpty private String truthModeDescription;
+    private String imagePath;
 }

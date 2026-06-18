@@ -31,7 +31,8 @@ public class SaveGroomingLevelController {
                         request.getNormalModeDescription(),
                         request.getTruthModeName(),
                         request.getTruthModeSummary(),
-                        request.getTruthModeDescription());
+                        request.getTruthModeDescription(),
+                        request.getImagePath());
         saveGroomingLevelUseCase.execute(command);
 
         return ResponseEntity.status(HttpStatus.CREATED)

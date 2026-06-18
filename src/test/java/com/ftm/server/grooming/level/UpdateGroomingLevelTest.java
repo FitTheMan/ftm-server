@@ -47,7 +47,8 @@ public class UpdateGroomingLevelTest extends BaseTest {
                         "레벨 일반모드 설명",
                         "레벨 진심모드 이름",
                         "레벨 진심모드 요약",
-                        "레벨 진심모드 설명");
+                        "레벨 진심모드 설명",
+                        "https://test-image-path");
         GroomingLevel level = GroomingLevel.create(command);
         levelId = groomingLevelRepository.save(groomingLevelMapper.toJpaEntity(level)).getId();
     }
@@ -65,7 +66,8 @@ public class UpdateGroomingLevelTest extends BaseTest {
                         "레벨 일반모드 설명",
                         "레벨 진심모드 이름",
                         "레벨 진심모드 요약",
-                        "레벨 진심모드 설명");
+                        "레벨 진심모드 설명",
+                        "https://test-image-path");
 
         // when
         MockHttpSession session = createAdminUserAndLogin();
@@ -80,7 +82,7 @@ public class UpdateGroomingLevelTest extends BaseTest {
     void 그루밍_레벨_수정_실패1() throws Exception {
         // given
         UpdateGroomingLevelRequest request =
-                new UpdateGroomingLevelRequest(1, 9, null, null, null, null, null, null);
+                new UpdateGroomingLevelRequest(1, 9, null, null, null, null, null, null, null);
 
         // when
         MockHttpSession session = createUserAndLogin();
@@ -97,7 +99,7 @@ public class UpdateGroomingLevelTest extends BaseTest {
     void 그루밍_레벨_수정_실패2() throws Exception {
         // given
         UpdateGroomingLevelRequest request =
-                new UpdateGroomingLevelRequest(1, 9, null, null, null, null, null, null);
+                new UpdateGroomingLevelRequest(1, 9, null, null, null, null, null, null, null);
 
         // when
         MockHttpSession session = createAdminUserAndLogin();

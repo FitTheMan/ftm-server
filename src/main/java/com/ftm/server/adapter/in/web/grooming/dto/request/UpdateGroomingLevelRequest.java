@@ -23,4 +23,5 @@ public class UpdateGroomingLevelRequest {
     private String truthModeName;
     private String truthModeSummary;
     private String truthModeDescription;
+    private String imagePath;
 }

@@ -22,6 +22,7 @@ public class GroomingLevelJpaEntity extends BaseTimeJpaEntity {
     private String truthModeName;
     private String truthModeSummary;
     private String truthModeDescription;
+    private String imagePath;
 
     @Builder(access = AccessLevel.PRIVATE)
     private GroomingLevelJpaEntity(
@@ -32,7 +33,8 @@ public class GroomingLevelJpaEntity extends BaseTimeJpaEntity {
             String normalModeDescription,
             String truthModeName,
             String truthModeSummary,
-            String truthModeDescription) {
+            String truthModeDescription,
+            String imagePath) {
         this.minScore = minScore;
         this.maxScore = maxScore;
         this.normalModeName = normalModeName;
@@ -41,6 +43,7 @@ public class GroomingLevelJpaEntity extends BaseTimeJpaEntity {
         this.truthModeName = truthModeName;
         this.truthModeSummary = truthModeSummary;
         this.truthModeDescription = truthModeDescription;
+        this.imagePath = imagePath;
     }
 
     public static GroomingLevelJpaEntity from(GroomingLevel groomingLevel) {
@@ -53,6 +56,7 @@ public class GroomingLevelJpaEntity extends BaseTimeJpaEntity {
                 .truthModeName(groomingLevel.getTruthModeName())
                 .truthModeSummary(groomingLevel.getTruthModeSummary())
                 .truthModeDescription(groomingLevel.getTruthModeDescription())
+                .imagePath(groomingLevel.getImagePath())
                 .build();
     }
 
@@ -65,5 +69,6 @@ public class GroomingLevelJpaEntity extends BaseTimeJpaEntity {
         this.truthModeName = groomingLevel.getTruthModeName();
         this.truthModeSummary = groomingLevel.getTruthModeSummary();
         this.truthModeDescription = groomingLevel.getTruthModeDescription();
+        this.imagePath = groomingLevel.getImagePath();
     }
 }

@@ -21,7 +21,7 @@ public class UpdateGroomingLevelController {
     private final UpdateGroomingLevelUseCase updateGroomingLevelUseCase;
 
     @PatchMapping("/api/grooming/levels/{levelId}")
-    public ResponseEntity<ApiResponse<Void>> saveGroomingLevel(
+    public ResponseEntity<ApiResponse<Void>> updateGroomingLevel(
             @PathVariable Long levelId, @RequestBody @Valid UpdateGroomingLevelRequest request) {
 
         UpdateGroomingLevelCommand command =
@@ -34,7 +34,8 @@ public class UpdateGroomingLevelController {
                         request.getNormalModeDescription(),
                         request.getTruthModeName(),
                         request.getTruthModeSummary(),
-                        request.getTruthModeDescription());
+                        request.getTruthModeDescription(),
+                        request.getImagePath());
         updateGroomingLevelUseCase.execute(command);
 
         return ResponseEntity.status(HttpStatus.OK)

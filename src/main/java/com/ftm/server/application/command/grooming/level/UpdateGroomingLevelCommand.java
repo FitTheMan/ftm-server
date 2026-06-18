@@ -14,6 +14,7 @@ public class UpdateGroomingLevelCommand {
     private final String truthModeName;
     private final String truthModeSummary;
     private final String truthModeDescription;
+    private final String imagePath;
 
     private UpdateGroomingLevelCommand(
             Long id,
@@ -24,7 +25,8 @@ public class UpdateGroomingLevelCommand {
             String normalModeDescription,
             String truthModeName,
             String truthModeSummary,
-            String truthModeDescription) {
+            String truthModeDescription,
+            String imagePath) {
         this.id = id;
         this.minScore = minScore;
         this.maxScore = maxScore;
@@ -34,6 +36,7 @@ public class UpdateGroomingLevelCommand {
         this.truthModeName = truthModeName;
         this.truthModeSummary = truthModeSummary;
         this.truthModeDescription = truthModeDescription;
+        this.imagePath = imagePath;
     }
 
     public static UpdateGroomingLevelCommand of(
@@ -45,7 +48,8 @@ public class UpdateGroomingLevelCommand {
             String normalModeDescription,
             String truthModeName,
             String truthModeSummary,
-            String truthModeDescription) {
+            String truthModeDescription,
+            String imagePath) {
         return new UpdateGroomingLevelCommand(
                 id,
                 minScore,
@@ -55,6 +59,7 @@ public class UpdateGroomingLevelCommand {
                 normalModeDescription,
                 truthModeName,
                 truthModeSummary,
-                truthModeDescription);
+                truthModeDescription,
+                imagePath);
     }
 }
