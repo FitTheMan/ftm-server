@@ -13,6 +13,7 @@ public class SaveGroomingLevelCommand {
     private final String truthModeName;
     private final String truthModeSummary;
     private final String truthModeDescription;
+    private final String imagePath;
 
     private SaveGroomingLevelCommand(
             Integer minScore,
@@ -22,7 +23,8 @@ public class SaveGroomingLevelCommand {
             String normalModeDescription,
             String truthModeName,
             String truthModeSummary,
-            String truthModeDescription) {
+            String truthModeDescription,
+            String imagePath) {
         this.minScore = minScore;
         this.maxScore = maxScore;
         this.normalModeName = normalModeName;
@@ -31,6 +33,7 @@ public class SaveGroomingLevelCommand {
         this.truthModeName = truthModeName;
         this.truthModeSummary = truthModeSummary;
         this.truthModeDescription = truthModeDescription;
+        this.imagePath = imagePath;
     }
 
     public static SaveGroomingLevelCommand of(
@@ -41,7 +44,8 @@ public class SaveGroomingLevelCommand {
             String normalModeDescription,
             String truthModeName,
             String truthModeSummary,
-            String truthModeDescription) {
+            String truthModeDescription,
+            String imagePath) {
         return new SaveGroomingLevelCommand(
                 minScore,
                 maxScore,
@@ -50,6 +54,7 @@ public class SaveGroomingLevelCommand {
                 normalModeDescription,
                 truthModeName,
                 truthModeSummary,
-                truthModeDescription);
+                truthModeDescription,
+                imagePath);
     }
 }

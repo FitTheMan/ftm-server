@@ -130,7 +130,10 @@ public class LoadGroomingTestHistoryDetailTest extends BaseTest {
                             .description("그루밍 레벨 진심모드 요약"),
                     fieldWithPath("data.level.truthMode.description")
                             .type(STRING)
-                            .description("그루밍 레벨 진심모드 설명"));
+                            .description("그루밍 레벨 진심모드 설명"),
+                    fieldWithPath("data.level.imagePath")
+                            .type(STRING)
+                            .description("그루밍 레벨 이미지 경로"));
 
     private RestDocumentationResultHandler getDocument(Integer identifier) {
         return document(

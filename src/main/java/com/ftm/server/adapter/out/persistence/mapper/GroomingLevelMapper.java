@@ -19,6 +19,7 @@ public class GroomingLevelMapper {
                 jpaEntity.getTruthModeName(),
                 jpaEntity.getTruthModeSummary(),
                 jpaEntity.getTruthModeDescription(),
+                jpaEntity.getImagePath(),
                 jpaEntity.getCreatedAt(),
                 jpaEntity.getUpdatedAt());
     }

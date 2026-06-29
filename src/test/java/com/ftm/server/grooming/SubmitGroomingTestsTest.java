@@ -121,21 +121,58 @@ public class SubmitGroomingTestsTest extends BaseTest {
                             .description("그루밍 레벨 진심모드 요약"),
                     fieldWithPath("data.level.truthMode.description")
                             .type(STRING)
-                            .description("그루밍 레벨 진심모드 설명"));
+                            .description("그루밍 레벨 진심모드 설명"),
+                    fieldWithPath("data.level.imagePath")
+                            .type(STRING)
+                            .description("그루밍 레벨 이미지 경로"));
 
     private GroomingTestSubmissionRequest getRequest() {
         List<GroomingTestSubmissionRequest.SubmittedQuestion> submissions =
                 List.of(
                         new GroomingTestSubmissionRequest.SubmittedQuestion(
-                                1L, "BEAUTY", List.of(1L, 2L, 3L)),
+                                1L, "BEAUTY", List.of(1L, 2L, 3L, 4L)),
+                        new GroomingTestSubmissionRequest.SubmittedQuestion(
+                                2L, "BEAUTY", List.of(7L)),
+                        new GroomingTestSubmissionRequest.SubmittedQuestion(
+                                3L, "BEAUTY", List.of(8L, 9L, 10L, 11L)),
+                        new GroomingTestSubmissionRequest.SubmittedQuestion(
+                                4L, "BEAUTY", List.of(13L)),
+                        new GroomingTestSubmissionRequest.SubmittedQuestion(
+                                5L, "BEAUTY", List.of(16L)),
                         new GroomingTestSubmissionRequest.SubmittedQuestion(
                                 6L, "HYGIENE", List.of(18L)),
                         new GroomingTestSubmissionRequest.SubmittedQuestion(
-                                10L, "HAIR", List.of(32L)),
+                                7L, "HYGIENE", List.of(20L, 21L, 22L)),
                         new GroomingTestSubmissionRequest.SubmittedQuestion(
-                                15L, "WORKOUT", List.of(46L, 47L, 48L)),
+                                8L, "HYGIENE", List.of(26L, 27L)),
                         new GroomingTestSubmissionRequest.SubmittedQuestion(
-                                18L, "FASHION", List.of(67L, 68L)));
+                                9L, "HYGIENE", List.of(28L, 29L, 30L, 31L)),
+                        new GroomingTestSubmissionRequest.SubmittedQuestion(
+                                10L, "HAIR", List.of(33L)),
+                        new GroomingTestSubmissionRequest.SubmittedQuestion(
+                                11L, "HAIR", List.of(35L)),
+                        new GroomingTestSubmissionRequest.SubmittedQuestion(
+                                12L, "HAIR", List.of(37L)),
+                        new GroomingTestSubmissionRequest.SubmittedQuestion(
+                                13L, "HAIR", List.of(40L)),
+                        new GroomingTestSubmissionRequest.SubmittedQuestion(
+                                14L, "HAIR", List.of(42L, 44L)),
+                        new GroomingTestSubmissionRequest.SubmittedQuestion(
+                                15L, "WORKOUT", List.of(47L)),
+                        new GroomingTestSubmissionRequest.SubmittedQuestion(
+                                16L, "WORKOUT", List.of(59L)),
+                        new GroomingTestSubmissionRequest.SubmittedQuestion(
+                                17L, "WORKOUT", List.of(61L, 63L, 64L)),
+                        new GroomingTestSubmissionRequest.SubmittedQuestion(
+                                18L, "FASHION", List.of(67L)),
+                        new GroomingTestSubmissionRequest.SubmittedQuestion(
+                                19L, "FASHION", List.of(71L)),
+                        new GroomingTestSubmissionRequest.SubmittedQuestion(
+                                20L, "FASHION", List.of(74L)),
+                        new GroomingTestSubmissionRequest.SubmittedQuestion(
+                                21L, "FASHION", List.of(77L)),
+                        new GroomingTestSubmissionRequest.SubmittedQuestion(
+                                22L, "FASHION", List.of(80L)));
         return new GroomingTestSubmissionRequest(submissions);
     }
 

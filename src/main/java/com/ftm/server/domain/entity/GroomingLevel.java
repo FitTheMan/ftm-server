@@ -21,6 +21,7 @@ public class GroomingLevel extends BaseTime {
     private String truthModeName;
     private String truthModeSummary;
     private String truthModeDescription;
+    private String imagePath;
 
     @Builder(access = AccessLevel.PRIVATE)
     private GroomingLevel(
@@ -33,6 +34,7 @@ public class GroomingLevel extends BaseTime {
             String truthModeName,
             String truthModeSummary,
             String truthModeDescription,
+            String imagePath,
             LocalDateTime createdAt,
             LocalDateTime updatedAt) {
         this.id = id;
@@ -44,6 +46,7 @@ public class GroomingLevel extends BaseTime {
         this.truthModeName = truthModeName;
         this.truthModeSummary = truthModeSummary;
         this.truthModeDescription = truthModeDescription;
+        this.imagePath = imagePath;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -58,6 +61,7 @@ public class GroomingLevel extends BaseTime {
             String truthModeName,
             String truthModeSummary,
             String truthModeDescription,
+            String imagePath,
             LocalDateTime createdAt,
             LocalDateTime updatedAt) {
         return GroomingLevel.builder()
@@ -70,6 +74,7 @@ public class GroomingLevel extends BaseTime {
                 .truthModeName(truthModeName)
                 .truthModeSummary(truthModeSummary)
                 .truthModeDescription(truthModeDescription)
+                .imagePath(imagePath)
                 .createdAt(createdAt)
                 .updatedAt(updatedAt)
                 .build();
@@ -85,6 +90,7 @@ public class GroomingLevel extends BaseTime {
                 .truthModeName(command.getTruthModeName())
                 .truthModeSummary(command.getTruthModeSummary())
                 .truthModeDescription(command.getTruthModeDescription())
+                .imagePath(command.getImagePath())
                 .build();
     }
 
@@ -101,5 +107,6 @@ public class GroomingLevel extends BaseTime {
             this.truthModeSummary = command.getTruthModeSummary();
         if (command.getTruthModeDescription() != null)
             this.truthModeDescription = command.getTruthModeDescription();
+        if (command.getImagePath() != null) this.imagePath = command.getImagePath();
     }
 }
